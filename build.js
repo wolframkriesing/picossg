@@ -32,25 +32,32 @@ function* walk(dir) {
 // Transform and build the site
 function transform(filePath) {
   const relPath = path.relative(srcDir, filePath);
-  if (relPath.includes(includesDir)) {
+  if (relPath.startsWith('_')) {
     return;
-  } // Skip components themselves
+  }
 
-  const outPath = path.join(outDir, relPath
-    .replace(/\.njk\.md$/, '.html')
-    .replace(/\.njk$/, '.html')
-    .replace(/\.md$/, '.html')
-  );
+  if (relPath.endsWith('.njk') || relPath.endsWith('.md')) {
+    const outPath = path.join(outDir, relPath
+      .replace(/\.njk\.md$/, '.html')
+      .replace(/\.njk$/, '.html')
+      .replace(/\.md$/, '.html')
+    );
 
-  ensureDirSync(path.dirname(outPath));
-  let content = fs.readFileSync(filePath, 'utf8');
+    ensureDirSync(path.dirname(outPath));
+    let content = fs.readFileSync(filePath, 'utf8');
 
-  // Process Markdown + Nunjucks (chained) files
-  if (filePath.includes('.njk')) content = njk.renderString(content);
-  if (filePath.includes('.md')) content = md.render(content);
+    // Process Markdown + Nunjucks (chained) files
+    if (filePath.includes('.njk')) content = njk.renderString(content);
+    if (filePath.includes('.md')) content = md.render(content);
 
-  fs.writeFileSync(outPath, content);
-  console.log('✔ Built', `${relPath} => ${outPath}`);
+    fs.writeFileSync(outPath, content);
+    console.log('⚙️ Built', `${relPath} => ${outPath}`);
+  } else {
+    const dest = path.join(outDir, relPath);
+    ensureDirSync(path.dirname(dest));
+    fs.copyFileSync(filePath, dest);
+    console.log('💾 Copied', `${relPath} => ${dest}`);
+  }
 }
 
 // Main build function
