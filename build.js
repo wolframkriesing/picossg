@@ -22,48 +22,60 @@ function* walk(dir) {
   for (const entry of fs.readdirSync(dir, {withFileTypes: true})) {
     const res = path.resolve(dir, entry.name);
     if (entry.isDirectory()) {
-      yield * walk(res);
+      yield* walk(res);
     } else {
       yield res;
     }
   }
 }
 
-// Transform and build the site
-function transform(filePath) {
+const processors = new Map([
+  ['.njk.md', (content) => md.render(njk.renderString(content))],
+  ['.njk', (content) => njk.renderString(content)],
+  ['.md', (content) => md.render(content)],
+])
+
+function processFile(relPath, filePath) {
+  let outPath = path.join(outDir, relPath);
+  ensureDirSync(path.dirname(outPath));
+  let content = fs.readFileSync(filePath, 'utf8');
+
+  for (const [ext, processor] of processors) {
+    if (relPath.endsWith(ext)) {
+      content = processor(content);
+      outPath = outPath.split(ext)[0] + '.html';
+      break; // Apply ONLY ONE processor!
+    }
+  }
+
+  fs.writeFileSync(outPath, content);
+  console.log('⚙️ Built', `${relPath} => ${outPath}`);
+}
+
+function copyFile(relPath, filePath) {
+  const dest = path.join(outDir, relPath);
+  ensureDirSync(path.dirname(dest));
+  fs.copyFileSync(filePath, dest);
+  console.log('💾 Copied', `${relPath} => ${dest}`);
+}
+
+function transformFile(filePath) {
   const relPath = path.relative(srcDir, filePath);
   if (relPath.startsWith('_')) {
     return;
   }
 
-  if (relPath.endsWith('.njk') || relPath.endsWith('.md')) {
-    const outPath = path.join(outDir, relPath
-      .replace(/\.njk\.md$/, '.html')
-      .replace(/\.njk$/, '.html')
-      .replace(/\.md$/, '.html')
-    );
-
-    ensureDirSync(path.dirname(outPath));
-    let content = fs.readFileSync(filePath, 'utf8');
-
-    // Process Markdown + Nunjucks (chained) files
-    if (filePath.includes('.njk')) content = njk.renderString(content);
-    if (filePath.includes('.md')) content = md.render(content);
-
-    fs.writeFileSync(outPath, content);
-    console.log('⚙️ Built', `${relPath} => ${outPath}`);
-  } else {
-    const dest = path.join(outDir, relPath);
-    ensureDirSync(path.dirname(dest));
-    fs.copyFileSync(filePath, dest);
-    console.log('💾 Copied', `${relPath} => ${dest}`);
+  if (processors.has(path.extname(relPath))) {
+    processFile(relPath, filePath);
+    return;
   }
+
+  copyFile(relPath, filePath);
 }
 
-// Main build function
 function buildAll() {
   fs.rmSync(outDir, {recursive: true, force: true});
-  for (const file of walk(srcDir)) transform(file);
+  for (const file of walk(srcDir)) transformFile(file);
 }
 
 buildAll();
