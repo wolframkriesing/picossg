@@ -8,7 +8,7 @@ const outDir = 'dist';
 const includesDir = '_includes';
 const md = new MarkdownIt();
 
-const env = nunjucks.configure(path.join(srcDir, includesDir), {autoescape: false});
+const njk = nunjucks.configure(path.join(srcDir, includesDir), {autoescape: false});
 
 // Helper to ensure directory exists
 function ensureDirSync(dir) {
@@ -37,26 +37,20 @@ function transform(filePath) {
   } // Skip components themselves
 
   const outPath = path.join(outDir, relPath
-    .replace(/\.md\.njk\.html$/, '.html')
-    .replace(/\.njk\.html$/, '.html')
-    .replace(/\.md\.html$/, '.html')
+    .replace(/\.njk\.md$/, '.html')
+    .replace(/\.njk$/, '.html')
+    .replace(/\.md$/, '.html')
   );
 
   ensureDirSync(path.dirname(outPath));
   let content = fs.readFileSync(filePath, 'utf8');
 
-  // Process Markdown + Nunjucks chained files
-  if (filePath.endsWith('.md.njk.html')) {
-    content = env.renderString(content);
-    content = md.render(content);
-  } else if (filePath.endsWith('.md.html')) {
-    content = md.render(content);
-  } else if (filePath.endsWith('.njk.html')) {
-    content = env.renderString(content);
-  }
+  // Process Markdown + Nunjucks (chained) files
+  if (filePath.includes('.njk')) content = njk.renderString(content);
+  if (filePath.includes('.md')) content = md.render(content);
 
   fs.writeFileSync(outPath, content);
-  console.log('✔ Built', relPath);
+  console.log('✔ Built', `${relPath} => ${outPath}`);
 }
 
 // Main build function

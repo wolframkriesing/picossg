@@ -4,8 +4,9 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "build": "node --watch-path src build.js",
-    "serve": "npx http-server dist -p 8899"
+    "build": "node --watch-path src --watch-path build.js build.js",
+    "serve": "npx http-server dist -p 8899",
+    "test": "npx nodemon --legacy-watch --watch dist --watch expected-dist --watch build.js --ext '*' --exec \"diff -r dist expected-dist\""
   },
   "keywords": [],
   "author": "Wolfram Kriesing",
