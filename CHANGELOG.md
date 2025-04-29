@@ -3,6 +3,8 @@
 - [x] serve and process md files
 - [x] serve and process njk.md files
 - [x] serve assets, favicon, img.svg
+- [x] exclude dirs with _
+- [x] make includes work
 
 # To do
 - [ ] 
