@@ -1,5 +1,6 @@
 {
   "name": "picossg",
+  "description": "The pico static side generator, the simplest one I ever wanted and hopefully 'found'.",
   "version": "1.0.0",
   "main": "index.js",
   "type": "module",
@@ -11,7 +12,6 @@
   "keywords": [],
   "author": "Wolfram Kriesing",
   "license": "agpl-3.0",
-  "description": "",
   "dependencies": {
     "markdown-it": "^14.1.0",
     "nunjucks": "^3.2.4"
