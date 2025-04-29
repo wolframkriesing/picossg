@@ -6,7 +6,7 @@ import MarkdownIt from 'markdown-it';
 const config = {
   srcDir: 'src',
   outDir: 'dist',
-  includesDir: '_includes'
+  includesDir: 'components'
 };
 
 const md = new MarkdownIt();
@@ -56,7 +56,7 @@ function handleFile(filePath) {
   const relPath = path.relative(config.srcDir, filePath);
 
   // Skip files/directories starting with underscore
-  if (relPath.startsWith('_')) {
+  if (path.basename(relPath).startsWith('_')) {
     return;
   }
 
