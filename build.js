@@ -14,7 +14,6 @@ const njk = nunjucks.configure(path.join(config.srcDir, config.includesDir), {au
 
 // File processors mapped by extension
 const processors = new Map([
-  ['.njk.md', (content) => md.render(njk.renderString(content))],
   ['.njk', (content) => njk.renderString(content)],
   ['.md', (content) => md.render(content)]
 ]);
@@ -34,15 +33,6 @@ function* walk(dir) {
   }
 }
 
-function getOutputPath(relPath) {
-  for (const [ext] of processors) {
-    if (relPath.endsWith(ext)) {
-      return path.join(config.outDir, relPath.split(ext)[0] + '.html');
-    }
-  }
-  return path.join(config.outDir, relPath);
-}
-
 function needsProcessing(relPath) {
   for (const ext of processors.keys()) {
     if (relPath.endsWith(ext)) {
@@ -60,18 +50,22 @@ function handleFile(filePath) {
     return;
   }
 
-  const outPath = getOutputPath(relPath);
+  let outPath = path.join(config.outDir, relPath);
   ensureDir(outPath);
 
   if (needsProcessing(relPath)) {
-    const content = fs.readFileSync(filePath, 'utf8');
-    for (const [ext, processor] of processors) {
-      if (relPath.endsWith(ext)) {
-        fs.writeFileSync(outPath, processor(content));
-        console.log('⚙️ Built', `${relPath} => ${outPath}`);
-        return;
-      }
+    let content = fs.readFileSync(filePath, 'utf8');
+    const processed = [];
+    while (processors.has(path.extname(outPath))) { // process all known extensions
+      const ext = path.extname(outPath);
+      const processor = processors.get(ext);
+      content = processor(content);
+      outPath = outPath.slice(0, -ext.length);
+      processed.push(ext);
     }
+    fs.writeFileSync(outPath, content);
+    console.log(`⚙️ Processed (${processed.join(' ')}) ${relPath} => ${outPath}`);
+    return;
   }
 
   // Simply copy the file
