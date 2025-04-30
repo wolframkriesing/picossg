@@ -42,6 +42,14 @@ function needsProcessing(relPath) {
   return false;
 }
 
+const toSize = (size) => {
+  const number = size / 1024;
+  if (number < 1) {
+    return `${size} Bytes`;
+  }
+  return number.toFixed(2) + ' kB'; 
+};
+
 function handleFile(filePath) {
   const relPath = path.relative(config.srcDir, filePath);
 
@@ -55,6 +63,7 @@ function handleFile(filePath) {
 
   if (needsProcessing(relPath)) {
     let content = fs.readFileSync(filePath, 'utf8');
+    const initialSize = toSize(content.length);
     const processed = [];
     while (processors.has(path.extname(outPath))) { // process all known extensions
       const ext = path.extname(outPath);
@@ -64,7 +73,7 @@ function handleFile(filePath) {
       processed.push(ext);
     }
     fs.writeFileSync(outPath, content);
-    console.log(`⚙️ Processed (${processed.join(' ')}) ${relPath} => ${outPath}`);
+    console.log(`⚙️ Processed (${processed.join(' ')}) ${relPath} (${initialSize}) => ${outPath} (${toSize(content.length)})`);
     return;
   }
 
