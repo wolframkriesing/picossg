@@ -7,7 +7,7 @@
   "scripts": {
     "build": "node --watch-path src --watch-path build.js build.js",
     "serve": "npx http-server dist -p 8899",
-    "test": "npx nodemon --legacy-watch --watch dist --watch expected-dist --watch build.js --ext '*' --exec \"diff -r dist expected-dist\""
+    "test": "npx nodemon --quiet --legacy-watch --watch dist --watch expected-dist --watch build.js --ext '*' --exec \"bash -c 'diff -ru dist expected-dist > /tmp/diffout; cat /tmp/diffout | diffstat; if [ -s /tmp/diffout ]; then echo ❌ Differences found; else echo ✅ OK; fi'\""
   },
   "keywords": [],
   "author": "Wolfram Kriesing",
