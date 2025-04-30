@@ -2,14 +2,20 @@
   "name": "picossg",
   "description": "The pico static side generator, the simplest one I ever wanted and hopefully 'found'.",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "build.js",
   "type": "module",
+  "bin": {
+    "picossg": "./build-cli.js"
+  },
   "scripts": {
     "build": "node --watch-path src --watch-path build.js build.js",
     "serve": "npx http-server dist -p 8899",
     "test": "npx nodemon --quiet --legacy-watch --watch dist --watch expected-dist --watch build.js --ext '*' --exec \"bash -c 'diff -ru dist expected-dist > /tmp/diffout; cat /tmp/diffout | diffstat; if [ -s /tmp/diffout ]; then echo ❌ Differences found; else echo ✅ OK; fi'\""
   },
-  "keywords": [],
+  "keywords": [
+    "static-site-generator",
+    "ssg"
+  ],
   "author": "Wolfram Kriesing",
   "license": "agpl-3.0",
   "dependencies": {

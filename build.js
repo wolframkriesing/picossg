@@ -3,22 +3,26 @@ import path from 'path';
 import nunjucks from 'nunjucks';
 import MarkdownIt from 'markdown-it';
 
-const config = {
+const defaultConfig = {
   srcDir: 'src',
   outDir: 'dist',
   includesDir: 'components'
-};
+}
 
-const md = new MarkdownIt();
-const njk = nunjucks.configure(path.join(config.srcDir, config.includesDir), {autoescape: false});
+export function createConfig(config = {}) {
+  return {...defaultConfig, ...config};
+}
 
-// File processors mapped by extension
-const processors = new Map([
-  ['.njk', (content) => njk.renderString(content)],
-  ['.md', (content) => md.render(content)]
-]);
+function createProcessors(config) {
+  const njk = nunjucks.configure(path.join(config.srcDir, config.includesDir), {autoescape: false});
+  const md = new MarkdownIt();
 
-// Helper functions
+  return new Map([
+    ['.njk', (content) => njk.renderString(content)],
+    ['.md', (content) => md.render(content)]
+  ]);
+}
+
 function ensureDir(filePath) {
   const dir = path.dirname(filePath);
   if (!fs.existsSync(dir)) {
@@ -33,7 +37,7 @@ function* walk(dir) {
   }
 }
 
-function needsProcessing(relPath) {
+function needsProcessing(relPath, processors) {
   for (const ext of processors.keys()) {
     if (relPath.endsWith(ext)) {
       return true;
@@ -47,10 +51,24 @@ const toSize = (size) => {
   if (number < 1) {
     return `${size} Bytes`;
   }
-  return number.toFixed(2) + ' kB'; 
+  return number.toFixed(2) + ' kB';
 };
 
-function handleFile(filePath) {
+function processFile(content, processors, outPath, relPath) {
+  const initialSize = toSize(content.length);
+  const processed = [];
+  while (processors.has(path.extname(outPath))) { // process all known extensions
+    const ext = path.extname(outPath);
+    const processor = processors.get(ext);
+    content = processor(content);
+    outPath = outPath.slice(0, -ext.length);
+    processed.push(ext);
+  }
+  fs.writeFileSync(outPath, content);
+  console.log(`⚙️ Processed (${processed.join(' ')}) ${relPath} (${initialSize}) => ${outPath} (${toSize(content.length)})`);
+}
+
+function handleFile(filePath, config, processors) {
   const relPath = path.relative(config.srcDir, filePath);
 
   // Skip files/directories starting with underscore
@@ -61,19 +79,9 @@ function handleFile(filePath) {
   let outPath = path.join(config.outDir, relPath);
   ensureDir(outPath);
 
-  if (needsProcessing(relPath)) {
-    let content = fs.readFileSync(filePath, 'utf8');
-    const initialSize = toSize(content.length);
-    const processed = [];
-    while (processors.has(path.extname(outPath))) { // process all known extensions
-      const ext = path.extname(outPath);
-      const processor = processors.get(ext);
-      content = processor(content);
-      outPath = outPath.slice(0, -ext.length);
-      processed.push(ext);
-    }
-    fs.writeFileSync(outPath, content);
-    console.log(`⚙️ Processed (${processed.join(' ')}) ${relPath} (${initialSize}) => ${outPath} (${toSize(content.length)})`);
+  if (needsProcessing(relPath, processors)) {
+    const content = fs.readFileSync(filePath, 'utf8');
+    processFile(content, processors, outPath, relPath);
     return;
   }
 
@@ -82,9 +90,13 @@ function handleFile(filePath) {
   console.log('💾 Copied', `${relPath} => ${outPath}`);
 }
 
-function buildAll() {
+export function buildAll(config) {
   fs.rmSync(config.outDir, {recursive: true, force: true});
-  for (const file of walk(config.srcDir)) handleFile(file);
+  const processors = createProcessors(config);
+  for (const file of walk(config.srcDir)) handleFile(file, config, processors);
 }
 
-buildAll();
+// Execute build with default config when run directly
+if (import.meta.url === `file://${process.argv[1]}`) {
+  buildAll(createConfig());
+}
