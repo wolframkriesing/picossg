@@ -1,9 +1,19 @@
 {
-  "name": "picossg",
+  "name": "@wolframkriesing/picossg",
+  "publishConfig": { "access": "public" },
   "description": "The pico static side generator, the simplest one I ever wanted and hopefully 'found'.",
   "version": "1.0.0",
   "main": "build.js",
   "type": "module",
+  "files": [
+    "build.js",
+    "build-cli.js",
+    "src",
+    "expected-dist",
+    "README.md",
+    "LICENSE.md",
+    "CHANGELOG.md"
+  ],
   "bin": {
     "picossg": "./build-cli.js"
   },
@@ -21,5 +31,9 @@
   "dependencies": {
     "markdown-it": "^14.1.0",
     "nunjucks": "^3.2.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://codeberg.org/wolframkriesing/picosgg.git"
   }
 }
