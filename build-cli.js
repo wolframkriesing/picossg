@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 
-import {createConfig, buildAll} from './build.js';
+import {buildAll} from './build.js';
 
 function parseArgs() {
   const args = process.argv.slice(2);
   const options = {
-    srcDir: {paramNames: ['src', 's']},
+    contentDir: {paramNames: ['content', 'c']},
     outDir: {paramNames: ['out', 'o']},
-    includesDir: {paramNames: ['includes', 'i']},
+    includesDir: {value: 'components', paramNames: ['includes', 'i']},
   };
 
   for (let i = 0; i < args.length; i++) {
@@ -22,9 +22,7 @@ function parseArgs() {
     }
   }
 
-  const entries = Object.entries(options)
-    .filter(([_, v]) => v.value !== undefined)
-    .map(([k, v]) => [k, v.value])
+  const entries = Object.entries(options).map(([k, v]) => [k, v.value])
   ;
   return Object.fromEntries(entries);
 }
@@ -37,14 +35,17 @@ Usage:
   picossg [options]
 
 Options:
-  -s, --src <directory>      Source directory (default: "src")
-  -o, --out <directory>      Output directory (default: "dist")
+  -c, --content <directory>  Source directory
+  -o, --out <directory>      Output directory
   -i, --includes <directory> Includes directory (default: "components")
   -h, --help                 Show this help message
 `);
 }
 
 const options = parseArgs();
-const config = createConfig(options);
-console.log(`Building from '${config.srcDir}' to '${config.outDir}' (includes: '${config.includesDir}')`);
-buildAll(config);
+if (!options.contentDir || !options.outDir) {
+  console.error('Error: Missing content and/or output dir. Use --help for more information.');
+  process.exit(1);
+}
+console.log(`Building from '${options.contentDir}' to '${options.outDir}' (includes: '${options.includesDir}')`);
+buildAll(options);

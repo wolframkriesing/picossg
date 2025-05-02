@@ -3,18 +3,8 @@ import path from 'path';
 import nunjucks from 'nunjucks';
 import MarkdownIt from 'markdown-it';
 
-const defaultConfig = {
-  srcDir: 'src',
-  outDir: 'dist',
-  includesDir: 'components'
-}
-
-export function createConfig(config = {}) {
-  return {...defaultConfig, ...config};
-}
-
 function createProcessors(config) {
-  const njk = nunjucks.configure(path.join(config.srcDir, config.includesDir), {autoescape: false});
+  const njk = nunjucks.configure(path.join(config.contentDir, config.includesDir), {autoescape: false});
   const md = new MarkdownIt();
 
   return new Map([
@@ -69,7 +59,7 @@ function processFile(content, processors, outPath, relPath) {
 }
 
 function handleFile(filePath, config, processors) {
-  const relPath = path.relative(config.srcDir, filePath);
+  const relPath = path.relative(config.contentDir, filePath);
 
   // Skip files/directories starting with underscore
   if (path.basename(relPath).startsWith('_')) {
@@ -93,10 +83,5 @@ function handleFile(filePath, config, processors) {
 export function buildAll(config) {
   fs.rmSync(config.outDir, {recursive: true, force: true});
   const processors = createProcessors(config);
-  for (const file of walk(config.srcDir)) handleFile(file, config, processors);
-}
-
-// Execute build with default config when run directly
-if (import.meta.url === `file://${process.argv[1]}`) {
-  buildAll(createConfig());
+  for (const file of walk(config.contentDir)) handleFile(file, config, processors);
 }

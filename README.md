@@ -32,8 +32,9 @@ There are no complex configuration options, no plugins, no middleware – just a
 ## How to run it
 
 ```bash
-# Start the build process (watches for changes)
+# Start the build process
 npm run build
+npm run build:watch # watch mode
 
 # In another terminal, start the server
 npm run serve
@@ -49,4 +50,6 @@ To run the tests:
 npm test
 ```
 
-This compares the generated `dist` directory with the expected output in `expected-dist`.
+This compares the generated `dist` directory with the expected output in `test/golden-ref`.
+
+Run `npm run test:watch` to run the tests in watch mode, and re-run on any content change.
