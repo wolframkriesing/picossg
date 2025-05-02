@@ -1,6 +1,8 @@
 {
   "name": "@wolframkriesing/picossg",
-  "publishConfig": { "access": "public" },
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "The pico static side generator, the simplest one I ever wanted and hopefully 'found'.",
   "version": "1.0.0",
   "main": "build-cli.js",
@@ -13,7 +15,7 @@
     "CHANGELOG.md"
   ],
   "bin": {
-    "picossg": "./build-cli.js"
+    "picossg": "build-cli.js"
   },
   "scripts": {
     "build": "node build-cli.js -c test/content -o dist",
