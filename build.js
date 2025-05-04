@@ -83,6 +83,7 @@ function handleFile(filePath, config, processors) {
 
 export function buildAll(config) {
   fs.rmSync(config.outDir, {recursive: true, force: true});
-  const processors = createProcessors(config);
+  const processors = await createProcessors(config);
+  console.log('');
   for (const file of walk(config.contentDir)) handleFile(file, config, processors);
 }
