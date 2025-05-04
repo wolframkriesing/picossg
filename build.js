@@ -68,6 +68,7 @@ const toSize = (size) => {
 function processFile(content, processors, outPath, relPath) {
   const initialSize = toSize(content.length);
   const processed = [];
+  process.stdout.write(`⚙️ Process ${relPath} (${initialSize}) ... `);
   while (processors.has(path.extname(outPath))) { // process all known extensions
     const ext = path.extname(outPath);
     const processor = processors.get(ext);
@@ -76,7 +77,7 @@ function processFile(content, processors, outPath, relPath) {
     processed.push(ext);
   }
   fs.writeFileSync(outPath, content);
-  console.log(`⚙️ Processed (${processed.join(' ')}) ${relPath} (${initialSize}) => ${outPath} (${toSize(content.length)})`);
+  console.log(`=> ${outPath} (${toSize(content.length)}) – (${processed.join(' ')}) ✅ `);
 }
 
 function handleFile(filePath, config, processors) {
@@ -97,8 +98,9 @@ function handleFile(filePath, config, processors) {
   }
 
   // Simply copy the file
+  process.stdout.write(`💾 Copy ${relPath} => ${outPath}`);
   fs.copyFileSync(filePath, outPath);
-  console.log('💾 Copied', `${relPath} => ${outPath}`);
+  console.log(' ✅ ');
 }
 
 export async function buildAll(config) {
