@@ -23,9 +23,12 @@ async function loadNjkCustomStuff(config, njk) {
 }
 
 async function createProcessors(config) {
-  const njk = nunjucks.configure(path.join(config.contentDir, config.includesDir), {autoescape: false});
-  await loadNjkCustomStuff(config, njk);
   const md = new MarkdownIt();
+  
+  const njk = nunjucks.configure(path.join(config.contentDir, config.includesDir), {autoescape: false});
+  njk.addFilter('md', (s) => md.render(s));
+  njk.addFilter('mdinline', (s) => md.renderInline(s));
+  await loadNjkCustomStuff(config, njk);
 
   return new Map([
     ['.njk', (content) => njk.renderString(content)],
