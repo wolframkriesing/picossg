@@ -23,7 +23,8 @@ function ensureDir(filePath) {
 function* walk(dir) {
   for (const entry of fs.readdirSync(dir, {withFileTypes: true})) {
     const res = path.resolve(dir, entry.name);
-    yield* entry.isDirectory() ? walk(res) : [res];
+    const shouldEnterDirectory = entry.isDirectory() && !entry.name.startsWith('_');
+    yield* shouldEnterDirectory ? walk(res) : [res];
   }
 }
 
