@@ -3,8 +3,28 @@ import path from 'path';
 import nunjucks from 'nunjucks';
 import MarkdownIt from 'markdown-it';
 
-function createProcessors(config) {
+async function loadNjkCustomStuff(config, njk) {
+  const njkFilterFile = path.join(import.meta.dirname, config.contentDir, '_njk-custom/filters.js');
+  try {
+    const mod = await import(njkFilterFile);
+    if (mod.default) {
+      mod.default(njk);
+    }
+  } catch (e) {
+    if (e.code === 'ERR_MODULE_NOT_FOUND') {
+      console.error(`⏭️ NO (valid) custom njk filters loaded, searched at:\n     ${njkFilterFile}`);
+      return;
+    }
+    console.log(`❌ Error loading njk custom filters:\n    ${njkFilterFile}`);
+    console.log(e);
+    return;
+  }
+  console.log(`✅  Loaded njk custom filters from:\n    ${njkFilterFile}`);
+}
+
+async function createProcessors(config) {
   const njk = nunjucks.configure(path.join(config.contentDir, config.includesDir), {autoescape: false});
+  await loadNjkCustomStuff(config, njk);
   const md = new MarkdownIt();
 
   return new Map([
@@ -81,7 +101,7 @@ function handleFile(filePath, config, processors) {
   console.log('💾 Copied', `${relPath} => ${outPath}`);
 }
 
-export function buildAll(config) {
+export async function buildAll(config) {
   fs.rmSync(config.outDir, {recursive: true, force: true});
   const processors = await createProcessors(config);
   console.log('');

@@ -47,5 +47,5 @@ if (!options.contentDir || !options.outDir) {
   console.error('Error: Missing content and/or output dir. Use --help for more information.');
   process.exit(1);
 }
-buildAll(options);
 console.log(`🎬 Building from '${options.contentDir}' to '${options.outDir}' (includes: '${options.includesDir}' [below content dir])`);
+await buildAll(options);

@@ -1,3 +1,7 @@
+# V2.0.0
+- [x] make `npx run @wolframkriesing/picossg -c content -o out` work in other projects
+- [x] allow loading njk filters
+
 # Done
 - [x] serve and process njk files
 - [x] serve and process md files
