@@ -53,3 +53,6 @@ npm test
 This compares the generated `dist` directory with the expected output in `test/golden-ref`.
 
 Run `npm run test:watch` to run the tests in watch mode, and re-run on any content change.
+
+Since the default `npm run build:watch` runs multiple times when you change the source code, e.g. `build.js`
+there is also `build:watch:dev` which only watches the code to be run and NOT the content to be generated.

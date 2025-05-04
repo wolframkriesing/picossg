@@ -22,6 +22,7 @@
     "serve": "npx http-server dist -p 8899",
     "test": "diff -ru dist test/golden-ref > /tmp/diffout; cat /tmp/diffout | diffstat; if [ -s /tmp/diffout ]; then echo ❌ Differences found; else echo ✅ OK; fi",
     "build:watch": "node --watch-path test/content --watch-path build.js build-cli.js -c test/content -o dist",
+    "build:watch:dev": "node --watch build-cli.js -c test/content -o dist",
     "test:watch": "npx nodemon --quiet --legacy-watch --watch dist --watch test/golden-ref --watch build.js --ext '*' --exec \"bash -c 'npm test --silent'\""
   },
   "keywords": [
