@@ -4,7 +4,7 @@ import nunjucks from 'nunjucks';
 import MarkdownIt from 'markdown-it';
 
 async function loadNjkCustomStuff(config, njk) {
-  const njkFilterFile = path.join(import.meta.dirname, config.contentDir, '_njk-custom/filters.js');
+  const njkFilterFile = path.join(process.cwd(), config.contentDir, '_njk-custom/filters.js');
   try {
     const mod = await import(njkFilterFile);
     if (mod.default) {
