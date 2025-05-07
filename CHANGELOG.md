@@ -6,6 +6,7 @@
 - [ ] make a ~~frontmatter block~~ *.meta.js work – just purely processing `*.html.md.njk` does not work, since `njk` files that
   extend others and generate HTML will
   be processed as md later and all the included HTML gets escaped
+  - [x] pass meta data to the template
   - [ ] make "extends" key in ~~frontmatter block~~ work, we start with *.meta.js files for each content file
 
 # Done

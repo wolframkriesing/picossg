@@ -35,8 +35,8 @@ async function createProcessors(config) {
   
 
   return new Map([
-    ['.njk', (content) => njk.renderString(content)],
-    ['.md', (content) => md.render(content)]
+    ['.njk', (content, meta) => njk.renderString(content, {meta})],
+    ['.md', (content, meta) => md.render(content, {meta})]
   ]);
 }
 
@@ -74,14 +74,14 @@ const toSize = (size) => {
   return number.toFixed(2) + ' kB';
 };
 
-function processFile(content, processors, outPath, relPath) {
+function processFile(content, processors, outPath, relPath, metadata) {
   const initialSize = toSize(content.length);
   const processed = [];
   process.stdout.write(`⚙️ Process ${relPath} (${initialSize}) ... `);
   while (processors.has(path.extname(outPath))) { // process all known extensions
     const ext = path.extname(outPath);
     const processor = processors.get(ext);
-    content = processor(content);
+    content = processor(content, metadata);
     outPath = outPath.slice(0, -ext.length);
     processed.push(ext);
   }
@@ -89,19 +89,30 @@ function processFile(content, processors, outPath, relPath) {
   console.log(`=> ${outPath} (${toSize(content.length)}) – (${processed.join(' ')}) ✅ `);
 }
 
-function handleFile(filePath, config, processors) {
+async function readMetadata(filePath) {
+  const parsed = path.parse(filePath);
+  const metaFilename = path.join(parsed.dir, parsed.base.split('.')[0] + '.meta.js');
+  try {
+    const meta = await import(metaFilename);
+    return meta.default ?? {};
+  } catch {}
+  return {};
+}
+
+async function handleFile(filePath, config, processors) {
   const relPath = path.relative(config.contentDir, filePath);
 
   if (isIgnoredFile(path.basename(relPath))) {
     return;
   }
+  const metadata = await readMetadata(filePath);
 
   let outPath = path.join(config.outDir, relPath);
   ensureDir(outPath);
 
   if (needsProcessing(relPath, processors)) {
     const content = fs.readFileSync(filePath, 'utf8');
-    processFile(content, processors, outPath, relPath);
+    processFile(content, processors, outPath, relPath, metadata);
     return;
   }
 
@@ -115,5 +126,10 @@ export async function buildAll(config) {
   fs.rmSync(config.outDir, {recursive: true, force: true});
   const processors = await createProcessors(config);
   console.log('');
-  for (const file of walk(config.contentDir)) handleFile(file, config, processors);
+  
+  const fileProcessings = [];
+  for (const file of walk(config.contentDir)) {
+    fileProcessings.push(handleFile(file, config, processors));
+  }
+  await Promise.all(fileProcessings);
 }
