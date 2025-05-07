@@ -28,7 +28,11 @@ async function createProcessors(config) {
   const njk = nunjucks.configure(path.join(config.contentDir, config.includesDir), {autoescape: false});
   njk.addFilter('md', (s) => md.render(s));
   njk.addFilter('mdinline', (s) => md.renderInline(s));
+  const coreFilters = Object.keys(njk.filters);
   await loadNjkCustomStuff(config, njk);
+  const newFilters = Object.keys(njk.filters).filter((f) => !coreFilters.includes(f));
+  console.log(`${newFilters.length} custom njk filters loaded: ${newFilters.join(', ')}`);
+  
 
   return new Map([
     ['.njk', (content) => njk.renderString(content)],
