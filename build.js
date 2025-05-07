@@ -64,6 +64,8 @@ function needsProcessing(relPath, processors) {
   return false;
 }
 
+const isIgnoredFile = (filename) => filename.startsWith('_') || filename.endsWith('.meta.js')
+
 const toSize = (size) => {
   const number = size / 1024;
   if (number < 1) {
@@ -90,8 +92,7 @@ function processFile(content, processors, outPath, relPath) {
 function handleFile(filePath, config, processors) {
   const relPath = path.relative(config.contentDir, filePath);
 
-  // Skip files/directories starting with underscore
-  if (path.basename(relPath).startsWith('_')) {
+  if (isIgnoredFile(path.basename(relPath))) {
     return;
   }
 
