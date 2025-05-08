@@ -4,7 +4,7 @@
 - [x] allow loading njk filters
 - [x] provide filter `|md` and `|mdinline`
 - [ ] make a frontmatter block work
-  - [ ] pass meta data to the template
+  - [x] pass meta data to the template
   - [ ] make "extends/layout" key in frontmatter block work
 
 # Done

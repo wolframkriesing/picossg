@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import nunjucks from 'nunjucks';
 import MarkdownIt from 'markdown-it';
+import {parse as parseYaml} from 'yaml'
 
 async function loadNjkCustomStuff(config, njk) {
   const njkFilterFile = path.join(process.cwd(), config.contentDir, '_njk-custom/filters.js');
@@ -89,12 +90,10 @@ function processFile(content, processors, outPath, relPath, metadata) {
 }
 
 function readMetadata(content) {
-  const metadata = {
-    title: 'Simple Meta Data',
-    dateCreated: "2023-10-01 10:00:00",
-    tags: ['simple', 'SSG']
-  };
-  const contentWithoutFrontMatterBlock = content.replace(/^---\s*[\s\S]*?\s*---\s*/, '');
+  const regexp = /^---(\s*[\s\S]*?\s*)---/;
+  const frontmatterBlock = content.match(regexp)?.pop() ?? '';
+  const metadata = parseYaml(frontmatterBlock);
+  const contentWithoutFrontMatterBlock = content.replace(regexp, '');
   return [metadata, contentWithoutFrontMatterBlock];
 }
 
