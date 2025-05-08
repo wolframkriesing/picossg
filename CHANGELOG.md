@@ -3,11 +3,9 @@
 - [x] make `npx run @wolframkriesing/picossg -c content -o out` work in other projects
 - [x] allow loading njk filters
 - [x] provide filter `|md` and `|mdinline`
-- [ ] make a ~~frontmatter block~~ *.meta.js work – just purely processing `*.html.md.njk` does not work, since `njk` files that
-  extend others and generate HTML will
-  be processed as md later and all the included HTML gets escaped
-  - [x] pass meta data to the template
-  - [ ] make "extends" key in ~~frontmatter block~~ work, we start with *.meta.js files for each content file
+- [ ] make a frontmatter block work
+  - [ ] pass meta data to the template
+  - [ ] make "extends/layout" key in frontmatter block work
 
 # Done
 
