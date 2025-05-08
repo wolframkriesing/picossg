@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import nunjucks from 'nunjucks';
 import MarkdownIt from 'markdown-it';
+import {MarkdownTag} from "./src/markdown-tag.js";
 
 async function loadNjkCustomStuff(config, njk) {
   const njkFilterFile = path.join(process.cwd(), config.contentDir, '_njk-custom/filters.js');
@@ -24,15 +25,15 @@ async function loadNjkCustomStuff(config, njk) {
 
 async function createProcessors(config) {
   const md = new MarkdownIt();
-  
+
   const njk = nunjucks.configure(path.join(config.contentDir, config.includesDir), {autoescape: false});
+  njk.addExtension('MarkdownTag', new MarkdownTag());
   njk.addFilter('md', (s) => md.render(s));
   njk.addFilter('mdinline', (s) => md.renderInline(s));
   const coreFilters = Object.keys(njk.filters);
   await loadNjkCustomStuff(config, njk);
   const newFilters = Object.keys(njk.filters).filter((f) => !coreFilters.includes(f));
   console.log(`${newFilters.length} custom njk filters loaded: ${newFilters.join(', ')}`);
-  
 
   return new Map([
     ['.njk', (content, meta) => njk.renderString(content, {meta})],
@@ -126,7 +127,7 @@ export async function buildAll(config) {
   fs.rmSync(config.outDir, {recursive: true, force: true});
   const processors = await createProcessors(config);
   console.log('');
-  
+
   const fileProcessings = [];
   for (const file of walk(config.contentDir)) {
     fileProcessings.push(handleFile(file, config, processors));
