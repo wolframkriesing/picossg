@@ -2,7 +2,6 @@ import fs from 'fs';
 import path from 'path';
 import nunjucks from 'nunjucks';
 import MarkdownIt from 'markdown-it';
-import {MarkdownTag} from "./src/markdown-tag.js";
 
 async function loadNjkCustomStuff(config, njk) {
   const njkFilterFile = path.join(process.cwd(), config.contentDir, '_njk-custom/filters.js');
@@ -27,7 +26,6 @@ async function createProcessors(config) {
   const md = new MarkdownIt();
 
   const njk = nunjucks.configure(path.join(config.contentDir, config.includesDir), {autoescape: false});
-  njk.addExtension('MarkdownTag', new MarkdownTag());
   njk.addFilter('md', (s) => md.render(s));
   njk.addFilter('mdinline', (s) => md.renderInline(s));
   const coreFilters = Object.keys(njk.filters);
@@ -65,7 +63,7 @@ function needsProcessing(relPath, processors) {
   return false;
 }
 
-const isIgnoredFile = (filename) => filename.startsWith('_') || filename.endsWith('.meta.js')
+const isIgnoredFile = (filename) => filename.startsWith('_');
 
 const toSize = (size) => {
   const number = size / 1024;
@@ -91,12 +89,6 @@ function processFile(content, processors, outPath, relPath, metadata) {
 }
 
 async function readMetadata(filePath) {
-  const parsed = path.parse(filePath);
-  const metaFilename = path.join(parsed.dir, parsed.base.split('.')[0] + '.meta.js');
-  try {
-    const meta = await import(metaFilename);
-    return meta.default ?? {};
-  } catch {}
   return {};
 }
 
