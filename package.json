@@ -5,25 +5,25 @@
   },
   "description": "The pico static side generator, the simplest one I ever wanted and hopefully 'found'.",
   "version": "1.0.0",
-  "main": "build-cli.js",
+  "main": "src/build-cli.js",
   "type": "module",
   "files": [
-    "build.js",
-    "build-cli.js",
+    "src/build.js",
+    "src/build-cli.js",
     "README.md",
     "LICENSE.md",
     "CHANGELOG.md"
   ],
   "bin": {
-    "picossg": "build-cli.js"
+    "picossg": "src/build-cli.js"
   },
   "scripts": {
-    "build": "node build-cli.js -c test/content -o dist",
+    "build": "node src/build-cli.js -c test/content -o dist",
     "serve": "npx http-server dist -p 8899",
     "test": "diff -ru dist test/golden-ref > /tmp/diffout; cat /tmp/diffout | diffstat; if [ -s /tmp/diffout ]; then echo ❌ Differences found; else echo ✅ OK; fi",
-    "build:watch": "node --watch-path test/content --watch-path build.js build-cli.js -c test/content -o dist",
-    "build:watch:dev": "node --watch build-cli.js -c test/content -o dist",
-    "test:watch": "npx nodemon --quiet --legacy-watch --watch dist --watch test/golden-ref --watch build.js --ext '*' --exec \"bash -c 'npm test --silent'\""
+    "build:watch": "node --watch-path test/content --watch-path src/build.js build-cli.js -c test/content -o dist",
+    "build:watch:dev": "node --watch src/build-cli.js -c test/content -o dist",
+    "test:watch": "npx nodemon --quiet --legacy-watch --watch dist --watch test/golden-ref --watch src/build.js --ext '*' --exec \"bash -c 'npm test --silent'\""
   },
   "keywords": [
     "static-site-generator",

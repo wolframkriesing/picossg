@@ -88,8 +88,14 @@ function processFile(content, processors, outPath, relPath, metadata) {
   console.log(`=> ${outPath} (${toSize(content.length)}) – (${processed.join(' ')}) ✅ `);
 }
 
-async function readMetadata(filePath) {
-  return {};
+function readMetadata(content) {
+  const metadata = {
+    title: 'Simple Meta Data',
+    dateCreated: "2023-10-01 10:00:00",
+    tags: ['simple', 'SSG']
+  };
+  const contentWithoutFrontMatterBlock = content.replace(/^---\s*[\s\S]*?\s*---\s*/, '');
+  return [metadata, contentWithoutFrontMatterBlock];
 }
 
 async function handleFile(filePath, config, processors) {
@@ -98,13 +104,13 @@ async function handleFile(filePath, config, processors) {
   if (isIgnoredFile(path.basename(relPath))) {
     return;
   }
-  const metadata = await readMetadata(filePath);
 
   let outPath = path.join(config.outDir, relPath);
   ensureDir(outPath);
 
   if (needsProcessing(relPath, processors)) {
-    const content = fs.readFileSync(filePath, 'utf8');
+    const rawContent = fs.readFileSync(filePath, 'utf8');
+    const [metadata, content] = readMetadata(rawContent);
     processFile(content, processors, outPath, relPath, metadata);
     return;
   }
