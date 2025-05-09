@@ -188,9 +188,8 @@ export async function buildAll(config) {
   
   const picoSsg = new PicoSsg(metadata, processors);
   
-  const fileProcessings = [];
   for (const file of walk(config.contentDir)) {
-    fileProcessings.push(handleFile(file, config, processors, picoSsg));
+    // If these shall be `Promise.all()`'ed then the outputting needs fixed, because they would be out of order.
+    await handleFile(file, config, processors, picoSsg);
   }
-  await Promise.all(fileProcessings);
 }
