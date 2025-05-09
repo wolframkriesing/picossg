@@ -8,6 +8,7 @@
   - [x] make "extends/layout" key in frontmatter block work
   - [x] allow "collecting" all metadata e.g. through picossg.pages("/blog") or so and iterate over them to generate a blog list or alike
     - [x] and provide attributes for each page such as "url", ????
+  - [x] pass the data into the layout template too, so e.g. a `title` of a page will be seen in the _base.njk template
 
 # Done
 
