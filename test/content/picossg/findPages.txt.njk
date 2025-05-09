@@ -1,0 +1,7 @@
+{% for page in picossg.findPages('picossg/') %}
+  Page {{ loop.index }}
+  - filename: {{ page.filename }}
+  - prettyUrlPath: {{ page.prettyUrlPath }}
+  - rawUrlPath: {{ page.rawUrlPath }}
+
+{% endfor %}

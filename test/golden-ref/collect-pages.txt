@@ -89,6 +89,15 @@
   - tags: -
 
   Page 11
+  - filename: picossg/findPages.txt.njk
+  - layout: -
+  - title: -
+  - prettyUrlPath: /picossg/findPages.txt
+  - rawUrlPath: /picossg/findPages.txt
+  - dateCreated: -
+  - tags: -
+
+  Page 12
   - filename: simple.html.md
   - layout: -
   - title: -
@@ -97,7 +106,7 @@
   - dateCreated: -
   - tags: -
 
-  Page 12
+  Page 13
   - filename: use-filter.txt.njk
   - layout: -
   - title: -
@@ -106,7 +115,7 @@
   - dateCreated: -
   - tags: -
 
-  Page 13
+  Page 14
   - filename: with-layout.html.md
   - layout: _body.njk
   - title: -

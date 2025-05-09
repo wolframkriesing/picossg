@@ -22,10 +22,12 @@ export class PicoSsg {
     this.processors = processors;
   }
 
-  findPages() {
+  findPages(startsWith='') {
     const pages = [];
     for (const [filename, meta] of this.metadata) {
-      pages.push({...meta, filename, ...filenameToUrlPaths(filename, this.processors)});
+      if (filename.startsWith(startsWith)) {
+        pages.push({...meta, filename, ...filenameToUrlPaths(filename, this.processors)});
+      }
     }
     return pages;
   }
