@@ -26,7 +26,13 @@ async function loadNjkCustomStuff(config, njk) {
 async function createProcessors(config) {
   const md = new MarkdownIt();
 
-  const njk = nunjucks.configure(path.join(config.contentDir, config.includesDir), {autoescape: false});
+  const nunjucksOptions = {
+    autoescape: true,
+    throwOnUndefined: true,
+    trimBlocks: true,
+    lstripBlocks: true,
+  };
+  const njk = nunjucks.configure(path.join(config.contentDir, config.includesDir), nunjucksOptions);
   njk.addFilter('md', (s) => md.render(s));
   njk.addFilter('mdinline', (s) => md.renderInline(s));
   const coreFilters = Object.keys(njk.filters);
@@ -37,7 +43,7 @@ async function createProcessors(config) {
   return new Map([
     ['.njk', (content, meta) => njk.renderString(content, {meta})],
     ['.md', (content, meta) => md.render(content, {meta})],
-   
+
     // The processor below is not for a file extension but just for rendering the "layout" given as (front-matter) attribute in the metadata.
     [Symbol.for('njk-layout'), (filename, data) => njk.render(filename, data)],
   ]);
