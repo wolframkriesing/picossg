@@ -1,4 +1,4 @@
-{% for page in picossg.findPages() %}
+{% for page in picossg.findPages('i') %}
   Page {{ loop.index }}
   - filename: {{ page.filename }}
   - layout: {{ page.layout | default('-') }}

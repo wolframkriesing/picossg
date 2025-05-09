@@ -29,6 +29,27 @@ async function loadNjkCustomStuff(config, njk) {
   console.log(`✅  Loaded njk custom filters from:\n    ${njkFilterFile}`);
 }
 
+async function loadUserFunctions(config) {
+  const userFunctionsFile = path.join(process.cwd(), config.contentDir, '_config.js');
+  let module;
+  try {
+    module = await import(userFunctionsFile);
+  } catch (e) {
+    if (e.code === 'ERR_MODULE_NOT_FOUND') {
+      console.error(`⏭️ NO (valid) user functions loaded, searched at:\n     ${userFunctionsFile}`);
+      return;
+    }
+    console.log(`❌ Error loading user functions:\n    ${userFunctionsFile}`);
+    console.log(e);
+    return;
+  }
+  if (module) {
+    console.log(`✅  Loaded user functions from:\n    ${userFunctionsFile}`);
+    return module;
+  }
+  console.error(`⏭️ NO (valid) user functions loaded, searched at:\n     ${userFunctionsFile}`);
+}
+
 /**
  * @return {Promise<ProcessorMap>}
  */
@@ -92,10 +113,23 @@ const toSize = (size) => {
   return number.toFixed(2) + ' kB';
 };
 
-function processFile(contentIn, processors, outPath, relPath, data) {
+function processFile(contentIn, processors, outPath, relPath, dataIn, userFunctions) {
   let contentOut = contentIn;
+  let data = dataIn;
   const initialSize = toSize(contentOut.length);
   process.stdout.write(`⚙️ Process ${relPath} (${initialSize}) ... `);
+  
+  // Run the user's pre-processor first, if any
+  if (userFunctions.preprocess) {
+    const preProcessed = userFunctions.preprocess(relPath, {content: contentOut, data});
+    if (!preProcessed || !('content' in preProcessed) || !('data' in preProcessed)) {
+      console.error(`\n❌  Error in user function ("preprocess()"), it must return an object with "content" and "data" keys.`);
+      process.exit(1);
+    }
+    contentOut = preProcessed.content;
+    data = preProcessed.data;
+  }
+  
   while (processors.has(path.extname(outPath))) { // process all known extensions
     const ext = path.extname(outPath);
     process.stdout.write(`${ext}`);
@@ -130,7 +164,7 @@ function splitMetadataAndContent(content) {
   return [metadata, contentWithoutFrontMatterBlock];
 }
 
-async function handleFile(filePath, config, processors, picossg) {
+async function handleFile(filePath, config, processors, picossg, userFunctions) {
   const relPath = path.relative(config.contentDir, filePath);
 
   if (isIgnoredFile(path.basename(relPath))) {
@@ -143,7 +177,7 @@ async function handleFile(filePath, config, processors, picossg) {
   if (needsProcessing(relPath, processors)) {
     const rawContent = fs.readFileSync(filePath, 'utf8');
     const [metadata, content] = splitMetadataAndContent(rawContent);
-    processFile(content, processors, outPath, relPath, {...metadata, picossg});
+    processFile(content, processors, outPath, relPath, {...metadata, picossg}, userFunctions);
     return;
   }
 
@@ -173,6 +207,7 @@ function readMetadataFromFile(filePath, config, processors) {
 export async function buildAll(config) {
   fs.rmSync(config.outDir, {recursive: true, force: true});
   const processors = await createProcessors(config);
+  const userFunctions = await loadUserFunctions(config);
   console.log('');
 
   // Collect all the metadata from the content files
@@ -190,6 +225,6 @@ export async function buildAll(config) {
   
   for (const file of walk(config.contentDir)) {
     // If these shall be `Promise.all()`'ed then the outputting needs fixed, because they would be out of order.
-    await handleFile(file, config, processors, picoSsg);
+    await handleFile(file, config, processors, picoSsg, userFunctions);
   }
 }
