@@ -41,8 +41,8 @@ async function createProcessors(config) {
   console.log(`${newFilters.length} custom njk filters loaded: ${newFilters.join(', ')}`);
 
   return new Map([
-    ['.njk', (content, meta) => njk.renderString(content, {meta})],
-    ['.md', (content, meta) => md.render(content, {meta})],
+    ['.njk', (content, data) => njk.renderString(content, data)],
+    ['.md', (content, _) => md.render(content)],
 
     // The processor below is not for a file extension but just for rendering the "layout" given as (front-matter) attribute in the metadata.
     [Symbol.for('njk-layout'), (filename, data) => njk.render(filename, data)],
@@ -83,7 +83,7 @@ const toSize = (size) => {
   return number.toFixed(2) + ' kB';
 };
 
-function processFile(contentIn, processors, outPath, relPath, metadata) {
+function processFile(contentIn, processors, outPath, relPath, data) {
   let contentOut = contentIn;
   const initialSize = toSize(contentOut.length);
   const processed = [];
@@ -91,15 +91,15 @@ function processFile(contentIn, processors, outPath, relPath, metadata) {
   while (processors.has(path.extname(outPath))) { // process all known extensions
     const ext = path.extname(outPath);
     const processor = processors.get(ext);
-    contentOut = processor(contentOut, metadata);
+    contentOut = processor(contentOut, data);
     outPath = outPath.slice(0, -ext.length);
     processed.push(ext);
   }
 
   // If the metadata (front-matter block) has a "layout" key, wrap it all in that given layout, we use njk's {% extends %} for it.
-  if (metadata?.layout) {
+  if (data?.meta?.layout) {
     const processor = processors.get(Symbol.for('njk-layout'));
-    contentOut = processor(metadata.layout, {content: contentOut});
+    contentOut = processor(data.meta.layout, {content: contentOut});
   }
 
   fs.writeFileSync(outPath, contentOut);
@@ -127,7 +127,7 @@ async function handleFile(filePath, config, processors) {
   if (needsProcessing(relPath, processors)) {
     const rawContent = fs.readFileSync(filePath, 'utf8');
     const [metadata, content] = readMetadata(rawContent);
-    processFile(content, processors, outPath, relPath, metadata);
+    processFile(content, processors, outPath, relPath, {meta: metadata});
     return;
   }
 
