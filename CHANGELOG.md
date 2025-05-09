@@ -6,7 +6,8 @@
 - [ ] make a frontmatter block work
   - [x] pass meta data to the template
   - [x] make "extends/layout" key in frontmatter block work
-  - [ ] allow "collecting" all metadata e.g. through picossg.pages("/blog") or so and iterate over them to generate a blog list or alike
+  - [x] allow "collecting" all metadata e.g. through picossg.pages("/blog") or so and iterate over them to generate a blog list or alike
+    - [x] and provide attributes for each page such as "url", ????
 
 # Done
 

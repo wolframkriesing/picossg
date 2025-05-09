@@ -1,0 +1,11 @@
+{% for page in picossg.findPages() %}
+  Page {{ loop.index }}
+  - filename: {{ page.filename }}
+  - layout: {{ page.layout }}
+  - title: {{  page.title }}
+  - prettyUrlPath: {{ page.prettyUrlPath }}
+  - rawUrlPath: {{ page.rawUrlPath }}
+  - dateCreated: {{ page.dateCreated }}
+  - tags: {{ page.tags }}
+
+{% endfor %}

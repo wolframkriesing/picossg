@@ -3,6 +3,12 @@ import path from 'path';
 import nunjucks from 'nunjucks';
 import MarkdownIt from 'markdown-it';
 import {parse as parseYaml} from 'yaml'
+import {PicoSsg} from "./picossg.js";
+
+/**
+ * @typedef {string} ProcessedFilename These are the filenames that are processed by picossg, e.g. `*.njk` or `*.md.njk` files.
+ * @typedef {Map<string|symbol, function(*, *): *>} ProcessorMap
+ */
 
 async function loadNjkCustomStuff(config, njk) {
   const njkFilterFile = path.join(process.cwd(), config.contentDir, '_njk-custom/filters.js');
@@ -23,12 +29,15 @@ async function loadNjkCustomStuff(config, njk) {
   console.log(`✅  Loaded njk custom filters from:\n    ${njkFilterFile}`);
 }
 
+/**
+ * @return {Promise<ProcessorMap>}
+ */
 async function createProcessors(config) {
   const md = new MarkdownIt();
 
   const nunjucksOptions = {
     autoescape: true,
-    throwOnUndefined: true,
+    // throwOnUndefined: true,
     trimBlocks: true,
     lstripBlocks: true,
   };
@@ -106,15 +115,20 @@ function processFile(contentIn, processors, outPath, relPath, data) {
   console.log(`=> ${outPath} (${toSize(contentOut.length)}) – (${processed.join(' ')}) ✅ `);
 }
 
+const frontMatterRegexp = /^---(\s*[\s\S]*?\s*)---/;
+
 function readMetadata(content) {
-  const regexp = /^---(\s*[\s\S]*?\s*)---/;
-  const frontmatterBlock = content.match(regexp)?.pop() ?? '';
-  const metadata = parseYaml(frontmatterBlock);
-  const contentWithoutFrontMatterBlock = content.replace(regexp, '');
+  const frontmatterBlock = content.match(frontMatterRegexp)?.pop() ?? '';
+  return parseYaml(frontmatterBlock) ?? {};
+}
+
+function splitMetadataAndContent(content) {
+  const metadata = readMetadata(content);
+  const contentWithoutFrontMatterBlock = content.replace(frontMatterRegexp, '');
   return [metadata, contentWithoutFrontMatterBlock];
 }
 
-async function handleFile(filePath, config, processors) {
+async function handleFile(filePath, config, processors, picossg) {
   const relPath = path.relative(config.contentDir, filePath);
 
   if (isIgnoredFile(path.basename(relPath))) {
@@ -126,8 +140,8 @@ async function handleFile(filePath, config, processors) {
 
   if (needsProcessing(relPath, processors)) {
     const rawContent = fs.readFileSync(filePath, 'utf8');
-    const [metadata, content] = readMetadata(rawContent);
-    processFile(content, processors, outPath, relPath, {meta: metadata});
+    const [metadata, content] = splitMetadataAndContent(rawContent);
+    processFile(content, processors, outPath, relPath, {meta: metadata, picossg});
     return;
   }
 
@@ -137,14 +151,44 @@ async function handleFile(filePath, config, processors) {
   console.log(' ✅ ');
 }
 
+/**
+ * Reads the metadata from a file and returns the relative path and the metadata.
+ * @return {undefined | [ProcessedFilename, object]}
+ */
+function readMetadataFromFile(filePath, config, processors) {
+  const relPath = path.relative(config.contentDir, filePath);
+
+  if (isIgnoredFile(path.basename(relPath))) {
+    return;
+  }
+
+  if (needsProcessing(relPath, processors)) {
+    const rawContent = fs.readFileSync(filePath, 'utf8');
+    return [relPath, readMetadata(rawContent)]
+  }
+}
+
 export async function buildAll(config) {
   fs.rmSync(config.outDir, {recursive: true, force: true});
   const processors = await createProcessors(config);
   console.log('');
 
+  // Collect all the metadata from the content files
+  /** @type {Map<ProcessedFilename, object>} */
+  const metadata = new Map();
+  for (const file of walk(config.contentDir)) {
+    const metaOrNot = readMetadataFromFile(file, config, processors);
+    if (metaOrNot !== undefined) {
+      const [processedFilename, oneFilesMetadata] = metaOrNot;
+      metadata.set(processedFilename, oneFilesMetadata);
+    }
+  }
+  
+  const picoSsg = new PicoSsg(metadata, processors);
+  
   const fileProcessings = [];
   for (const file of walk(config.contentDir)) {
-    fileProcessings.push(handleFile(file, config, processors));
+    fileProcessings.push(handleFile(file, config, processors, picoSsg));
   }
   await Promise.all(fileProcessings);
 }
