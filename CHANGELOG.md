@@ -5,7 +5,8 @@
 - [x] provide filter `|md` and `|mdinline`
 - [ ] make a frontmatter block work
   - [x] pass meta data to the template
-  - [ ] make "extends/layout" key in frontmatter block work
+  - [x] make "extends/layout" key in frontmatter block work
+  - [ ] allow "collecting" all metadata e.g. through picossg.pages("/blog") or so and iterate over them to generate a blog list or alike
 
 # Done
 

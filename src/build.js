@@ -36,7 +36,10 @@ async function createProcessors(config) {
 
   return new Map([
     ['.njk', (content, meta) => njk.renderString(content, {meta})],
-    ['.md', (content, meta) => md.render(content, {meta})]
+    ['.md', (content, meta) => md.render(content, {meta})],
+   
+    // The processor below is not for a file extension but just for rendering the "layout" given as (front-matter) attribute in the metadata.
+    [Symbol.for('njk-layout'), (filename, data) => njk.render(filename, data)],
   ]);
 }
 
@@ -57,7 +60,7 @@ function* walk(dir) {
 
 function needsProcessing(relPath, processors) {
   for (const ext of processors.keys()) {
-    if (relPath.endsWith(ext)) {
+    if (typeof ext === 'string' && relPath.endsWith(ext)) {
       return true;
     }
   }
@@ -74,19 +77,27 @@ const toSize = (size) => {
   return number.toFixed(2) + ' kB';
 };
 
-function processFile(content, processors, outPath, relPath, metadata) {
-  const initialSize = toSize(content.length);
+function processFile(contentIn, processors, outPath, relPath, metadata) {
+  let contentOut = contentIn;
+  const initialSize = toSize(contentOut.length);
   const processed = [];
   process.stdout.write(`⚙️ Process ${relPath} (${initialSize}) ... `);
   while (processors.has(path.extname(outPath))) { // process all known extensions
     const ext = path.extname(outPath);
     const processor = processors.get(ext);
-    content = processor(content, metadata);
+    contentOut = processor(contentOut, metadata);
     outPath = outPath.slice(0, -ext.length);
     processed.push(ext);
   }
-  fs.writeFileSync(outPath, content);
-  console.log(`=> ${outPath} (${toSize(content.length)}) – (${processed.join(' ')}) ✅ `);
+
+  // If the metadata (front-matter block) has a "layout" key, wrap it all in that given layout, we use njk's {% extends %} for it.
+  if (metadata?.layout) {
+    const processor = processors.get(Symbol.for('njk-layout'));
+    contentOut = processor(metadata.layout, {content: contentOut});
+  }
+
+  fs.writeFileSync(outPath, contentOut);
+  console.log(`=> ${outPath} (${toSize(contentOut.length)}) – (${processed.join(' ')}) ✅ `);
 }
 
 function readMetadata(content) {
