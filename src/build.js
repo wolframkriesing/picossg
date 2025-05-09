@@ -106,9 +106,9 @@ function processFile(contentIn, processors, outPath, relPath, data) {
   }
 
   // If the metadata (front-matter block) has a "layout" key, wrap it all in that given layout, we use njk's {% extends %} for it.
-  if (data?.meta?.layout) {
+  if (data?.layout) {
     const processor = processors.get(Symbol.for('njk-layout'));
-    contentOut = processor(data.meta.layout, {content: contentOut});
+    contentOut = processor(data.layout, {...data, content: contentOut});
   }
 
   fs.writeFileSync(outPath, contentOut);
@@ -141,7 +141,7 @@ async function handleFile(filePath, config, processors, picossg) {
   if (needsProcessing(relPath, processors)) {
     const rawContent = fs.readFileSync(filePath, 'utf8');
     const [metadata, content] = splitMetadataAndContent(rawContent);
-    processFile(content, processors, outPath, relPath, {meta: metadata, picossg});
+    processFile(content, processors, outPath, relPath, {...metadata, picossg});
     return;
   }
 

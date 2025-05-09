@@ -1,24 +1,24 @@
   Page 1
   - filename: builtin-filters.html.njk
-  - layout: 
-  - title: 
+  - layout: -
+  - title: -
   - prettyUrlPath: /builtin-filters.html
   - rawUrlPath: /builtin-filters.html
-  - dateCreated: 
-  - tags: 
+  - dateCreated: -
+  - tags: -
 
   Page 2
   - filename: collect-pages.txt.njk
-  - layout: 
-  - title: 
+  - layout: -
+  - title: -
   - prettyUrlPath: /collect-pages.txt
   - rawUrlPath: /collect-pages.txt
-  - dateCreated: 
-  - tags: 
+  - dateCreated: -
+  - tags: -
 
   Page 3
   - filename: front-matter.html.md.njk
-  - layout: 
+  - layout: -
   - title: Simple Meta Data
   - prettyUrlPath: /front-matter.html
   - rawUrlPath: /front-matter.html
@@ -27,82 +27,91 @@
 
   Page 4
   - filename: in-dir/index.html.md
-  - layout: 
-  - title: 
+  - layout: -
+  - title: -
   - prettyUrlPath: /in-dir/
   - rawUrlPath: /in-dir/index.html
-  - dateCreated: 
-  - tags: 
+  - dateCreated: -
+  - tags: -
 
   Page 5
   - filename: include-html-only.html.njk
-  - layout: 
-  - title: 
+  - layout: -
+  - title: -
   - prettyUrlPath: /include-html-only.html
   - rawUrlPath: /include-html-only.html
-  - dateCreated: 
-  - tags: 
+  - dateCreated: -
+  - tags: -
 
   Page 6
   - filename: include-with-style.html.njk
-  - layout: 
-  - title: 
+  - layout: -
+  - title: -
   - prettyUrlPath: /include-with-style.html
   - rawUrlPath: /include-with-style.html
-  - dateCreated: 
-  - tags: 
+  - dateCreated: -
+  - tags: -
 
   Page 7
   - filename: index.html.njk
-  - layout: 
-  - title: 
+  - layout: -
+  - title: -
   - prettyUrlPath: /
   - rawUrlPath: /index.html
-  - dateCreated: 
-  - tags: 
+  - dateCreated: -
+  - tags: -
 
   Page 8
-  - filename: mixed.html.md.njk
-  - layout: 
-  - title: 
-  - prettyUrlPath: /mixed.html
-  - rawUrlPath: /mixed.html
-  - dateCreated: 
-  - tags: 
+  - filename: metadata-for-layout.html.njk
+  - layout: _post.njk
+  - title: This must be seen in the layout
+  - prettyUrlPath: /metadata-for-layout.html
+  - rawUrlPath: /metadata-for-layout.html
+  - dateCreated: -
+  - tags: -
 
   Page 9
-  - filename: myindex.html.md
-  - layout: 
-  - title: 
-  - prettyUrlPath: /myindex.html
-  - rawUrlPath: /myindex.html
-  - dateCreated: 
-  - tags: 
+  - filename: mixed.html.md.njk
+  - layout: -
+  - title: -
+  - prettyUrlPath: /mixed.html
+  - rawUrlPath: /mixed.html
+  - dateCreated: -
+  - tags: -
 
   Page 10
-  - filename: simple.html.md
-  - layout: 
-  - title: 
-  - prettyUrlPath: /simple.html
-  - rawUrlPath: /simple.html
-  - dateCreated: 
-  - tags: 
+  - filename: myindex.html.md
+  - layout: -
+  - title: -
+  - prettyUrlPath: /myindex.html
+  - rawUrlPath: /myindex.html
+  - dateCreated: -
+  - tags: -
 
   Page 11
-  - filename: use-filter.txt.njk
-  - layout: 
-  - title: 
-  - prettyUrlPath: /use-filter.txt
-  - rawUrlPath: /use-filter.txt
-  - dateCreated: 
-  - tags: 
+  - filename: simple.html.md
+  - layout: -
+  - title: -
+  - prettyUrlPath: /simple.html
+  - rawUrlPath: /simple.html
+  - dateCreated: -
+  - tags: -
 
   Page 12
+  - filename: use-filter.txt.njk
+  - layout: -
+  - title: -
+  - prettyUrlPath: /use-filter.txt
+  - rawUrlPath: /use-filter.txt
+  - dateCreated: -
+  - tags: -
+
+  Page 13
   - filename: with-layout.html.md
   - layout: _body.njk
-  - title: 
+  - title: -
   - prettyUrlPath: /with-layout.html
   - rawUrlPath: /with-layout.html
-  - dateCreated: 
-  - tags: 
+  - dateCreated: -
+  - tags: -
 
