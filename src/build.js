@@ -95,24 +95,26 @@ const toSize = (size) => {
 function processFile(contentIn, processors, outPath, relPath, data) {
   let contentOut = contentIn;
   const initialSize = toSize(contentOut.length);
-  const processed = [];
   process.stdout.write(`⚙️ Process ${relPath} (${initialSize}) ... `);
   while (processors.has(path.extname(outPath))) { // process all known extensions
     const ext = path.extname(outPath);
+    process.stdout.write(`${ext}`);
     const processor = processors.get(ext);
     contentOut = processor(contentOut, data);
     outPath = outPath.slice(0, -ext.length);
-    processed.push(ext);
+    process.stdout.write(`👍🏾`);
   }
 
   // If the metadata (front-matter block) has a "layout" key, wrap it all in that given layout, we use njk's {% extends %} for it.
   if (data?.layout) {
+    process.stdout.write(` layout: ${data.layout}`);
     const processor = processors.get(Symbol.for('njk-layout'));
     contentOut = processor(data.layout, {...data, content: contentOut});
+    process.stdout.write(`👍🏾`);
   }
 
   fs.writeFileSync(outPath, contentOut);
-  console.log(`=> ${outPath} (${toSize(contentOut.length)}) – (${processed.join(' ')}) ✅ `);
+  console.log(`\n        ✅  => ${outPath} (${toSize(contentOut.length)})`);
 }
 
 const frontMatterRegexp = /^---(\s*[\s\S]*?\s*)---/;
