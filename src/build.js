@@ -37,7 +37,7 @@ async function createProcessors(config) {
 
   const nunjucksOptions = {
     autoescape: true,
-    // throwOnUndefined: true,
+    throwOnUndefined: true,
     trimBlocks: true,
     lstripBlocks: true,
   };
