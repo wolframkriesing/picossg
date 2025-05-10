@@ -1,0 +1,27 @@
+  Page 1
+  - filename: 20-front-matter.html.md.njk
+  - layout: -
+  - title: Simple Meta Data
+  - prettyUrlPath: /20-front-matter.html
+  - rawUrlPath: /20-front-matter.html
+  - dateCreated: 2023-10-01 10:00:00
+  - tags: simple,SSG
+
+  Page 2
+  - filename: 22-metadata-for-layout.html.njk
+  - layout: _post.njk
+  - title: This must be seen in the layout
+  - prettyUrlPath: /22-metadata-for-layout.html
+  - rawUrlPath: /22-metadata-for-layout.html
+  - dateCreated: -
+  - tags: -
+
+  Page 3
+  - filename: 22-with-layout.html.md
+  - layout: _body.njk
+  - title: -
+  - prettyUrlPath: /22-with-layout.html
+  - rawUrlPath: /22-with-layout.html
+  - dateCreated: -
+  - tags: -
+

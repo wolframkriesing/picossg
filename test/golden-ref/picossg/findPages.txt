@@ -1,5 +1,0 @@
-  Page 1
-  - filename: picossg/findPages.txt.njk
-  - prettyUrlPath: /picossg/findPages.txt
-  - rawUrlPath: /picossg/findPages.txt
-
