@@ -29,7 +29,6 @@ The test system compares generated output in the `dist` directory with the expec
 - `src/build-cli.js` - CLI entry point for the PicoSSG tool
 - `src/build.js` - Core build process implementation
 - `src/picossg.js` - PicoSSG class with utilities for page finding and processing
-- `src/markdown-tag.js` - Nunjucks extension for Markdown processing
 
 ### Build Process
 
