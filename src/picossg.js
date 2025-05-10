@@ -14,7 +14,7 @@ const filenameToUrlPaths = (filenameIn, processors) => {
 
 export class PicoSsg {
   /**
-   * @param metadata {Map<ProcessedFilename, object>}
+   * @param metadata {Map<Filename, object>}
    * @param processors {ProcessorMap}
    */
   constructor(metadata, processors) {

@@ -3,10 +3,12 @@ import path from 'path';
 import nunjucks from 'nunjucks';
 import MarkdownIt from 'markdown-it';
 import {parse as parseYaml} from 'yaml'
-import {PicoSsg} from "./picossg.js";
 
 /**
- * @typedef {string} ProcessedFilename These are the filenames that are processed by picossg, e.g. `*.njk` or `*.md.njk` files.
+ * @typedef {string} Filename These are the filenames that will be copied or processed by picossg, e.g. `*.njk` or `*.md.njk` files.
+ * 
+ * @typedef {{url: string, content: string, date: Date}} RootProps
+ * @typedef {{_file: object, _frontmatter: object, _output: object, _site: object} & RootProps} FileData All the data each file has.
  * @typedef {Map<string|symbol, function(*, *): *>} ProcessorMap
  */
 
@@ -68,7 +70,7 @@ async function createProcessors(config) {
   const coreFilters = Object.keys(njk.filters);
   await loadNjkCustomStuff(config, njk);
   const newFilters = Object.keys(njk.filters).filter((f) => !coreFilters.includes(f));
-  console.log(`${newFilters.length} custom njk filters loaded: ${newFilters.join(', ')}`);
+  console.log(`    ${newFilters.length} custom njk filters loaded: ${newFilters.join(', ')}`);
 
   return new Map([
     ['.njk', (content, data) => njk.renderString(content, data)],
@@ -153,13 +155,9 @@ function processFile(contentIn, processors, outPath, relPath, dataIn, userFuncti
 
 const frontMatterRegexp = /^---(\s*[\s\S]*?\s*)---/;
 
-function readMetadata(content) {
+function readMetadataAndContent(content) {
   const frontmatterBlock = content.match(frontMatterRegexp)?.pop() ?? '';
-  return parseYaml(frontmatterBlock) ?? {};
-}
-
-function splitMetadataAndContent(content) {
-  const metadata = readMetadata(content);
+  const metadata = parseYaml(frontmatterBlock) ?? {};
   const contentWithoutFrontMatterBlock = content.replace(frontMatterRegexp, '');
   return [metadata, contentWithoutFrontMatterBlock];
 }
@@ -176,7 +174,7 @@ async function handleFile(filePath, config, processors, picossg, userFunctions) 
 
   if (needsProcessing(relPath, processors)) {
     const rawContent = fs.readFileSync(filePath, 'utf8');
-    const [metadata, content] = splitMetadataAndContent(rawContent);
+    const [metadata, content] = readMetadataAndContent(rawContent);
     processFile(content, processors, outPath, relPath, {...metadata, picossg}, userFunctions);
     return;
   }
@@ -187,21 +185,12 @@ async function handleFile(filePath, config, processors, picossg, userFunctions) 
   console.log(' ✅ ');
 }
 
-/**
- * Reads the metadata from a file and returns the relative path and the metadata.
- * @return {undefined | [ProcessedFilename, object]}
- */
-function readMetadataFromFile(filePath, config, processors) {
-  const relPath = path.relative(config.contentDir, filePath);
-
+function isFileToHandle(relPath, config, processors) {
   if (isIgnoredFile(path.basename(relPath))) {
-    return;
+    return [false, false];
   }
 
-  if (needsProcessing(relPath, processors)) {
-    const rawContent = fs.readFileSync(filePath, 'utf8');
-    return [relPath, readMetadata(rawContent)]
-  }
+  return [true, needsProcessing(relPath, processors)];
 }
 
 export async function buildAll(config) {
@@ -210,21 +199,37 @@ export async function buildAll(config) {
   const userFunctions = await loadUserFunctions(config);
   console.log('');
 
-  // Collect all the metadata from the content files
-  /** @type {Map<ProcessedFilename, object>} */
-  const metadata = new Map();
-  for (const file of walk(config.contentDir)) {
-    const metaOrNot = readMetadataFromFile(file, config, processors);
-    if (metaOrNot !== undefined) {
-      const [processedFilename, oneFilesMetadata] = metaOrNot;
-      metadata.set(processedFilename, oneFilesMetadata);
+  // Go through all files and fill the files map, with the relative filename and all data for it.
+  /** @type {Map<Filename, FileData>} */
+  const files = new Map();
+  for (const absoluteFilePath of walk(config.contentDir)) {
+    const relativeFilePath = path.relative(config.contentDir, absoluteFilePath);
+    const [shouldHandleFile, needsProcessing] = isFileToHandle(relativeFilePath, config, processors);
+    if (shouldHandleFile) {
+      const [frontmatter, content] = readMetadataAndContent(absoluteFilePath, config, processors);
+      files.set(relativeFilePath, {
+        _file: {relativeFilePath, absoluteFilePath, content, needsProcessing},
+        _frontmatter: frontmatter,
+        _output: {},
+        _site: {},
+      });
     }
   }
   
-  const picoSsg = new PicoSsg(metadata, processors);
+  // Run the user's pre-processor first, if any
+  if (userFunctions.preprocess) {
+    userFunctions.preprocess(files);
+  }  
+  return;
   
-  for (const file of walk(config.contentDir)) {
-    // If these shall be `Promise.all()`'ed then the outputting needs fixed, because they would be out of order.
-    await handleFile(file, config, processors, picoSsg, userFunctions);
-  }
+  
+  
+  
+  //
+  // const picoSsg = new PicoSsg(metadata, processors);
+  //
+  // for (const file of walk(config.contentDir)) {
+  //   // If these shall be `Promise.all()`'ed then the outputting needs fixed, because they would be out of order.
+  //   await handleFile(file, config, processors, picoSsg, userFunctions);
+  // }
 }
