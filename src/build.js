@@ -30,7 +30,7 @@ async function loadNjkCustomStuff(config, njk) {
 }
 
 async function loadUserFunctions(config) {
-  const userFunctionsFile = path.join(process.cwd(), config.contentDir, '_config.js');
+  const userFunctionsFile = path.join(process.cwd(), config.contentDir, config.configFile);
   let module;
   try {
     module = await import(userFunctionsFile);

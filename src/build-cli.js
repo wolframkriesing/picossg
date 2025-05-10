@@ -8,6 +8,7 @@ function parseArgs() {
     contentDir: {paramNames: ['content', 'c']},
     outDir: {paramNames: ['out', 'o']},
     includesDir: {value: 'components', paramNames: ['includes', 'i']},
+    configFile: {value: '_config.js', paramNames: ['config', 'x']},
   };
 
   for (let i = 0; i < args.length; i++) {
@@ -38,6 +39,7 @@ Options:
   -c, --content <directory>  Source directory
   -o, --out <directory>      Output directory
   -i, --includes <directory> Includes directory (default: "components")
+  -x, --config <filename>    The config.js filename (default: "_config.js")
   -h, --help                 Show this help message
 `);
 }
@@ -47,5 +49,5 @@ if (!options.contentDir || !options.outDir) {
   console.error('Error: Missing content and/or output dir. Use --help for more information.');
   process.exit(1);
 }
-console.log(`🎬 Building from '${options.contentDir}' to '${options.outDir}' (includes: '${options.includesDir}' [below content dir])`);
+console.log(`🎬 Building with config: ${JSON.stringify(options, null, 2)}`);
 await buildAll(options);
