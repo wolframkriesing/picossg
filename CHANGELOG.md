@@ -3,6 +3,11 @@
 - [x] rebuild tests to be at least somehow grouped/sorted
 - [x] ~~make the components directory be _includes, just like in nunjucks no need to invent names~~ actually this is good as it is, the components have files that will be built and served, so its mixed purpose
 - [ ] rewrite the processing to
+  - [ ] provide one very clear set of data, data is the front-matter data, merged/enhanced with the file's data such as the file name, path, url, etc.
+    - [ ] provide `_file` with all info about the original file, like filename, size, content, etc.
+    - [ ] provide `_frontmatter` with all frontmatter data
+    - [ ] provide `_output` with the processed data, like url, content, etc.
+    - [ ] merge all this together into the `data` object, so the data are convinient to use in the template but also available in their original form (in the `_*` keys)
   - [ ] allow `preprocess()` and `postprocess()` functions that receive ALL files incl. data and content
         like so: `preprocess(files: Map<filename, {content: string, data: object}>)`
         this allows to process any file before and after the main processing, it provides access to all files e.g. to find related ones and do searches
