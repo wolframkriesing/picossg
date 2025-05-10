@@ -67,3 +67,8 @@ The project is moving toward v3.0.0 with plans to:
 - Allow preprocessing and postprocessing functions that receive ALL files
 - Support page minification 
 - Restructure tests
+
+## Coding Guidelines
+
+- Always use descriptive variable names
+- Try to write the most minimal code, not smartest and shortest but the least code needed to fulfill something, and also just fulfill that not a tiny bit more!
