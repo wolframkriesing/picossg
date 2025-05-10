@@ -1,6 +1,7 @@
 # V3.0.0
 
 - [ ] rebuild tests to be at least somehow grouped/sorted
+- [ ] make the components directory be _includes, just like in nunjucks no need to invent names
 - [ ] rewrite the processing to
   - [ ] allow `preprocess()` and `postprocess()` functions that receive ALL files incl. data and content
         like so: `preprocess(files: Map<filename, {content: string, data: object}>)`
