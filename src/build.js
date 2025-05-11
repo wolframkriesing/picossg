@@ -6,9 +6,14 @@ import {parse as parseYaml} from 'yaml'
 
 /**
  * @typedef {string} Filename These are the filenames that will be copied or processed by picossg, e.g. `*.njk` or `*.md.njk` files.
+ * @typedef {string} UrlPath The trailing part in a URL after the domain name, e.g. `/about` or `/blog/2023/01/01/my-post.html` and excluding the query string and hash.
  *
- * @typedef {{url: string, content: string, date: Date}} RootProps
- * @typedef {{_file: object, _frontmatter: object, _output: object, _site: object} & RootProps} FileData All the data each file has.
+ * @typedef {{url: UrlPath, content: string, date: Date}} RootProps
+ * @typedef {{relativeFilePath: Filename, absoluteFilePath: Filename, content: string, needsProcessing: boolean, hasFrontmatterBlock: boolean}} FileObject
+ * @typedef {{rawUrlPath: UrlPath, prettyUrlPath: UrlPath}} OutputObject
+ * @typedef {{_file: FileObject, _frontmatter: object, _output: OutputObject, _site: object}} PicossgObjects
+ * @typedef {PicossgObjects & RootProps} FileData All the data each file has.
+ * 
  * @typedef {Map<string|symbol, function(*, *): *>} ProcessorMap
  */
 
@@ -194,6 +199,11 @@ function isFileToHandle(relPath, config, processors) {
   return [true, needsProcessing(relPath, processors)];
 }
 
+/**
+ * @param relativeFilePath
+ * @param processors
+ * @return {{rawUrlPath: string, prettyUrlPath: (string|string)}}
+ */
 const toOutputObject = (relativeFilePath, processors) => {
   let urlPath = '/' + relativeFilePath;
   while (processors.has(path.extname(urlPath))) { // process all known extensions

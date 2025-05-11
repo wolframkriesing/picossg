@@ -40,8 +40,8 @@ const testAllPicossgObjectsExist = (files) => {
  * Test a static file, one that does NOT get processed.
  */
 const testStaticFilesFileObject = (files) => {
-  const file = files.get('favicon.ico');
-  const f = file._file;
+  /** @type {FileObject} */
+  const f = files.get('favicon.ico')._file;
   
   assert.equal(f.needsProcessing, false);
   assert.equal(f.hasFrontmatterBlock, false);
@@ -51,8 +51,8 @@ const testStaticFilesFileObject = (files) => {
 };
 
 const testToBeProcessedFilesFileObject = (files) => {
-  const file = files.get('02-markdown.html.md');
-  const f = file._file;
+  /** @type {FileObject} */
+  const f = files.get('02-markdown.html.md')._file;
   
   assert.equal(f.needsProcessing, true);
   assert.equal(f.hasFrontmatterBlock, false);
@@ -71,6 +71,7 @@ const testToBeProcessedFilesFileObject = (files) => {
  * The `_frontmatter` object is empty.
  */
 const testStaticFilesFrontmatterObject = (files) => {
+  /** @type {FileData} */
   const file = files.get('house.svg');
   
   assert.equal(file._file.hasFrontmatterBlock, false);
@@ -78,8 +79,7 @@ const testStaticFilesFrontmatterObject = (files) => {
 };
 
 const testToBeProcessedFilesFrontmatterObject = files => {
-  const file = files.get('20-front-matter.html.md.njk');
-  const f = file._frontmatter;
+  const f = files.get('20-front-matter.html.md.njk')._frontmatter;
   
   assert.equal(f.title, 'Simple Meta Data');
   assert.equal(f.dateCreated, "2023-10-01 10:00:00");
@@ -87,6 +87,7 @@ const testToBeProcessedFilesFrontmatterObject = files => {
 };
 
 const testStaticFilesOutputObject = (files) => {
+  /** @type {OutputObject} */
   const o = files.get('house.svg')._output;
   
   assert.equal(o.rawUrlPath, '/house.svg');
@@ -94,6 +95,7 @@ const testStaticFilesOutputObject = (files) => {
 };
 
 const testToBeProcessedFilesOutputObject = (files) => {
+  /** @type {OutputObject} */
   const o = files.get('05-myindex.html.md')._output;
   
   assert.equal(o.rawUrlPath, '/05-myindex.html');
