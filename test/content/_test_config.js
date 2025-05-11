@@ -44,6 +44,7 @@ const testStaticFilesFileObject = (files) => {
   const f = file._file;
   
   assert.equal(f.needsProcessing, false);
+  assert.equal(f.hasFrontmatterBlock, false);
   assert.equal(f.relativeFilePath, 'favicon.ico');
   assert.ok(f.absoluteFilePath.endsWith('test/content/favicon.ico')); // the absolute path depends on the local fs, so we just check what we know for sure.
   assert.equal(f.content, '');
@@ -54,6 +55,7 @@ const testToBeProcessedFilesFileObject = (files) => {
   const f = file._file;
   
   assert.equal(f.needsProcessing, true);
+  assert.equal(f.hasFrontmatterBlock, false);
   assert.equal(f.relativeFilePath, '02-markdown.html.md');
   assert.ok(f.absoluteFilePath.endsWith('test/content/02-markdown.html.md')); // the absolute path depends on the local fs, so we just check what we know for sure.
   assert.equal(f.content, '# Headline\n\nparagraph');
@@ -61,6 +63,27 @@ const testToBeProcessedFilesFileObject = (files) => {
   // A file with a frontmatter block, that block should NOT be part of `_file.content`.
   const fileWithFrontmatterBlock = files.get('22-with-layout.html.md')._file;
   assert.equal(fileWithFrontmatterBlock.content, '\n\n# I am H1\n\nand a paragraph');
+  assert.equal(fileWithFrontmatterBlock.hasFrontmatterBlock, true);
+};
+
+/**
+ * A static file, one that will just be copied to the output directory, does NOT have a frontmatter block.
+ * The `_frontmatter` object is empty.
+ */
+const testStaticFilesFrontmatterObject = (files) => {
+  const file = files.get('house.svg');
+  
+  assert.equal(file._file.hasFrontmatterBlock, false);
+  assert.deepEqual(file._frontmatter, {});
+};
+
+const testToBeProcessedFilesFrontmatterObject = files => {
+  const file = files.get('20-front-matter.html.md.njk');
+  const f = file._frontmatter;
+  
+  assert.equal(f.title, 'Simple Meta Data');
+  assert.equal(f.dateCreated, "2023-10-01 10:00:00");
+  assert.deepEqual(f.tags, ['simple', 'SSG']);
 };
 
 /**
@@ -73,8 +96,10 @@ const preprocess = (files) => {
   // Test the `_file` object.
   testStaticFilesFileObject(files);
   testToBeProcessedFilesFileObject(files);
+  // Test the `_frontmatter` object.
+  testStaticFilesFrontmatterObject(files);
+  testToBeProcessedFilesFrontmatterObject(files);
 
-  
   console.log('done');
   process.exit(0);
 }

@@ -157,9 +157,10 @@ const frontMatterRegexp = /^---(\s*[\s\S]*?\s*)---/;
 
 function readMetadataAndContent(content) {
   const frontmatterBlock = content.match(frontMatterRegexp)?.pop() ?? '';
-  const metadata = parseYaml(frontmatterBlock) ?? {};
+  const hasFrontmatterBlock = frontmatterBlock.trim().length > 0;
+  const metadata = hasFrontmatterBlock ? parseYaml(frontmatterBlock) : {};
   const contentWithoutFrontMatterBlock = content.replace(frontMatterRegexp, '');
-  return [metadata, contentWithoutFrontMatterBlock];
+  return [hasFrontmatterBlock, metadata, contentWithoutFrontMatterBlock];
 }
 
 async function handleFile(filePath, config, processors, picossg, userFunctions) {
@@ -207,11 +208,11 @@ export async function buildAll(config) {
     const [shouldHandleFile, needsProcessing] = isFileToHandle(relativeFilePath, config, processors);
     if (shouldHandleFile) {
       const fileContent = fs.readFileSync(absoluteFilePath, 'utf8');
-      const [frontmatter, content] = needsProcessing
+      const [hasFrontmatterBlock, frontmatter, content] = needsProcessing
         ? readMetadataAndContent(fileContent)
-        : [{}, ''];
+        : [false, {}, ''];
       files.set(relativeFilePath, {
-        _file: {relativeFilePath, absoluteFilePath, content, needsProcessing},
+        _file: {relativeFilePath, absoluteFilePath, content, needsProcessing, hasFrontmatterBlock},
         _frontmatter: frontmatter,
         _output: {},
         _site: {},
@@ -223,7 +224,6 @@ export async function buildAll(config) {
   if (userFunctions.preprocess) {
     userFunctions.preprocess(files);
   }
-  
 
   //
   // const picoSsg = new PicoSsg(metadata, processors);
