@@ -1,5 +1,11 @@
 import {strict as assert} from 'assert';
 
+let numTestSets = 0;
+const testSetSucceeded = (description) => {
+  numTestSets++;
+  console.log(`✅  Test set ${numTestSets} – ${description}`);
+}
+
 const testAllFilesAreFound = (files) => {
   assert.deepEqual(files.keys().toArray(), [
     '01-pure-html.html',
@@ -21,6 +27,8 @@ const testAllFilesAreFound = (files) => {
     'house.svg',
     'in-dir/index.html.md'
   ]);
+  
+  testSetSucceeded('All files are found');
 };
 
 /**
@@ -34,6 +42,8 @@ const testAllPicossgObjectsExist = (files) => {
   assert(actualKeys.includes('_frontmatter')); 
   assert(actualKeys.includes('_output')); 
   assert(actualKeys.includes('_site')); 
+  
+  testSetSucceeded('All picossg objects exist');
 };
 
 /**
@@ -48,6 +58,8 @@ const testStaticFilesFileObject = (files) => {
   assert.equal(f.relativeFilePath, 'favicon.ico');
   assert.ok(f.absoluteFilePath.endsWith('test/content/favicon.ico')); // the absolute path depends on the local fs, so we just check what we know for sure.
   assert.equal(f.content, '');
+  
+  testSetSucceeded('Static files `_file` object');
 };
 
 const testToBeProcessedFilesFileObject = (files) => {
@@ -64,6 +76,8 @@ const testToBeProcessedFilesFileObject = (files) => {
   const fileWithFrontmatterBlock = files.get('22-with-layout.html.md')._file;
   assert.equal(fileWithFrontmatterBlock.content, '\n\n# I am H1\n\nand a paragraph');
   assert.equal(fileWithFrontmatterBlock.hasFrontmatterBlock, true);
+  
+  testSetSucceeded('To be processed files `_file` object');
 };
 
 /**
@@ -76,6 +90,8 @@ const testStaticFilesFrontmatterObject = (files) => {
   
   assert.equal(file._file.hasFrontmatterBlock, false);
   assert.deepEqual(file._frontmatter, {});
+  
+  testSetSucceeded('Static files `_frontmatter` object');
 };
 
 const testToBeProcessedFilesFrontmatterObject = files => {
@@ -84,6 +100,8 @@ const testToBeProcessedFilesFrontmatterObject = files => {
   assert.equal(f.title, 'Simple Meta Data');
   assert.equal(f.dateCreated, "2023-10-01 10:00:00");
   assert.deepEqual(f.tags, ['simple', 'SSG']);
+  
+  testSetSucceeded('To be processed files `_frontmatter` object');
 };
 
 const testStaticFilesOutputObject = (files) => {
@@ -92,6 +110,8 @@ const testStaticFilesOutputObject = (files) => {
   
   assert.equal(o.rawUrlPath, '/house.svg');
   assert.equal(o.prettyUrlPath, '/house.svg');
+  
+  testSetSucceeded('Static files `_output` object');
 };
 
 const testToBeProcessedFilesOutputObject = (files) => {
@@ -100,6 +120,8 @@ const testToBeProcessedFilesOutputObject = (files) => {
   
   assert.equal(o.rawUrlPath, '/05-myindex.html');
   assert.equal(o.prettyUrlPath, '/05-myindex.html');
+  
+  testSetSucceeded('To be processed files `_output` object');
 };
 
 /**
@@ -119,7 +141,7 @@ const preprocess = (files) => {
   testStaticFilesOutputObject(files);
   testToBeProcessedFilesOutputObject(files);
 
-  console.log('done');
+  console.log('✅  All config-assertion test sets passed.');
   process.exit(0);
 }
 
