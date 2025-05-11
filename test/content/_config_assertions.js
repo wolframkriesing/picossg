@@ -1,4 +1,5 @@
 import {strict as assert} from 'assert';
+import fs from "fs";
 
 let numTestSets = 0;
 const testSetSucceeded = (description) => {
@@ -17,8 +18,9 @@ const testAllFilesAreFound = (files) => {
     '10-include-html-only.html.njk',
     '11-include-with-style.html.njk',
     '20-front-matter.html.md.njk',
+    '21-with-layout.html.md',
     '22-metadata-for-layout.html.njk',
-    '22-with-layout.html.md',
+    '23-has-date.html.md',
     '40-preprocess.txt.njk',
     '50-picossg-findPages.txt.njk',
     'README.md',
@@ -73,7 +75,7 @@ const testToBeProcessedFilesFileObject = (files) => {
   assert.equal(f.content, '# Headline\n\nparagraph');
   
   // A file with a frontmatter block, that block should NOT be part of `_file.content`.
-  const fileWithFrontmatterBlock = files.get('22-with-layout.html.md')._file;
+  const fileWithFrontmatterBlock = files.get('21-with-layout.html.md')._file;
   assert.equal(fileWithFrontmatterBlock.content, '\n\n# I am H1\n\nand a paragraph');
   assert.equal(fileWithFrontmatterBlock.hasFrontmatterBlock, true);
   
@@ -124,6 +126,31 @@ const testToBeProcessedFilesOutputObject = (files) => {
   testSetSucceeded('To be processed files `_output` object');
 };
 
+const testStaticFilesRootProps = files => {
+  const readme = files.get('README.md');
+  assert.equal(readme.url, '/README');
+  
+  const stats = fs.statSync(files.get('README.md')._file.absoluteFilePath);
+  const isoDate = stats.mtime.toISOString();
+  assert.equal(readme.date, isoDate);
+  
+  assert.equal(files.get('02-markdown.html.md').content, '# Headline\n\nparagraph');
+  
+  testSetSucceeded('Static files root props');
+};
+
+const testToBeProcessedFilesRootProps = files => {
+  const hasDate = files.get('23-has-date.html.md');
+  assert.equal(hasDate.date, '1999-12-31');
+  
+  // all of frontmatter is merged into the root object
+  const rootObj = files.get('20-front-matter.html.md.njk');
+  const frontmatterProps = Object.keys(rootObj._frontmatter);
+  frontmatterProps.forEach(key =>
+    assert.ok(key in rootObj, `Key "${key}" (from the frontmatter block) not found in root object.`)
+  );
+};
+
 /**
  * @param files {Map<Filename, FileData>}
  */
@@ -140,6 +167,10 @@ const preprocess = (files) => {
   // Test the `_output` object.
   testStaticFilesOutputObject(files);
   testToBeProcessedFilesOutputObject(files);
+  
+  // Test the root props.
+  testStaticFilesRootProps(files);
+  testToBeProcessedFilesRootProps(files);
 
   console.log('✅  All config-assertion test sets passed.');
   process.exit(0);

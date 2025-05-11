@@ -13,7 +13,7 @@ import {parse as parseYaml} from 'yaml'
  * @typedef {{rawUrlPath: UrlPath, prettyUrlPath: UrlPath}} OutputObject
  * @typedef {{_file: FileObject, _frontmatter: object, _output: OutputObject, _site: object}} PicossgObjects
  * @typedef {PicossgObjects & RootProps} FileData All the data each file has.
- * 
+ *
  * @typedef {Map<string|symbol, function(*, *): *>} ProcessorMap
  */
 
@@ -216,6 +216,28 @@ const toOutputObject = (relativeFilePath, processors) => {
   };
 };
 
+/**
+ * This function just prevents `fs.statSync` to be run for files where `date` is already set in the frontmatter.
+ * So it's just reducing processing load (for now).
+ */
+const readRootPropDate = (picossgObject) => {
+  const frontmatter = picossgObject._frontmatter;
+  if (frontmatter.date) {
+    return frontmatter.date;
+  }
+  const stats = fs.statSync(picossgObject._file.absoluteFilePath);
+  return stats.mtime.toISOString();
+};
+
+const toRootProps = (picossgObject) => {
+  return {
+    url: picossgObject._output.prettyUrlPath,
+    content: picossgObject._file.content,
+    date: readRootPropDate(picossgObject),
+    ...picossgObject._frontmatter,
+  }
+};
+
 export async function buildAll(config) {
   fs.rmSync(config.outDir, {recursive: true, force: true});
   const processors = await createProcessors(config);
@@ -233,11 +255,15 @@ export async function buildAll(config) {
       const [hasFrontmatterBlock, frontmatter, content] = needsProcessing
         ? readMetadataAndContent(fileContent)
         : [false, {}, ''];
-      files.set(relativeFilePath, {
+      const picossgObject = {
         _file: {relativeFilePath, absoluteFilePath, content, needsProcessing, hasFrontmatterBlock},
         _frontmatter: frontmatter,
         _output: toOutputObject(relativeFilePath, processors),
         _site: {},
+      };
+      files.set(relativeFilePath, {
+        ...picossgObject,
+        ...toRootProps(picossgObject),
       });
     }
   }
