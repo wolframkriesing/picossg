@@ -120,37 +120,26 @@ const toSize = (size) => {
   return number.toFixed(2) + ' kB';
 };
 
-function processFile(contentIn, processors, outPath, relPath, dataIn, userFunctions) {
+function processFile(contentIn, processors, originalFilePath, relPath, fileData) {
+  let outPath = originalFilePath;
   let contentOut = contentIn;
-  let data = dataIn;
   const initialSize = toSize(contentOut.length);
   process.stdout.write(`⚙️ Process ${relPath} (${initialSize}) ... `);
-
-  // Run the user's pre-processor first, if any
-  if (userFunctions.preprocess) {
-    const preProcessed = userFunctions.preprocess(relPath, {content: contentOut, data});
-    if (!preProcessed || !('content' in preProcessed) || !('data' in preProcessed)) {
-      console.error(`\n❌  Error in user function ("preprocess()"), it must return an object with "content" and "data" keys.`);
-      process.exit(1);
-    }
-    contentOut = preProcessed.content;
-    data = preProcessed.data;
-  }
 
   while (processors.has(path.extname(outPath))) { // process all known extensions
     const ext = path.extname(outPath);
     process.stdout.write(`${ext}`);
     const processor = processors.get(ext);
-    contentOut = processor(contentOut, data);
+    contentOut = processor(contentOut, fileData);
     outPath = outPath.slice(0, -ext.length);
     process.stdout.write(`👍🏾`);
   }
 
   // If the metadata (front-matter block) has a "layout" key, wrap it all in that given layout, we use njk's {% extends %} for it.
-  if (data?.layout) {
-    process.stdout.write(` layout: ${data.layout}`);
+  if (fileData._frontmatter?.layout) {
+    process.stdout.write(` layout: ${fileData._frontmatter?.layout}`);
     const processor = processors.get(Symbol.for('njk-layout'));
-    contentOut = processor(data.layout, {...data, content: contentOut});
+    contentOut = processor(fileData._frontmatter?.layout, {...fileData, content: contentOut});
     process.stdout.write(`👍🏾`);
   }
 
@@ -168,26 +157,19 @@ function readMetadataAndContent(content) {
   return [hasFrontmatterBlock, metadata, contentWithoutFrontMatterBlock];
 }
 
-async function handleFile(filePath, config, processors, picossg, userFunctions) {
-  const relPath = path.relative(config.contentDir, filePath);
+async function handleFile(relativeFilePath, config, processors, fileData) {
+  const originalFilePath = path.join(config.outDir, relativeFilePath);
+  ensureDir(originalFilePath);
 
-  if (isIgnoredFile(path.basename(relPath))) {
-    return;
-  }
-
-  let outPath = path.join(config.outDir, relPath);
-  ensureDir(outPath);
-
-  if (needsProcessing(relPath, processors)) {
-    const rawContent = fs.readFileSync(filePath, 'utf8');
-    const [metadata, content] = readMetadataAndContent(rawContent);
-    processFile(content, processors, outPath, relPath, {...metadata, picossg}, userFunctions);
+  const file = fileData._file;
+  if (file.needsProcessing) {
+    processFile(file.content, processors, originalFilePath, relativeFilePath, fileData);
     return;
   }
 
   // Simply copy the file
-  process.stdout.write(`💾 Copy ${relPath} => ${outPath}`);
-  fs.copyFileSync(filePath, outPath);
+  process.stdout.write(`💾 Copy ${relativeFilePath} => ${originalFilePath}`);
+  fs.copyFileSync(fileData._file.absoluteFilePath, originalFilePath);
   console.log(' ✅ ');
 }
 
@@ -274,11 +256,8 @@ export async function buildAll(config) {
     userFunctions.preprocess(files);
   }
 
-  //
-  // const picoSsg = new PicoSsg(metadata, processors);
-  //
-  // for (const file of walk(config.contentDir)) {
-  //   // If these shall be `Promise.all()`'ed then the outputting needs fixed, because they would be out of order.
-  //   await handleFile(file, config, processors, picoSsg, userFunctions);
-  // }
+  for (const [relativeFilePath, fileData] of files) {
+    // If these shall be `Promise.all()`'ed then the outputting needs fixed, because they would be out of order.
+    await handleFile(relativeFilePath, config, processors, fileData);
+  }
 }
