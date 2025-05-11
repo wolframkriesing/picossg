@@ -4,24 +4,33 @@
   - title: Simple Meta Data
   - prettyUrlPath: /20-front-matter.html
   - rawUrlPath: /20-front-matter.html
-  - dateCreated: 2023-10-01 10:00:00
+  - date: 2025-05-09T14:49:26.907Z
   - tags: simple,SSG
 
   Page 2
+  - filename: 21-with-layout.html.md
+  - layout: _body.njk
+  - title: -
+  - prettyUrlPath: /21-with-layout.html
+  - rawUrlPath: /21-with-layout.html
+  - date: 2025-05-09T08:32:19.573Z
+  - tags: -
+
+  Page 3
   - filename: 22-metadata-for-layout.html.njk
   - layout: _post.njk
   - title: This must be seen in the layout
   - prettyUrlPath: /22-metadata-for-layout.html
   - rawUrlPath: /22-metadata-for-layout.html
-  - dateCreated: -
+  - date: 2025-05-09T12:57:52.745Z
   - tags: -
 
-  Page 3
-  - filename: 22-with-layout.html.md
-  - layout: _body.njk
+  Page 4
+  - filename: 23-has-date.html.md
+  - layout: -
   - title: -
-  - prettyUrlPath: /22-with-layout.html
-  - rawUrlPath: /22-with-layout.html
-  - dateCreated: -
+  - prettyUrlPath: /23-has-date.html
+  - rawUrlPath: /23-has-date.html
+  - date: 1999-12-31
   - tags: -
 

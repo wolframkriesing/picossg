@@ -1,11 +1,11 @@
-{% for page in picossg.findPages('2') %}
+{% for _, page in allPagesStartingWith2.entries() %}
   Page {{ loop.index }}
-  - filename: {{ page.filename }}
+  - filename: {{ page._file.relativeFilePath }}
   - layout: {{ page.layout | default('-') }}
   - title: {{  page.title | default('-')  }}
-  - prettyUrlPath: {{ page.prettyUrlPath }}
-  - rawUrlPath: {{ page.rawUrlPath }}
-  - dateCreated: {{ page.dateCreated | default('-')  }}
+  - prettyUrlPath: {{ page._output.prettyUrlPath }}
+  - rawUrlPath: {{ page._output.rawUrlPath }}
+  - date: {{ page.date | default('-')  }}
   - tags: {{ page.tags | default('-')  }}
 
 {% endfor %}

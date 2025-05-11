@@ -163,7 +163,8 @@ async function handleFile(relativeFilePath, config, processors, fileData) {
 
   const file = fileData._file;
   if (file.needsProcessing) {
-    processFile(file.content, processors, originalFilePath, relativeFilePath, fileData);
+    // NOTE: use the `fileData.content` here, it might have been modified by the user's preprocessor!
+    processFile(fileData.content, processors, originalFilePath, relativeFilePath, fileData);
     return;
   }
 
