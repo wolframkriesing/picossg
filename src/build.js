@@ -61,7 +61,7 @@ async function loadUserFunctions(config) {
  * @return {Promise<ProcessorMap>}
  */
 async function createProcessors(config) {
-  const md = new MarkdownIt();
+  const md = new MarkdownIt({html: true});
 
   const nunjucksOptions = {
     autoescape: true,
