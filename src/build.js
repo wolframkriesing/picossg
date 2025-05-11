@@ -194,6 +194,18 @@ function isFileToHandle(relPath, config, processors) {
   return [true, needsProcessing(relPath, processors)];
 }
 
+const toOutputObject = (relativeFilePath, processors) => {
+  let urlPath = '/' + relativeFilePath;
+  while (processors.has(path.extname(urlPath))) { // process all known extensions
+    const ext = path.extname(urlPath);
+    urlPath = urlPath.slice(0, -ext.length);
+  }
+  return {
+    rawUrlPath: urlPath,
+    prettyUrlPath: urlPath.endsWith('/index.html') ? urlPath.replace(/index\.html$/, '') : urlPath,
+  };
+};
+
 export async function buildAll(config) {
   fs.rmSync(config.outDir, {recursive: true, force: true});
   const processors = await createProcessors(config);
@@ -214,13 +226,14 @@ export async function buildAll(config) {
       files.set(relativeFilePath, {
         _file: {relativeFilePath, absoluteFilePath, content, needsProcessing, hasFrontmatterBlock},
         _frontmatter: frontmatter,
-        _output: {},
+        _output: toOutputObject(relativeFilePath, processors),
         _site: {},
       });
     }
   }
 
   // Run the user's pre-processor first, if any
+  // NOTE: this might modify `files`, intentionally. It is an architecture decision.
   if (userFunctions.preprocess) {
     userFunctions.preprocess(files);
   }

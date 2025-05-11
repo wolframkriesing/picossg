@@ -86,6 +86,20 @@ const testToBeProcessedFilesFrontmatterObject = files => {
   assert.deepEqual(f.tags, ['simple', 'SSG']);
 };
 
+const testStaticFilesOutputObject = (files) => {
+  const o = files.get('house.svg')._output;
+  
+  assert.equal(o.rawUrlPath, '/house.svg');
+  assert.equal(o.prettyUrlPath, '/house.svg');
+};
+
+const testToBeProcessedFilesOutputObject = (files) => {
+  const o = files.get('05-myindex.html.md')._output;
+  
+  assert.equal(o.rawUrlPath, '/05-myindex.html');
+  assert.equal(o.prettyUrlPath, '/05-myindex.html');
+};
+
 /**
  * @param files {Map<Filename, FileData>}
  */
@@ -99,6 +113,9 @@ const preprocess = (files) => {
   // Test the `_frontmatter` object.
   testStaticFilesFrontmatterObject(files);
   testToBeProcessedFilesFrontmatterObject(files);
+  // Test the `_output` object.
+  testStaticFilesOutputObject(files);
+  testToBeProcessedFilesOutputObject(files);
 
   console.log('done');
   process.exit(0);

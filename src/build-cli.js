@@ -49,5 +49,5 @@ if (!options.contentDir || !options.outDir) {
   console.error('Error: Missing content and/or output dir. Use --help for more information.');
   process.exit(1);
 }
-console.log(`🎬 Building with config: ${JSON.stringify(options, null, 2)}`);
+console.log(`🎬 Building with config: ${JSON.stringify(options, null, 4)}`);
 await buildAll(options);
