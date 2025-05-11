@@ -6,7 +6,7 @@ import {parse as parseYaml} from 'yaml'
 
 /**
  * @typedef {string} Filename These are the filenames that will be copied or processed by picossg, e.g. `*.njk` or `*.md.njk` files.
- * 
+ *
  * @typedef {{url: string, content: string, date: Date}} RootProps
  * @typedef {{_file: object, _frontmatter: object, _output: object, _site: object} & RootProps} FileData All the data each file has.
  * @typedef {Map<string|symbol, function(*, *): *>} ProcessorMap
@@ -120,7 +120,7 @@ function processFile(contentIn, processors, outPath, relPath, dataIn, userFuncti
   let data = dataIn;
   const initialSize = toSize(contentOut.length);
   process.stdout.write(`⚙️ Process ${relPath} (${initialSize}) ... `);
-  
+
   // Run the user's pre-processor first, if any
   if (userFunctions.preprocess) {
     const preProcessed = userFunctions.preprocess(relPath, {content: contentOut, data});
@@ -131,7 +131,7 @@ function processFile(contentIn, processors, outPath, relPath, dataIn, userFuncti
     contentOut = preProcessed.content;
     data = preProcessed.data;
   }
-  
+
   while (processors.has(path.extname(outPath))) { // process all known extensions
     const ext = path.extname(outPath);
     process.stdout.write(`${ext}`);
@@ -206,7 +206,10 @@ export async function buildAll(config) {
     const relativeFilePath = path.relative(config.contentDir, absoluteFilePath);
     const [shouldHandleFile, needsProcessing] = isFileToHandle(relativeFilePath, config, processors);
     if (shouldHandleFile) {
-      const [frontmatter, content] = readMetadataAndContent(absoluteFilePath, config, processors);
+      const fileContent = fs.readFileSync(absoluteFilePath, 'utf8');
+      const [frontmatter, content] = needsProcessing
+        ? readMetadataAndContent(fileContent)
+        : [{}, ''];
       files.set(relativeFilePath, {
         _file: {relativeFilePath, absoluteFilePath, content, needsProcessing},
         _frontmatter: frontmatter,
@@ -215,16 +218,13 @@ export async function buildAll(config) {
       });
     }
   }
-  
+
   // Run the user's pre-processor first, if any
   if (userFunctions.preprocess) {
     userFunctions.preprocess(files);
-  }  
-  return;
+  }
   
-  
-  
-  
+
   //
   // const picoSsg = new PicoSsg(metadata, processors);
   //
