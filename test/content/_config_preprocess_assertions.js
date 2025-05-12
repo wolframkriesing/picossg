@@ -1,5 +1,5 @@
 import {strict as assert} from 'assert';
-import fs from "fs";
+import path from "path";
 
 let numTestSets = 0;
 const testSetSucceeded = (description) => {
@@ -65,6 +65,10 @@ const testToBeProcessedFilesOutputObject = (files) => {
   
   assert.equal(o.rawUrlPath, '/05-myindex.html');
   assert.equal(o.prettyUrlPath, '/05-myindex.html');
+  assert.equal(o.relativeFilePath, '05-myindex.html');
+  const pwd = process.cwd();
+  const expectedFilePath = path.join(pwd, 'dist/05-myindex.html');
+  assert.equal(o.absoluteFilePath, expectedFilePath);
   
   testSetSucceeded('To be processed files `_output` object');
 };

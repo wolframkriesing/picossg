@@ -15,7 +15,8 @@
 - [x] no need for `picossg.*`, remove it, can be done inside the `preprocess()` function
 - [x] copy files first, and do NOT put them in the `files` map, so they are handled first, and do not land in the processing function (preprocess and postprocess)
 - [x] allow post-processing, e.g. to minify pages
-- [ ] add absolute and relative filePath to _output, to provide where the file will be stored to
+- [x] add absolute and relative filePath to _output, to provide where the file will be stored to
+- [ ] add sizes to the _file and _output, maybe also the time it too to process
 
 # V2.0.0
 

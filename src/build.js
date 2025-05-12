@@ -10,7 +10,7 @@ import {parse as parseYaml} from 'yaml'
  *
  * @typedef {{url: UrlPath, content: string, date: Date}} RootProps
  * @typedef {{relativeFilePath: Filename, absoluteFilePath: Filename, content: string, needsProcessing: boolean, hasFrontmatterBlock: boolean}} FileObject
- * @typedef {{rawUrlPath: UrlPath, prettyUrlPath: UrlPath}} OutputObject
+ * @typedef {{rawUrlPath: UrlPath, prettyUrlPath: UrlPath, relativeFilePath: Filename, absoluteFilePath: Filename}} OutputObject
  * @typedef {{_file: FileObject, _frontmatter: object, _output: OutputObject, _site: object}} PicossgObjects
  * @typedef {PicossgObjects & RootProps} FileData All the data each file has.
  *
@@ -30,8 +30,7 @@ async function loadNjkCustomStuff(config, njk) {
       return;
     }
     console.log(`❌ Error loading njk custom filters:\n    ${njkFilterFile}`);
-    console.log(e);
-    return;
+    throw e;
   }
   console.log(`✅  Loaded njk custom filters from:\n    ${njkFilterFile}`);
 }
@@ -47,8 +46,7 @@ async function loadUserFunctions(config) {
       return;
     }
     console.log(`❌ Error loading user functions:\n    ${userFunctionsFile}`);
-    console.log(e);
-    return;
+    throw e;
   }
   if (module) {
     console.log(`✅  Loaded user functions from:\n    ${userFunctionsFile}`);
@@ -124,7 +122,7 @@ function processFileContent(contentIn, processors, originalFilePath, relPath, fi
   let outPath = originalFilePath;
   let contentOut = contentIn;
   const initialSize = toSize(contentOut.length);
-  process.stdout.write(`⚙️ Process ${relPath} (${initialSize}) ... `);
+  process.stdout.write(`⚙️ Process ${relPath}, ${initialSize}, `);
 
   while (processors.has(path.extname(outPath))) { // process all known extensions
     const ext = path.extname(outPath);
@@ -142,7 +140,8 @@ function processFileContent(contentIn, processors, originalFilePath, relPath, fi
     contentOut = processor(fileData._frontmatter?.layout, {...fileData, content: contentOut});
     process.stdout.write(`👍🏾`);
   }
-  return [outPath, contentOut];
+  console.log('');
+  return contentOut;
 }
 
 const frontMatterRegexp = /^---(\s*[\s\S]*?\s*)---/;
@@ -164,19 +163,20 @@ function isFileToHandle(relPath, config, processors) {
 }
 
 /**
- * @param relativeFilePath
- * @param processors
- * @return {{rawUrlPath: string, prettyUrlPath: (string|string)}}
+ * @return {OutputObject}
  */
-const toOutputObject = (relativeFilePath, processors) => {
-  let urlPath = '/' + relativeFilePath;
-  while (processors.has(path.extname(urlPath))) { // process all known extensions
-    const ext = path.extname(urlPath);
-    urlPath = urlPath.slice(0, -ext.length);
+const toOutputObject = (relativeFilePath, config, processors) => {
+  let outRelativePath = relativeFilePath;
+  while (processors.has(path.extname(outRelativePath))) { // process all known extensions
+    const ext = path.extname(outRelativePath);
+    outRelativePath = outRelativePath.slice(0, -ext.length);
   }
+  const urlPath = '/' + outRelativePath;
   return {
     rawUrlPath: urlPath,
     prettyUrlPath: urlPath.endsWith('/index.html') ? urlPath.replace(/index\.html$/, '') : urlPath,
+    relativeFilePath: outRelativePath,
+    absoluteFilePath: path.resolve(config.outDir, outRelativePath),
   };
 };
 
@@ -223,7 +223,7 @@ export async function buildAll(config) {
         const picossgObject = {
           _file: {relativeFilePath, absoluteFilePath, content, needsProcessing, hasFrontmatterBlock},
           _frontmatter: frontmatter,
-          _output: toOutputObject(relativeFilePath, processors),
+          _output: toOutputObject(relativeFilePath, config, processors),
           _site: {},
         };
         files.set(relativeFilePath, {
@@ -244,7 +244,8 @@ export async function buildAll(config) {
   // Run the user's pre-processor first, if any
   // NOTE: this might modify `files`, intentionally. It is an architecture decision.
   if (userFunctions.preprocess) {
-    userFunctions.preprocess(files);
+    await userFunctions.preprocess(files);
+    console.log('⏭️  Preprocessing done.');
   }
 
   for (const [relativeFilePath, fileData] of files) {
@@ -252,13 +253,18 @@ export async function buildAll(config) {
     const outFilePathBeforeProcessing = path.join(config.outDir, relativeFilePath);
     ensureDir(outFilePathBeforeProcessing);
     // NOTE: use the `fileData.content` here, it might have been modified by the user's preprocessor!
-    const [outPath, processedContent] = processFileContent(fileData.content, processors, outFilePathBeforeProcessing, relativeFilePath, fileData);
+    fileData.content = processFileContent(fileData.content, processors, outFilePathBeforeProcessing, relativeFilePath, fileData);
+  }
 
-    if (userFunctions.postprocess) {
-      userFunctions.postprocess(files);
-    }
+  if (userFunctions.postprocess) {
+    await userFunctions.postprocess(files);
+    console.log('⏭️  Postprocessing done.');
+  }
     
-    fs.writeFileSync(outPath, processedContent, 'utf8');
-    console.log(`\n        ✅  => ${outPath} (${toSize(processedContent.length)})`);
+  for (const [_, fileData] of files) {
+    const inPath = fileData._file.relativeFilePath;
+    const output = fileData._output;
+    fs.writeFileSync(output.absoluteFilePath, fileData.content, 'utf8');
+    console.log(`✅  ${inPath} => ${output.relativeFilePath} ${toSize(fileData.content.length)}`);
   }
 }
