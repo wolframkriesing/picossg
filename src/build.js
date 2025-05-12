@@ -4,6 +4,10 @@ import nunjucks from 'nunjucks';
 import MarkdownIt from 'markdown-it';
 import {parse as parseYaml} from 'yaml'
 
+const md = new MarkdownIt({html: true, linkify: true});
+const mdRender = (s) => md.render(s);
+const mdRenderInline = (s) => md.renderInline(s);
+
 /**
  * @typedef {string} Filename These are the filenames that will be copied or processed by picossg, e.g. `*.njk` or `*.md.njk` files.
  * @typedef {string} UrlPath The trailing part in a URL after the domain name, e.g. `/about` or `/blog/2023/01/01/my-post.html` and excluding the query string and hash.
@@ -59,8 +63,6 @@ async function loadUserFunctions(config) {
  * @return {Promise<ProcessorMap>}
  */
 async function createProcessors(config) {
-  const md = new MarkdownIt({html: true, linkify: true});
-
   const nunjucksOptions = {
     autoescape: true,
     throwOnUndefined: true,
@@ -68,8 +70,8 @@ async function createProcessors(config) {
     lstripBlocks: true,
   };
   const njk = nunjucks.configure(path.join(config.contentDir, config.includesDir), nunjucksOptions);
-  njk.addFilter('md', (s) => md.render(s));
-  njk.addFilter('mdinline', (s) => md.renderInline(s));
+  njk.addFilter('md', (s) => mdRender(s));
+  njk.addFilter('mdinline', (s) => mdRenderInline(s));
   const coreFilters = Object.keys(njk.filters);
   await loadNjkCustomStuff(config, njk);
   const newFilters = Object.keys(njk.filters).filter((f) => !coreFilters.includes(f));
@@ -77,7 +79,7 @@ async function createProcessors(config) {
 
   return new Map([
     ['.njk', (content, data) => njk.renderString(content, data)],
-    ['.md', (content, _) => md.render(content)],
+    ['.md', (content, _) => mdRender(content)],
 
     // The processor below is not for a file extension but just for rendering the "layout" given as (front-matter) attribute in the metadata.
     [Symbol.for('njk-layout'), (filename, data) => njk.render(filename, data)],
