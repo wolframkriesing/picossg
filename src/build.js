@@ -1,9 +1,11 @@
 import fs from 'fs';
+import fsPromise from 'node:fs/promises';
 import path from 'path';
 import nunjucks from 'nunjucks';
 import {parse as parseYaml} from 'yaml'
 
 import MarkdownIt from 'markdown-it';
+
 const md = new MarkdownIt({html: true, linkify: true});
 const mdRender = (s) => md.render(s);
 const mdRenderInline = (s) => md.renderInline(s);
@@ -263,13 +265,17 @@ export async function buildAll(config) {
     await userFunctions.postprocess(files);
     console.log('⏭️ Postprocessing done.');
   }
-    
+
+  const writes = [];
   for (const [_, fileData] of files) {
     const inPath = fileData._file.relativeFilePath;
     const output = fileData._output;
-    fs.writeFileSync(output.absoluteFilePath, fileData.content, 'utf8');
-    console.log(`✅  ${inPath} => ${output.relativeFilePath} ${toSize(fileData.content.length)}`);
+    writes.push(fsPromise
+        .writeFile(output.absoluteFilePath, fileData.content, 'utf8')
+        .then(() => console.log(`✅  ${inPath} => ${output.relativeFilePath} ${toSize(fileData.content.length)}`))
+    );
   }
+  await Promise.allSettled(writes);
   const endTime = performance.now();
   console.log(`\n⏱️ Processed ${files.size} files in ${((endTime - startTime) / 1000).toFixed(2)} seconds.`);
 }
