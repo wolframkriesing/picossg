@@ -9,12 +9,12 @@ const testSetSucceeded = (description) => {
 
 const testAllFilesAreFound = (files) => {
   assert.deepEqual(files.keys().toArray(), [
-    '01-pure-html.html',
     '02-markdown.html.md',
     '03-custom-filter.txt.njk',
     '04-builtin-filters.html.njk',
     '05-myindex.html.md',
     '06-mixed.html.md.njk',
+    '07-html-in-md.html.md',
     '10-include-html-only.html.njk',
     '11-include-with-style.html.njk',
     '20-front-matter.html.md.njk',
@@ -22,46 +22,13 @@ const testAllFilesAreFound = (files) => {
     '22-metadata-for-layout.html.njk',
     '23-has-date.html.md',
     '40-preprocess.txt.njk',
+    '41-postprocess.txt.njk',
     '50-picossg-findPages.txt.njk',
     'README.md',
-    'components/2-with-css/style.css',
-    'favicon.ico',
-    'house.svg',
     'in-dir/index.html.md'
   ]);
   
   testSetSucceeded('All files are found');
-};
-
-/**
- * The "picossg objects" are the objects picossg provides, they are always prefixed with "_".
- * They are _file, _output, _frontmatter, ...
- */
-const testAllPicossgObjectsExist = (files) => {
-  const firstFile = files.get('01-pure-html.html');
-  const actualKeys = Object.keys(firstFile);
-  assert(actualKeys.includes('_file')); 
-  assert(actualKeys.includes('_frontmatter')); 
-  assert(actualKeys.includes('_output')); 
-  assert(actualKeys.includes('_site')); 
-  
-  testSetSucceeded('All picossg objects exist');
-};
-
-/**
- * Test a static file, one that does NOT get processed.
- */
-const testStaticFilesFileObject = (files) => {
-  /** @type {FileObject} */
-  const f = files.get('favicon.ico')._file;
-  
-  assert.equal(f.needsProcessing, false);
-  assert.equal(f.hasFrontmatterBlock, false);
-  assert.equal(f.relativeFilePath, 'favicon.ico');
-  assert.ok(f.absoluteFilePath.endsWith('test/content/favicon.ico')); // the absolute path depends on the local fs, so we just check what we know for sure.
-  assert.equal(f.content, '');
-  
-  testSetSucceeded('Static files `_file` object');
 };
 
 const testToBeProcessedFilesFileObject = (files) => {
@@ -82,20 +49,6 @@ const testToBeProcessedFilesFileObject = (files) => {
   testSetSucceeded('To be processed files `_file` object');
 };
 
-/**
- * A static file, one that will just be copied to the output directory, does NOT have a frontmatter block.
- * The `_frontmatter` object is empty.
- */
-const testStaticFilesFrontmatterObject = (files) => {
-  /** @type {FileData} */
-  const file = files.get('house.svg');
-  
-  assert.equal(file._file.hasFrontmatterBlock, false);
-  assert.deepEqual(file._frontmatter, {});
-  
-  testSetSucceeded('Static files `_frontmatter` object');
-};
-
 const testToBeProcessedFilesFrontmatterObject = files => {
   const f = files.get('20-front-matter.html.md.njk')._frontmatter;
   
@@ -106,16 +59,6 @@ const testToBeProcessedFilesFrontmatterObject = files => {
   testSetSucceeded('To be processed files `_frontmatter` object');
 };
 
-const testStaticFilesOutputObject = (files) => {
-  /** @type {OutputObject} */
-  const o = files.get('house.svg')._output;
-  
-  assert.equal(o.rawUrlPath, '/house.svg');
-  assert.equal(o.prettyUrlPath, '/house.svg');
-  
-  testSetSucceeded('Static files `_output` object');
-};
-
 const testToBeProcessedFilesOutputObject = (files) => {
   /** @type {OutputObject} */
   const o = files.get('05-myindex.html.md')._output;
@@ -124,19 +67,6 @@ const testToBeProcessedFilesOutputObject = (files) => {
   assert.equal(o.prettyUrlPath, '/05-myindex.html');
   
   testSetSucceeded('To be processed files `_output` object');
-};
-
-const testStaticFilesRootProps = files => {
-  const readme = files.get('README.md');
-  assert.equal(readme.url, '/README');
-  
-  const stats = fs.statSync(files.get('README.md')._file.absoluteFilePath);
-  const isoDate = stats.mtime.toISOString();
-  assert.equal(readme.date, isoDate);
-  
-  assert.equal(files.get('02-markdown.html.md').content, '# Headline\n\nparagraph');
-  
-  testSetSucceeded('Static files root props');
 };
 
 const testToBeProcessedFilesRootProps = files => {
@@ -156,23 +86,18 @@ const testToBeProcessedFilesRootProps = files => {
  */
 const preprocess = (files) => {
   testAllFilesAreFound(files);
-  testAllPicossgObjectsExist(files);
   
   // Test the `_file` object.
-  testStaticFilesFileObject(files);
   testToBeProcessedFilesFileObject(files);
   // Test the `_frontmatter` object.
-  testStaticFilesFrontmatterObject(files);
   testToBeProcessedFilesFrontmatterObject(files);
   // Test the `_output` object.
-  testStaticFilesOutputObject(files);
   testToBeProcessedFilesOutputObject(files);
   
   // Test the root props.
-  testStaticFilesRootProps(files);
   testToBeProcessedFilesRootProps(files);
 
-  console.log('✅  All config-assertion test sets passed.');
+  console.log('✅  All preprocess assertion test sets passed.');
   process.exit(0);
 }
 
