@@ -1,9 +1,9 @@
 import fs from 'fs';
 import path from 'path';
 import nunjucks from 'nunjucks';
-import MarkdownIt from 'markdown-it';
 import {parse as parseYaml} from 'yaml'
 
+import MarkdownIt from 'markdown-it';
 const md = new MarkdownIt({html: true, linkify: true});
 const mdRender = (s) => md.render(s);
 const mdRenderInline = (s) => md.renderInline(s);

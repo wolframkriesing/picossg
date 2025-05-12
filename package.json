@@ -25,7 +25,8 @@
     "build:watch": "node --watch-path test/content --watch-path src/build.js build-cli.js -c test/content -o dist",
     "build:watch:dev": "node --watch src/build-cli.js -c test/content -o dist",
     "test": "diff -ru test/golden-ref dist > /tmp/diffout; cat /tmp/diffout | diffstat; if [ -s /tmp/diffout ]; then echo ❌ Differences found; else echo ✅ OK; fi",
-    "test:watch": "npx nodemon --quiet --legacy-watch --watch dist --watch test/golden-ref --watch src/build.js --ext '*' --exec \"bash -c 'npm test --silent'\""
+    "test:watch": "npx nodemon --quiet --legacy-watch --watch dist --watch test/golden-ref --watch src/build.js --ext '*' --exec \"bash -c 'npm test --silent'\"",
+    "testdiffs": "cat /tmp/diffout"
   },
   "keywords": [
     "static-site-generator",

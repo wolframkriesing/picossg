@@ -1,3 +1,12 @@
 <h1>Title with <code>code</code></h1>
 <h2>Auto link URLs</h2>
-<p>The URL <a href="http://ssg.picostitch.com">ssg.picostitch.com</a> should be rendered as a-href.</p>
+<p>The URL <a href="http://ssg.picostitch.com">ssg.picostitch.com</a> should be rendered as a-href.
+With &quot;marked&quot; we need the package &quot;marked-linkify-it&quot; additionally.</p>
+<h2>Escape Entities</h2>
+<p>Some characters should be escaped as HTML entities.</p>
+<h3>Default/Simple</h3>
+<p>The inlined HTML for <code>&lt;strong&gt;</code> and its angle brackets <strong>are NOT</strong> escaped.</p>
+<p><img src="irrelvant.png" alt="the &lt; alt &quot; text ' with &gt; entities"></p>
+<h2>Markdown (by the spec) or not</h2>
+<p>The package &quot;marked&quot; keeps the leading spaces of this line (while &quot;markdown-it&quot; would not).
+the markdown spec says that less than 4 leading spaces can be ignored, but &quot;marked&quot; does not ignore them.</p>
