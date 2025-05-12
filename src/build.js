@@ -205,6 +205,7 @@ const toRootProps = (picossgObject) => {
 };
 
 export async function buildAll(config) {
+  const startTime = performance.now();
   fs.rmSync(config.outDir, {recursive: true, force: true});
   const processors = await createProcessors(config);
   const userFunctions = await loadUserFunctions(config);
@@ -247,7 +248,7 @@ export async function buildAll(config) {
   // NOTE: this might modify `files`, intentionally. It is an architecture decision.
   if (userFunctions.preprocess) {
     await userFunctions.preprocess(files);
-    console.log('⏭️  Preprocessing done.');
+    console.log('⏭️ Preprocessing done.');
   }
 
   for (const [relativeFilePath, fileData] of files) {
@@ -260,7 +261,7 @@ export async function buildAll(config) {
 
   if (userFunctions.postprocess) {
     await userFunctions.postprocess(files);
-    console.log('⏭️  Postprocessing done.');
+    console.log('⏭️ Postprocessing done.');
   }
     
   for (const [_, fileData] of files) {
@@ -269,4 +270,6 @@ export async function buildAll(config) {
     fs.writeFileSync(output.absoluteFilePath, fileData.content, 'utf8');
     console.log(`✅  ${inPath} => ${output.relativeFilePath} ${toSize(fileData.content.length)}`);
   }
+  const endTime = performance.now();
+  console.log(`\n⏱️ Processed ${files.size} files in ${((endTime - startTime) / 1000).toFixed(2)} seconds.`);
 }
