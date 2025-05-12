@@ -254,6 +254,10 @@ export async function buildAll(config) {
     // NOTE: use the `fileData.content` here, it might have been modified by the user's preprocessor!
     const [outPath, processedContent] = processFileContent(fileData.content, processors, outFilePathBeforeProcessing, relativeFilePath, fileData);
 
+    if (userFunctions.postprocess) {
+      userFunctions.postprocess(files);
+    }
+    
     fs.writeFileSync(outPath, processedContent, 'utf8');
     console.log(`\n        ✅  => ${outPath} (${toSize(processedContent.length)})`);
   }

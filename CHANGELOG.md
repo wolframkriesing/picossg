@@ -14,7 +14,7 @@
   this allows processing any file before and after the main processing, it provides access to all files e.g. to find related ones and do searches
 - [x] no need for `picossg.*`, remove it, can be done inside the `preprocess()` function
 - [x] copy files first, and do NOT put them in the `files` map, so they are handled first, and do not land in the processing function (preprocess and postprocess)
-- [ ] allow post-processing, e.g. to minify pages
+- [x] allow post-processing, e.g. to minify pages
 - [ ] add absolute and relative filePath to _output, to provide where the file will be stored to
 
 # V2.0.0

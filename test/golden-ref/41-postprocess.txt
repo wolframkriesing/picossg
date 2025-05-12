@@ -1,0 +1,4 @@
+The post processing
+on this file shall remove
+all empty lines
+this is implemented in _config.js `postprocess()` function

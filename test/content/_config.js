@@ -17,4 +17,9 @@ const preprocess = (files) => {
   file50.allPagesStartingWith2 = findPages(files, '2');
 }
 
-export {preprocess};
+const postprocess = (files) => {
+  const file50 = files.get('41-postprocess.txt.njk');
+  file50.content = file50.content.split('\n').filter((line) => line.trim().length > 0).join('\n');
+};
+
+export {preprocess, postprocess};
