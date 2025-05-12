@@ -2,17 +2,17 @@
 
 - [x] rebuild tests to be at least somehow grouped/sorted
 - [x] ~~make the components directory be _includes, just like in nunjucks no need to invent names~~ actually this is good as it is, the components have files that will be built and served, so its mixed purpose
-- [ ] rewrite the processing to
-  - [ ] provide the metadata conveniently
-    - [ ] merge the data below on the root level deterministically, so the data are convenient to use in the template but also available in their original form (in the `_*` keys)
-    - [ ] provide `_file` with all info about the original file, like filename, size, content, etc.
-    - [ ] provide `_frontmatter` with all frontmatter data
-    - [ ] provide `_output` with the processed data, like url, content, etc.
-    - [ ] provide `_site` with all data from the site, like url, title, description, author, etc.
-  - [ ] allow `preprocess()` and `postprocess()` functions that receive ALL files incl. data and content
-        like so: `preprocess(files: Map<filename, {content: string, data: object}>)`
-        this allows processing any file before and after the main processing, it provides access to all files e.g. to find related ones and do searches
-- [ ] no need for `picossg.*`, remove it, can be done inside the `preprocess()` function
+- [x] rewrite the processing to
+  - [x] provide the metadata conveniently
+    - [x] merge the data below on the root level deterministically, so the data are convenient to use in the template but also available in their original form (in the `_*` keys)
+    - [x] provide `_file` with all info about the original file, like filename, size, content, etc.
+    - [x] provide `_frontmatter` with all frontmatter data
+    - [x] provide `_output` with the processed data, like url, content, etc.
+    - [x] provide `_site` with all data from the site, like url, title, description, author, etc.
+- [x] allow `preprocess()` and `postprocess()` functions that receive ALL files incl. data and content
+  like so: `preprocess(files: Map<filename, {content: string, data: object}>)`
+  this allows processing any file before and after the main processing, it provides access to all files e.g. to find related ones and do searches
+- [x] no need for `picossg.*`, remove it, can be done inside the `preprocess()` function
 - [ ] allow post-processing, e.g. to minify pages
 
 # V2.0.0
