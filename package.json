@@ -20,10 +20,11 @@
   "scripts": {
     "build": "node src/build-cli.js -c test/content -o dist",
     "serve": "npx http-server dist -p 8899",
-    "test": "diff -ru dist test/golden-ref > /tmp/diffout; cat /tmp/diffout | diffstat; if [ -s /tmp/diffout ]; then echo ❌ Differences found; else echo ✅ OK; fi",
+    "test:preprocess": "node src/build-cli.js -c test/content -o dist -x _config_preprocess_assertions.js",
     "test:preprocess:watch": "node --watch src/build-cli.js -c test/content -o dist -x _config_preprocess_assertions.js",
     "build:watch": "node --watch-path test/content --watch-path src/build.js build-cli.js -c test/content -o dist",
     "build:watch:dev": "node --watch src/build-cli.js -c test/content -o dist",
+    "test": "diff -ru dist test/golden-ref > /tmp/diffout; cat /tmp/diffout | diffstat; if [ -s /tmp/diffout ]; then echo ❌ Differences found; else echo ✅ OK; fi",
     "test:watch": "npx nodemon --quiet --legacy-watch --watch dist --watch test/golden-ref --watch src/build.js --ext '*' --exec \"bash -c 'npm test --silent'\""
   },
   "keywords": [
