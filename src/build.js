@@ -120,7 +120,7 @@ const toSize = (size) => {
   return number.toFixed(2) + ' kB';
 };
 
-function processFile(contentIn, processors, originalFilePath, relPath, fileData) {
+function processFileContent(contentIn, processors, originalFilePath, relPath, fileData) {
   let outPath = originalFilePath;
   let contentOut = contentIn;
   const initialSize = toSize(contentOut.length);
@@ -142,9 +142,7 @@ function processFile(contentIn, processors, originalFilePath, relPath, fileData)
     contentOut = processor(fileData._frontmatter?.layout, {...fileData, content: contentOut});
     process.stdout.write(`👍🏾`);
   }
-
-  fs.writeFileSync(outPath, contentOut);
-  console.log(`\n        ✅  => ${outPath} (${toSize(contentOut.length)})`);
+  return [outPath, contentOut];
 }
 
 const frontMatterRegexp = /^---(\s*[\s\S]*?\s*)---/;
@@ -155,17 +153,6 @@ function readMetadataAndContent(content) {
   const metadata = hasFrontmatterBlock ? parseYaml(frontmatterBlock) : {};
   const contentWithoutFrontMatterBlock = content.replace(frontMatterRegexp, '');
   return [hasFrontmatterBlock, metadata, contentWithoutFrontMatterBlock];
-}
-
-async function handleFile(relativeFilePath, config, processors, fileData) {
-  const outFilePath = path.join(config.outDir, relativeFilePath);
-  ensureDir(outFilePath);
-
-  const file = fileData._file;
-  if (file.needsProcessing) {
-    // NOTE: use the `fileData.content` here, it might have been modified by the user's preprocessor!
-    processFile(fileData.content, processors, outFilePath, relativeFilePath, fileData);
-  }
 }
 
 function isFileToHandle(relPath, config, processors) {
@@ -262,6 +249,12 @@ export async function buildAll(config) {
 
   for (const [relativeFilePath, fileData] of files) {
     // If these shall be `Promise.all()`'ed then the outputting needs fixed, because they would be out of order.
-    await handleFile(relativeFilePath, config, processors, fileData);
+    const outFilePathBeforeProcessing = path.join(config.outDir, relativeFilePath);
+    ensureDir(outFilePathBeforeProcessing);
+    // NOTE: use the `fileData.content` here, it might have been modified by the user's preprocessor!
+    const [outPath, processedContent] = processFileContent(fileData.content, processors, outFilePathBeforeProcessing, relativeFilePath, fileData);
+
+    fs.writeFileSync(outPath, processedContent, 'utf8');
+    console.log(`\n        ✅  => ${outPath} (${toSize(processedContent.length)})`);
   }
 }
