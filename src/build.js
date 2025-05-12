@@ -158,20 +158,14 @@ function readMetadataAndContent(content) {
 }
 
 async function handleFile(relativeFilePath, config, processors, fileData) {
-  const originalFilePath = path.join(config.outDir, relativeFilePath);
-  ensureDir(originalFilePath);
+  const outFilePath = path.join(config.outDir, relativeFilePath);
+  ensureDir(outFilePath);
 
   const file = fileData._file;
   if (file.needsProcessing) {
     // NOTE: use the `fileData.content` here, it might have been modified by the user's preprocessor!
-    processFile(fileData.content, processors, originalFilePath, relativeFilePath, fileData);
-    return;
+    processFile(fileData.content, processors, outFilePath, relativeFilePath, fileData);
   }
-
-  // Simply copy the file
-  process.stdout.write(`💾 Copy ${relativeFilePath} => ${originalFilePath}`);
-  fs.copyFileSync(fileData._file.absoluteFilePath, originalFilePath);
-  console.log(' ✅ ');
 }
 
 function isFileToHandle(relPath, config, processors) {
@@ -234,20 +228,29 @@ export async function buildAll(config) {
     const relativeFilePath = path.relative(config.contentDir, absoluteFilePath);
     const [shouldHandleFile, needsProcessing] = isFileToHandle(relativeFilePath, config, processors);
     if (shouldHandleFile) {
-      const fileContent = fs.readFileSync(absoluteFilePath, 'utf8');
-      const [hasFrontmatterBlock, frontmatter, content] = needsProcessing
-        ? readMetadataAndContent(fileContent)
-        : [false, {}, ''];
-      const picossgObject = {
-        _file: {relativeFilePath, absoluteFilePath, content, needsProcessing, hasFrontmatterBlock},
-        _frontmatter: frontmatter,
-        _output: toOutputObject(relativeFilePath, processors),
-        _site: {},
-      };
-      files.set(relativeFilePath, {
-        ...picossgObject,
-        ...toRootProps(picossgObject),
-      });
+      if (needsProcessing) {
+        const fileContent = fs.readFileSync(absoluteFilePath, 'utf8');
+        const [hasFrontmatterBlock, frontmatter, content] = needsProcessing
+          ? readMetadataAndContent(fileContent)
+          : [false, {}, ''];
+        const picossgObject = {
+          _file: {relativeFilePath, absoluteFilePath, content, needsProcessing, hasFrontmatterBlock},
+          _frontmatter: frontmatter,
+          _output: toOutputObject(relativeFilePath, processors),
+          _site: {},
+        };
+        files.set(relativeFilePath, {
+          ...picossgObject,
+          ...toRootProps(picossgObject),
+        });
+      } else {
+        // File needs no processing => only copy the file
+        const outFilePath = path.join(config.outDir, relativeFilePath);
+        ensureDir(outFilePath);
+        process.stdout.write(`💾 Copy ${relativeFilePath} => ${outFilePath}`);
+        fs.copyFileSync(absoluteFilePath, outFilePath);
+        console.log(' ✅ ');
+      }
     }
   }
 
