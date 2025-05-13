@@ -21,6 +21,28 @@ It transforms these files into a static website with a 1:1 mapping from source d
 - to serve, open another terminal, run `npx http-server output -p 8000`, now open http://localhost:8000 in your browser
   and the files in `content` are processed and served from `output`
 
+## Getting Started
+
+- create your new site's directory: `mkdir my-site; cd my-site`
+- create the `content` directory: `mkdir content`
+- put the `package.json` in the root of the project
+```json
+{
+  "name": "my-ssg-site",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "npx @wolframkriesing/picossg -c content -o output",
+    "build:watch": "npx nodemon --quiet --legacy-watch --watch content --ext '*' --exec \"bash -c 'npm run build'\"",
+    "start": "npx http-server output -p 8000"
+  }
+}
+```
+- put any `*.md` or `*.njk` file into the `content` directory, e.g. start with `index.html.md`
+  (you can start with just putting "Hello World!" in there and go from there)
+- run `npm run build:watch` in one terminal to start building the site
+- run `npm start` in another terminal to start the server
+- open http://localhost:8000 in your browser to see the site
+
 ### Examples
 
 - see a [basic example in this repo](examples/1-basic), it contains a simple [index.html.njk](examples/1-basic/content/index.html.njk) file, start reading there
