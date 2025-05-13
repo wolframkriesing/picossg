@@ -5,13 +5,28 @@ The pico static site generator – the simplest one I ever wanted and hopefully 
 ## What it does
 
 picossg processes:
-- Source files from the `content` directory into a `output` directory, processing the files if needed
+- files from the `content` directory into the `output` directory, processing the files if needed
 - Markdown files (`.md`) using [markdown-it](https://markdown-it.github.io/)
 - Nunjucks templates (`.njk`) using [nunjucks](https://mozilla.github.io/nunjucks/)
 - Combined Nunjucks + Markdown files (`.md.njk`)
 - Static assets (copied as-is)
 
 It transforms these files into a static website with a 1:1 mapping from source director+file structure to output.
+
+## How to use it
+
+- Make sure to have nodejs installed [see here](https://nodejs.org/en/download/)
+- open a terminal
+- run `npx @wolframkriesing/picossg -c content -o output`, this builds all files in the `content` directory into the `output` directory
+- to serve, open another terminal, run `npx http-server output -p 8000`, now open http://localhost:8000 in your browser
+  and the files in `content` are processed and served from `output`
+
+### Examples
+
+- see a [basic example in this repo](examples/1-basic), it contains a simple [index.html.njk](examples/1-basic/content/index.html.njk) file, start reading there
+- a bit more complex example is a design implemented for the JSCraftCamp.org site for 2025,
+  find it in the [jscc-site-2025 repo](https://codeberg.org/wolframkriesing/jscc-site-2025) – it uses only picossg to build the site
+- [my blog](https://picostitch.com) runs only on picossg [the source code is here](https://codeberg.org/wolframkriesing/picostitch-com)
 
 ## Philosophy
 
@@ -29,7 +44,7 @@ The core philosophy of picossg is simplicity and predictability:
 
 There are no complex configuration options, no plugins, no middleware – just a simple, predictable build process.
 
-## How to run it
+## How to develop picossg
 
 ```bash
 # Start the build process

@@ -4,7 +4,7 @@
     "access": "public"
   },
   "description": "The pico static side generator, the simplest one I ever wanted and hopefully 'found'.",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "main": "src/build-cli.js",
   "type": "module",
   "files": [

@@ -2,6 +2,11 @@
 
 - [ ] add sizes to the _file and _output, maybe also the time it took to process
 
+# V3.0.1
+
+- [x] update the README to be useful and correct
+- [ ] provide example(s)
+
 # V3.0.0
 
 - [x] rebuild tests to be at least somehow grouped/sorted
