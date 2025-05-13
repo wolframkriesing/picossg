@@ -76,28 +76,16 @@ There are no complex configuration options, no plugins, no middleware – just a
 
 ## How to develop picossg
 
-```bash
-# Start the build process
-npm run build
-npm run build:watch # watch mode
+To develop picossg, clone the repository and install the dependencies:
+- `git clone https://codeberg.org/wolframkriesing/picossg.git`
+- `cd picossg`
+- `npm i`
+- `npm run test:ci` runs all the tests, just not in watch mode
+- `npm run test:watch` runs the tests in watch mode, and re-runs on any content change
+- `test:preprocess:watch` runs the preprocess tests in watch mode, they can NOT run in parallel with the `npm run test:watch` tests,
+    since they are using the same `dist` directory and would overwrite each other, therefore the final `nom run test:ci` command does the "final" test before a release
 
-# In another terminal, start the server
-npm run serve
-```
-
-Then open http://localhost:8899 in your browser.
-
-## For developers
-
-To run the tests:
-
-```bash
-npm test
-```
-
-This compares the generated `dist` directory with the expected output in `test/golden-ref`.
-
-Run `npm run test:watch` to run the tests in watch mode, and re-run on any content change.
+The `npm test` runs a simple `diff` command, it compares the generated `dist` directory with the expected output in `test/golden-ref`.
 
 Since the default `npm run build:watch` runs multiple times when you change the source code, e.g. `build.js`
 there is also `build:watch:dev` which only watches the code to be run and NOT the content to be generated.
