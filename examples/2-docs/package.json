@@ -1,0 +1,11 @@
+{
+  "name": "2-picossg-docs-site",
+  "description": "The picossg docs site, serving as an example and the actual docs",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "npx @wolframkriesing/picossg -c content -o output",
+    "build:watch": "npx nodemon --quiet --legacy-watch --watch content --ext '*' --exec \"bash -c 'npm run build'\"",
+    "start": "npx http-server output -p 8000"
+  }
+}
