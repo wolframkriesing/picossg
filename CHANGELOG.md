@@ -2,6 +2,10 @@
 
 - [ ] add sizes to the _file and _output, maybe also the time it took to process
 
+# V3.0.2
+
+- [ ] add some real docs
+
 # V3.0.1
 
 - [x] update the README to be useful and correct

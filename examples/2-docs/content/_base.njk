@@ -6,87 +6,269 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="author" content="Wolfram Kriesing">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="picostitch - crafting (and) JavaScript">
+  <meta name="description" content="PicoSSG - The minimalist static site generator with predictable 1:1 file mapping">
 
   <title>{{ title }} | picoSSG docs</title>
   <style>
+    :root {
+      --primary-color: #3b82f6;
+      --primary-hover: #2563eb;
+      --text-color: #333;
+      --light-bg: #f9fafb;
+      --border-color: #e5e7eb;
+      --sidebar-width: 280px;
+      --header-height: 60px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text-color);
       display: flex;
+      flex-direction: column;
       margin: 0;
+      line-height: 1.6;
+      min-height: 100vh;
     }
-    
+
+    header {
+      height: var(--header-height);
+      display: flex;
+      align-items: center;
+      background-color: var(--primary-color);
+      color: white;
+      padding: 0 1.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      text-decoration: none;
+      color: white;
+    }
+
+    .content-wrapper {
+      display: flex;
+      flex: 1;
+    }
+
     aside {
-      width: 250px;
-      padding: 1rem;
-      border-right: 1px solid #ddd;
+      width: var(--sidebar-width);
+      padding: 1.5rem;
+      background-color: var(--light-bg);
+      border-right: 1px solid var(--border-color);
+      overflow-y: auto;
+      position: sticky;
+      height: calc(100vh - var(--header-height));
+      top: var(--header-height);
     }
-    
+
     main {
       flex: 1;
-      padding: 1rem;
+      padding: 2rem;
+      max-width: 850px;
+      margin: 0 auto;
     }
-    
+
     nav ul {
       list-style: none;
       padding-left: 1rem;
-    }
-    
-    summary {
-      cursor: pointer;
       margin: 0.5rem 0;
     }
-    
+
+    nav ul li {
+      margin: 0.5rem 0;
+    }
+
+    nav a {
+      color: var(--text-color);
+      text-decoration: none;
+      display: block;
+      padding: 0.25rem 0;
+      transition: color 0.2s;
+    }
+
+    nav a:hover {
+      color: var(--primary-color);
+    }
+
+    nav a.active {
+      color: var(--primary-color);
+      font-weight: 500;
+    }
+
+    details {
+      margin-bottom: 1rem;
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+      user-select: none;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      color: #1a202c;
+      font-weight: 600;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-top: 0;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.5rem;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+    }
+
+    h3 {
+      font-size: 1.25rem;
+    }
+
+    a {
+      color: var(--primary-color);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    p, ul, ol {
+      margin-bottom: 1.5rem;
+    }
+
+    code {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      background-color: var(--light-bg);
+      padding: 0.2rem 0.4rem;
+      border-radius: 3px;
+      font-size: 0.9em;
+    }
+
+    pre {
+      background-color: #f8f9fa;
+      padding: 1rem;
+      border-radius: 5px;
+      overflow-x: auto;
+      margin: 1.5rem 0;
+      border: 1px solid var(--border-color);
+    }
+
+    pre code {
+      background-color: transparent;
+      padding: 0;
+    }
+
+    blockquote {
+      border-left: 4px solid var(--primary-color);
+      margin-left: 0;
+      padding-left: 1rem;
+      color: #4a5568;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+    }
+
+    th, td {
+      padding: 0.75rem;
+      border: 1px solid var(--border-color);
+    }
+
+    th {
+      background-color: var(--light-bg);
+      font-weight: 600;
+      text-align: left;
+    }
+
+    .callout {
+      padding: 1rem;
+      margin: 1.5rem 0;
+      border-radius: 5px;
+      border-left: 4px solid var(--primary-color);
+      background-color: var(--light-bg);
+    }
+
+    .callout-title {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
     @media (max-width: 768px) {
-      body {
+      .content-wrapper {
         flex-direction: column;
       }
-      
+
       aside {
-        width: auto;
-        border-bottom: 1px solid #ddd;
+        width: 100%;
+        height: auto;
+        position: static;
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      main {
+        padding: 1.5rem;
       }
     }
   </style>
   {% block head %}{% endblock %}
 </head>
 <body>
+  <header>
+    <a href="/" class="logo">picoSSG</a>
+  </header>
 
-  <aside>
-    <h2>picoSSG Docs</h2>
-    <nav>
-      <details open>
-        <summary>Getting Started</summary>
-        <ul>
-          <li><a href="/">Home</a></li>
-          <li><a href="/install">Installation</a></li>
-          <li><a href="/quick-start">Quick Start</a></li>
-        </ul>
-      </details>
-      
-      <details>
-        <summary>Core Concepts</summary>
-        <ul>
-          <li><a href="/file-mapping">File Mapping</a></li>
-          <li><a href="/frontmatter">Front Matter</a></li>
-          <li><a href="/templates">Templates</a></li>
-        </ul>
-      </details>
-      
-      <details>
-        <summary>Advanced</summary>
-        <ul>
-          <li><a href="/custom-filters">Custom Filters</a></li>
-          <li><a href="/user-functions">User Functions</a></li>
-          <li><a href="/components">Components</a></li>
-        </ul>
-      </details>
-    </nav>
-  </aside>
+  <div class="content-wrapper">
+    <aside>
+      <nav>
+        <details open>
+          <summary>Getting Started</summary>
+          <ul>
+            <li><a href="/" {% if page.url == '/' %}class="active"{% endif %}>Home</a></li>
+            <li><a href="/install/" {% if page.url == '/install/' %}class="active"{% endif %}>Installation</a></li>
+            <li><a href="/quick-start/" {% if page.url == '/quick-start/' %}class="active"{% endif %}>Quick Start</a></li>
+          </ul>
+        </details>
 
-  <main>
-    {{ content | safe }}
-  </main>
+        <details open>
+          <summary>Core Concepts</summary>
+          <ul>
+            <li><a href="/file-mapping/" {% if page.url == '/file-mapping/' %}class="active"{% endif %}>File Mapping</a></li>
+            <li><a href="/frontmatter/" {% if page.url == '/frontmatter/' %}class="active"{% endif %}>Front Matter</a></li>
+            <li><a href="/templates/" {% if page.url == '/templates/' %}class="active"{% endif %}>Templates</a></li>
+          </ul>
+        </details>
 
+        <details open>
+          <summary>Advanced</summary>
+          <ul>
+            <li><a href="/custom-filters/" {% if page.url == '/custom-filters/' %}class="active"{% endif %}>Custom Filters</a></li>
+            <li><a href="/user-functions/" {% if page.url == '/user-functions/' %}class="active"{% endif %}>User Functions</a></li>
+            <li><a href="/components/" {% if page.url == '/components/' %}class="active"{% endif %}>Components</a></li>
+          </ul>
+        </details>
+      </nav>
+    </aside>
+
+    <main>
+      {{ content | safe }}
+    </main>
+  </div>
 </body>
 </html>
