@@ -248,7 +248,7 @@ export async function buildAll(config) {
 
   // Run the user's pre-processor first, if any
   // NOTE: this might modify `files`, intentionally. It is an architecture decision.
-  if (userFunctions.preprocess) {
+  if (userFunctions?.preprocess) {
     await userFunctions.preprocess(files);
     console.log('⏭️ Preprocessing done.');
   }
@@ -261,7 +261,7 @@ export async function buildAll(config) {
     fileData.content = processFileContent(fileData.content, processors, outFilePathBeforeProcessing, relativeFilePath, fileData);
   }
 
-  if (userFunctions.postprocess) {
+  if (userFunctions?.postprocess) {
     await userFunctions.postprocess(files);
     console.log('⏭️ Postprocessing done.');
   }
