@@ -15,6 +15,7 @@ const testAllFilesAreFound = (files) => {
     '05-myindex.html.md',
     '06-mixed.html.md.njk',
     '07-html-in-md.html.md',
+    '08-markdown-edge-cases.html.md',
     '10-include-html-only.html.njk',
     '11-include-with-style.html.njk',
     '20-front-matter.html.md.njk',

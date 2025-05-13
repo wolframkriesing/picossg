@@ -26,6 +26,7 @@
     "build:watch:dev": "node --watch src/build-cli.js -c test/content -o dist",
     "test": "diff -ru test/golden-ref dist > /tmp/diffout; cat /tmp/diffout | diffstat; if [ -s /tmp/diffout ]; then echo ❌ Differences found; else echo ✅ OK; fi",
     "test:watch": "npx nodemon --quiet --legacy-watch --watch dist --watch test/golden-ref --watch src/build.js --ext '*' --exec \"bash -c 'npm test --silent'\"",
+    "test:ci": "npm run test:preprocess && npm run build && npm run test",
     "testdiffs": "cat /tmp/diffout"
   },
   "keywords": [
