@@ -4,13 +4,14 @@ The pico static site generator – the simplest one I ever wanted and hopefully 
 
 ## What it does
 
-picossg is a minimalist static site generator that processes:
+picossg processes:
+- Source files from the `content` directory into a `output` directory, processing the files if needed
 - Markdown files (`.md`) using [markdown-it](https://markdown-it.github.io/)
 - Nunjucks templates (`.njk`) using [nunjucks](https://mozilla.github.io/nunjucks/)
 - Combined Nunjucks + Markdown files (`.md.njk`)
 - Static assets (copied as-is)
 
-It transforms these files into a static website with a 1:1 mapping from source to output.
+It transforms these files into a static website with a 1:1 mapping from source director+file structure to output.
 
 ## Philosophy
 
@@ -22,10 +23,9 @@ The core philosophy of picossg is simplicity and predictability:
    - Template files (`.njk`, `.md`) are processed, a `file.html.md.njk` processes nunjucks and markdown and outputs `file.html`, 
      just by working off the extensions from the last one backward. Allows also for `style.css.njk` to be processed and output as `style.css` if desired.
    - All other files are copied as-is
-3. **Components** – Components can be included from the `components` directory, this is handled like any other directory or URL
-   - For example, `components/_header.njk` can be included in any template with `{% include "_header.njk" %}`, the leading underscore excludes it from being built and served
-   - This allows for easy reuse of components across different templates
-4. **Asset handling** – Any assets (CSS, images, etc.) in the source directory are copied to the output, as mentioned in 2. already
+3. **Asset handling** – Any assets (CSS, images, etc.) in the source directory are copied to the output, as mentioned in 2. already
+4. **_config.js** – An optional `_config.js` file in the content directory can provide `preprocess()` and `postprocess()` functions, they both receive a map of all files
+   and can be used to preprocess the content before rendering or postprocess the output after rendering.
 
 There are no complex configuration options, no plugins, no middleware – just a simple, predictable build process.
 
