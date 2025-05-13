@@ -271,8 +271,8 @@ export async function buildAll(config) {
     const inPath = fileData._file.relativeFilePath;
     const output = fileData._output;
     writes.push(fsPromise
-        .writeFile(output.absoluteFilePath, fileData.content, 'utf8')
-        .then(() => console.log(`✅  ${inPath} => ${output.relativeFilePath} ${toSize(fileData.content.length)}`))
+      .writeFile(output.absoluteFilePath, fileData.content, 'utf8')
+      .then(() => console.log(`✅  ${inPath} => ${output.relativeFilePath} ${toSize(fileData.content.length)}`))
     );
   }
   await Promise.allSettled(writes);
