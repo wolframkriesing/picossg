@@ -1,5 +1,5 @@
 ---
-layout: _body.njk
+layout: components/_body.njk
 ---
 
 # I am H1

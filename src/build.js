@@ -71,7 +71,7 @@ async function createProcessors(config) {
     trimBlocks: true,
     lstripBlocks: true,
   };
-  const njk = nunjucks.configure(path.join(config.contentDir, config.includesDir), nunjucksOptions);
+  const njk = nunjucks.configure(config.contentDir, nunjucksOptions);
   njk.addFilter('md', (s) => mdRender(s));
   njk.addFilter('mdinline', (s) => mdRenderInline(s));
   const coreFilters = Object.keys(njk.filters);

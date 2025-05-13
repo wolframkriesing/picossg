@@ -17,6 +17,7 @@
 - [x] allow post-processing, e.g. to minify pages
 - [x] add absolute and relative filePath to _output, to provide where the file will be stored to
 - [ ] add sizes to the _file and _output, maybe also the time it too to process
+- [x] remove -i command line option, just make the includes root be the content dir, simple
 
 # V2.0.0
 

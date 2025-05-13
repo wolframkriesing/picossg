@@ -9,20 +9,20 @@
 
   Page 2
   - filename: 21-with-layout.html.md
-  - layout: _body.njk
+  - layout: components/_body.njk
   - title: -
   - prettyUrlPath: /21-with-layout.html
   - rawUrlPath: /21-with-layout.html
-  - date: 2025-05-12T08:37:57.598Z
+  - date: 2025-05-13T08:49:01.574Z
   - tags: -
 
   Page 3
   - filename: 22-metadata-for-layout.html.njk
-  - layout: _post.njk
+  - layout: components/_post.njk
   - title: This must be seen in the layout
   - prettyUrlPath: /22-metadata-for-layout.html
   - rawUrlPath: /22-metadata-for-layout.html
-  - date: 2025-05-09T12:57:52.745Z
+  - date: 2025-05-13T08:49:15.654Z
   - tags: -
 
   Page 4

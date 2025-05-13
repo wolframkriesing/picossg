@@ -7,7 +7,6 @@ function parseArgs() {
   const options = {
     contentDir: {paramNames: ['content', 'c']},
     outDir: {paramNames: ['out', 'o']},
-    includesDir: {value: 'components', paramNames: ['includes', 'i']},
     configFile: {value: '_config.js', paramNames: ['config', 'x']},
   };
 
@@ -38,7 +37,6 @@ Usage:
 Options:
   -c, --content <directory>  Source directory
   -o, --out <directory>      Output directory
-  -i, --includes <directory> Includes directory (default: "components")
   -x, --config <filename>    The config.js filename (default: "_config.js")
   -h, --help                 Show this help message
 `);
