@@ -5,7 +5,7 @@
 # V3.0.1
 
 - [x] update the README to be useful and correct
-- [ ] provide example(s)
+- [x] provide example(s)
 
 # V3.0.0
 
