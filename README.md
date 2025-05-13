@@ -32,8 +32,8 @@ It transforms these files into a static website with a 1:1 mapping from source d
   "version": "1.0.0",
   "scripts": {
     "build": "npx @wolframkriesing/picossg -c content -o output",
-    "build:watch": "npx nodemon --quiet --legacy-watch --watch content --ext '*' --exec \"bash -c 'npm run build'\"",
-    "start": "npx http-server output -p 8000"
+    "start": "npx http-server output -p 8000",
+    "build:watch": "npx nodemon --quiet --legacy-watch --watch content --ext '*' --exec \"bash -c 'npm run build'\""
   }
 }
 ```
@@ -43,7 +43,15 @@ It transforms these files into a static website with a 1:1 mapping from source d
 - run `npm start` in another terminal to start the server
 - open http://localhost:8000 in your browser to see the site
 
-### Examples
+The `npm run build` script above (the code `npx @wolframkriesing/picossg -c content -o output`) will run the remote picossg
+package (which is published on npmjs.org) and look for files in the `content` directory, process them and put them to the `output` directory.  
+The `npm run start` (or can also be called as `npm start`) script (the code `npx http-server output -p 8000`) 
+will run the remote package `http-server` (also published on npmjs.org) and serve the files from the `output` directory on port 8000
+on your local computer, which you can then see in your browser at http://localhost:8000.  
+The `npm run build:watch` script uses yet another remote package `nodemon` to watch the `content` directory for changes 
+and re-run the build command whenever a file changes, so you don't have to call `npm run build` every time you change a file.
+
+## Examples
 
 - see a [basic example in this repo](examples/1-basic), it contains a simple [index.html.njk](examples/1-basic/content/index.html.njk) file, start reading there
 - a bit more complex example is a design implemented for the JSCraftCamp.org site for 2025,
