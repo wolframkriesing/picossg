@@ -1,9 +1,9 @@
 <style>
-  * :has(> [class$="-copy"]) {
+  * :has(> [class$="-allow2copy"]) {
     position: relative;
   }
 
-  [class$="-copy"]::after {
+  [class$="-allow2copy"]::after {
     content: "[copy]";
     position: absolute;
     right: 0;
@@ -11,13 +11,13 @@
     margin: 0.5em;
   }
 
-  .copied > [class$="-copy"]::after {
+  .copied > [class$="-allow2copy"]::after {
     content: "[copied]";
   }
 </style>
 
 <script>
-  document.querySelectorAll('[class$="-copy"]').forEach($el =>
+  document.querySelectorAll('[class$="-allow2copy"]').forEach($el =>
     $el.addEventListener('click', ($el) => {
       const $node = $el.target;
       const content = $node.textContent;

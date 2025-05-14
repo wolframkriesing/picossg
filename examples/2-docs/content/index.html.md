@@ -11,7 +11,7 @@ It processes your [markdown](https://markdown-it.github.io/), [nunjucks template
 ## How It Works
 
 Make sure you have [nodejs.org](https://nodejs.org/) installed and then run on the command line:
-```bash-copy
+```bash-allow2copy
 npx @wolframkriesing/picossg -c content -o output
 ```
 
