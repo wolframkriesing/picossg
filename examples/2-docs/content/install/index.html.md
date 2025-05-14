@@ -1,7 +1,6 @@
 ---
 layout: _base.njk
 title: Installation
-category: Getting Started
 ---
 
 # Installation Guide

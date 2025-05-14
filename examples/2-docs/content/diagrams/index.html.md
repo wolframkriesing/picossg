@@ -1,7 +1,6 @@
 ---
 layout: _base.njk
-title: PicoSSG Processing Flow
-category: Advanced
+title: Diagrams
 ---
 
 # PicoSSG Processing Flow

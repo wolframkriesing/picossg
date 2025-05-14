@@ -1,7 +1,6 @@
 ---
 layout: _base.njk
 title: File Mapping
-category: Concepts
 ---
 
 # File Mapping

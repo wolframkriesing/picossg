@@ -1,7 +1,6 @@
 ---
 layout: _base.njk
 title: Front Matter
-category: Concepts
 ---
 
 # Front Matter

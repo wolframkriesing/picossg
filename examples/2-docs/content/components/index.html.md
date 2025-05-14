@@ -1,7 +1,6 @@
 ---
 layout: _base.njk
 title: Components
-category: Advanced
 ---
 
 # Components in PicoSSG

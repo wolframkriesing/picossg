@@ -1,7 +1,6 @@
 ---
 layout: _base.njk
 title: Custom Filters
-category: Advanced
 ---
 
 # Custom Filters
