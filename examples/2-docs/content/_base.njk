@@ -26,7 +26,17 @@
           <summary>{{ category }}</summary>
           <ul>
             {% for file in files %}
-              <li><a href="{{ file.url }}" {% if url === file.url %}class="active"{% endif %}>{{ file.title }}</a></li>
+              <li>
+                <a href="{{ file.url }}" {% if url === file.url %}class="active"{% endif %}>{{ file.title }}</a>
+                
+                {% if url === file.url %}
+                  <ul class="secondLevelHeadlines">
+                    {% for h2 in file.firstLevelHeadlines %}
+                      <li><a href="#{{ h2 | slug }}">{{ h2 }}</a></li>
+                    {% endfor %}
+                  </ul>
+                {% endif %}
+              </li>
             {% endfor %}
           </ul>
         </details>
@@ -40,6 +50,34 @@
 </div>
 
 {% include '_allow2copy.html' %}
+
+<style>
+  h2 {
+    scroll-margin-top: 4rem;
+  }
+  .secondLevelHeadlines {
+    font-size: smaller;
+  }
+  .secondLevelHeadlines li {
+    margin: 0;
+    white-space: nowrap;
+  }
+  .secondLevelHeadlines a {
+    padding: 0;
+  }
+</style>
+<script>
+  const $h2s = document.querySelectorAll('h2');
+  document.querySelectorAll('.secondLevelHeadlines a').forEach($ahref => {
+    const h2text = $ahref.innerText;
+    const h2id = $ahref.getAttribute('href').substring(1);
+    $h2s.forEach($h2 => {
+      if ($h2.innerText === h2text) {
+        $h2.id = h2id;
+      }
+    });
+  });
+</script>
 
 </body>
 </html>

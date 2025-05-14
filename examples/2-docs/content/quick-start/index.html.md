@@ -48,7 +48,7 @@ Let's create a simple homepage. Create a file at `content/index.html.md`:
 
 Welcome to my website built with PicoSSG!
 
-## Features
+# Features
 
 - **Simple** - Easy to use and understand
 - **Fast** - Minimal processing overhead
@@ -125,7 +125,7 @@ title: Home
 
 Welcome to my website built with PicoSSG!
 
-## Features
+# Features
 
 - **Simple** - Easy to use and understand
 - **Fast** - Minimal processing overhead
@@ -146,7 +146,7 @@ title: About
 
 This is a demonstration site built with PicoSSG, the minimal static site generator.
 
-## About Me
+# About Me
 
 I'm learning to build static sites with PicoSSG because it's:
 

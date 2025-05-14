@@ -39,9 +39,17 @@ const collectSrcStats = () => {
   }
 }
 
+const addFirstLevelHeadlines = files => {
+  for (const [_, data] of files) {
+    const lines = data.content.match(/^## .*/gm);
+    data.firstLevelHeadlines = lines.map(s => s.replace(/^## /, ''));
+  }  
+}
+
 const preprocess = (files) => {
   buildNav(files);
   const srcStats = collectSrcStats();
+  addFirstLevelHeadlines(files);
   
   for (const [_, data] of files) {
     data.srcStats = srcStats;
