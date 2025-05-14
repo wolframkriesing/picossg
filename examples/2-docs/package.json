@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "build": "npx @wolframkriesing/picossg -c content -o output",
+    "build": "../../src/build-cli.js -c content -o output",
     "build:watch": "npx nodemon --quiet --legacy-watch --watch content --ext '*' --exec \"bash -c 'npm run build'\"",
     "start": "npx http-server output -p 8000"
   }
