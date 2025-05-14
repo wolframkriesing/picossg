@@ -17,16 +17,17 @@ The only changes that happen are:
 
 ## Extension Processing
 
-PicoSSG processes files based on their extensions, from right to left:
+PicoSSG processes files based on their extensions, from right to left. It only removes the extensions it processes and never replaces extensions:
 
 | Source File | Processing Steps | Output File |
 |-------------|-----------------|-------------|
-| `about.md` | Process as Markdown | `about.html` |
-| `about.html.md` | Process as Markdown, keeping .html extension | `about.html` |
-| `style.css` | No processing, copy as-is | `style.css` |
-| `page.html.njk` | Process as Nunjucks, output as HTML | `page.html` |
-| `style.css.njk` | Process as Nunjucks, output as CSS | `style.css` |
+| `about.html.md` | Process as Markdown | `about.html` |
+| `page.html.njk` | Process as Nunjucks | `page.html` |
+| `style.css.njk` | Process as Nunjucks | `style.css` |
 | `post.html.md.njk` | Process as Nunjucks, then as Markdown | `post.html` |
+| `style.css` | No processing, copy as-is | `style.css` |
+
+**Important**: Notice that you must include the final extension in the filename. For example, use `about.html.md` instead of just `about.md`. PicoSSG only removes the processed extensions and does not add or replace any extensions.
 
 ## Directory Structure Preservation
 
@@ -42,6 +43,8 @@ content/                   output/
 └── css/                   └── css/
     └── style.css              └── style.css
 ```
+
+Notice that all Markdown files must be named with `.html.md` to generate HTML files, not just `.md`.
 
 ## Special Files
 

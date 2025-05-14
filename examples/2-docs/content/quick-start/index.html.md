@@ -55,6 +55,8 @@ Welcome to my website built with PicoSSG!
 - **Flexible** - Use Markdown, Nunjucks, or both
 ```
 
+**Important**: Notice that we're using `.html.md` as the extension, not just `.md`. PicoSSG only removes the processed extensions (like `.md` and `.njk`) but doesn't replace them, so you need to include the final extension you want (`.html` in this case).
+
 ## 3. Add a Layout Template
 
 Let's create a layout template to apply consistent styling to all pages. Create `content/_base.njk`:
