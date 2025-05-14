@@ -2,9 +2,14 @@
 
 - [ ] add sizes to the _file and _output, maybe also the time it took to process
 
+# V3.0.3
+
+- [ ] make the docs correct and as I like them to be
+
 # V3.0.2
 
-- [ ] add some real docs
+- [x] add some real docs
+- [x] 🐛 fixed a bug, `npm run build` did not work, I had the wrong path to `build-cli.js` in there
 
 # V3.0.1
 
