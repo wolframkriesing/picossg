@@ -1,6 +1,7 @@
 ---
 layout: _base.njk
 title: Templates
+category: Concepts
 ---
 
 # Templates in PicoSSG

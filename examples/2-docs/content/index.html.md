@@ -1,6 +1,7 @@
 ---
 layout: _base.njk
 title: Home
+category: Getting Started
 ---
 
 # PicoSSG - The Minimal Static Site Generator

@@ -1,6 +1,7 @@
 ---
 layout: _base.njk
 title: User Functions
+category: Advanced
 ---
 
 # User Functions

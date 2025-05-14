@@ -237,33 +237,16 @@
   <div class="content-wrapper">
     <aside>
       <nav>
-        <details open>
-          <summary>Getting Started</summary>
-          <ul>
-            <li><a href="/" {% if page.url == '/' %}class="active"{% endif %}>Home</a></li>
-            <li><a href="/install/" {% if page.url == '/install/' %}class="active"{% endif %}>Installation</a></li>
-            <li><a href="/quick-start/" {% if page.url == '/quick-start/' %}class="active"{% endif %}>Quick Start</a></li>
-          </ul>
-        </details>
-
-        <details open>
-          <summary>Core Concepts</summary>
-          <ul>
-            <li><a href="/file-mapping/" {% if page.url == '/file-mapping/' %}class="active"{% endif %}>File Mapping</a></li>
-            <li><a href="/frontmatter/" {% if page.url == '/frontmatter/' %}class="active"{% endif %}>Front Matter</a></li>
-            <li><a href="/templates/" {% if page.url == '/templates/' %}class="active"{% endif %}>Templates</a></li>
-          </ul>
-        </details>
-
-        <details open>
-          <summary>Advanced</summary>
-          <ul>
-            <li><a href="/custom-filters/" {% if page.url == '/custom-filters/' %}class="active"{% endif %}>Custom Filters</a></li>
-            <li><a href="/user-functions/" {% if page.url == '/user-functions/' %}class="active"{% endif %}>User Functions</a></li>
-            <li><a href="/components/" {% if page.url == '/components/' %}class="active"{% endif %}>Components</a></li>
-            <li><a href="/diagrams/" {% if page.url == '/diagrams/' %}class="active"{% endif %}>Diagrams</a></li>
-          </ul>
-        </details>
+        {% for category, files in nav.entries() %}
+          <details open>
+            <summary>{{ category }}</summary>
+            <ul>
+              {% for file in files %}
+                <li><a href="{{ file.url }}" {% if url === file.url %}class="active"{% endif %}>{{ file.title }}</a></li>
+              {% endfor %}
+            </ul>
+          </details>
+        {% endfor %}
       </nav>
     </aside>
 

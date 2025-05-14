@@ -1,6 +1,7 @@
 ---
 layout: _base.njk
-title: Quick Start Guide
+title: Quick Start
+category: Getting Started
 ---
 
 # Quick Start Guide
