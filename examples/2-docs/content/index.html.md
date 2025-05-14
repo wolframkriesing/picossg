@@ -3,9 +3,28 @@ layout: _base.njk
 title: Home
 ---
 
-# PicoSSG - The Minimal Static Site Generator
+# PicoSSG - The Minimal **S**tatic **S**ite **G**enerator
 
-PicoSSG is a minimal static site generator built on the philosophy of simplicity and predictability. It processes your Markdown, Nunjucks templates, and static files into a clean, static website with minimal configuration.
+PicoSSG is a minimal static site generator built on the philosophy of simplicity and predictability. 
+It processes your [markdown](https://markdown-it.github.io/), [nunjucks templates](https://mozilla.github.io/nunjucks/), and static files into a clean, static website with minimal configuration.
+
+## How It Works
+
+Make sure you have [nodejs.org](https://nodejs.org/) installed and then run on the command line:
+```bash-copy
+npx @wolframkriesing/picossg -c content -o output
+```
+
+It will process all files in the `content` directory and put them into the `output` directory like so:
+
+| Files in `content` | Processing Steps | Files in `output` |
+|-------------|-----------------|-------------|
+| `index.html.md` | Process as Markdown | `index.html` |
+| `style.css` | Copied as is | `style.css` |
+| `image.webp` | Copied as is | `image.webp` |
+| `page.html.njk` | Process as Nunjucks | `page.html` |
+| `post.html.md.njk` | Process as Nunjucks, then as Markdown | `post.html` |
+
 
 ## Why Choose PicoSSG?
 
