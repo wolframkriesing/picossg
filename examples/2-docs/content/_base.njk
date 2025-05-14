@@ -2,7 +2,7 @@
 <html lang="en" prefix="og: https://ogp.me/ns#">
 <head>
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes"/>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="author" content="Wolfram Kriesing">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -44,7 +44,7 @@
       position: sticky;
       top: 0;
       z-index: 10;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
     .logo {
@@ -230,30 +230,30 @@
   {% block head %}{% endblock %}
 </head>
 <body>
-  <header>
-    <a href="/" class="logo">picoSSG</a>
-  </header>
+<header>
+  <a href="/" class="logo">picoSSG</a>
+</header>
 
-  <div class="content-wrapper">
-    <aside>
-      <nav>
-        {% for category, files in nav.entries() %}
-          <details open>
-            <summary>{{ category }}</summary>
-            <ul>
-              {% for file in files %}
-                <li><a href="{{ file.url }}" {% if url === file.url %}class="active"{% endif %}>{{ file.title }}</a></li>
-              {% endfor %}
-            </ul>
-          </details>
-        {% endfor %}
-      </nav>
-    </aside>
+<div class="content-wrapper">
+  <aside>
+    <nav>
+      {% for category, files in nav.entries() %}
+        <details open>
+          <summary>{{ category }}</summary>
+          <ul>
+            {% for file in files %}
+              <li><a href="{{ file.url }}" {% if url === file.url %}class="active"{% endif %}>{{ file.title }}</a></li>
+            {% endfor %}
+          </ul>
+        </details>
+      {% endfor %}
+    </nav>
+  </aside>
 
-    <main>
-      {{ content | safe }}
-    </main>
-  </div>
+  <main>
+    {{ content | safe }}
+  </main>
+</div>
 
 {% include '_clipboard.html' %}
 
