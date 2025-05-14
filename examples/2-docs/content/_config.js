@@ -1,9 +1,12 @@
-import {join} from 'path';
+import path from 'path';
+import fs from 'fs';
+
+const join = path.join;
 
 const buildNav = files => {
   const pages = new Map([
     ['Getting Started', ['', 'install', 'quick-start']],
-    ['Concepts', ['file-mapping', 'frontmatter', 'templates']],
+    ['Concepts', ['file-mapping', 'markdown', 'templates', 'frontmatter']],
     ['Advanced', ['components', 'custom-filters', 'diagrams']],
   ]);
   
@@ -24,8 +27,25 @@ const buildNav = files => {
   }
 };
 
+const collectSrcStats = () => {
+  // count the number of files in 'src' and count the number of lines of code in total in that directory
+  const statsDir = path.resolve(process.cwd() + '../../../src');
+  const files = fs.readdirSync(statsDir);
+  const numFiles = files.length;
+  const numLoc = files.map(file => fs.readFileSync(path.join(statsDir, file), 'utf8').split('\n').length);
+  return {
+    numFiles,
+    numLoc: numLoc.reduce((a, b) => a + b, 0),
+  }
+}
+
 const preprocess = (files) => {
   buildNav(files);
+  const srcStats = collectSrcStats();
+  
+  for (const [_, data] of files) {
+    data.srcStats = srcStats;
+  }  
 }
 
 export {preprocess}

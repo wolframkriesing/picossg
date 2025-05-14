@@ -26,13 +26,18 @@ It will process all files in the `content` directory and put them into the `outp
 | `post.html.md.njk` | Process as Nunjucks, then as Markdown | `post.html` |
 
 
-## Why Choose PicoSSG?
+## PicoSSG Principals?
 
-- **Minimal Magic**: Simple, predictable processing with minimal configuration
+- **Small Footprint** (and fast): Do only the work that is needed 
+  ({{ srcStats.numFiles }} files source code, {{ srcStats.numLoc }} LOC)
+- **Minimal Magic**: Simple, predictable processing
 - **1:1 File Mapping**: Each source file maps directly to an output file
 - **Straightforward Processing**: Markdown (`.md`), Nunjucks templates (`.njk`), or both combined
 - **Zero Configuration**: Works out of the box with sensible defaults
 - **Flexibility When Needed**: Optional hooks for preprocessing and postprocessing when you need more power
+- **Tiny Feature Set**: Only markdown, nunjucks and frontmatter processing, nothing more
+
+(Until now) There is no plan to support more template engines.
 
 ## Key Features
 

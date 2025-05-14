@@ -5,6 +5,7 @@
 # V3.0.3
 
 - [ ] make the docs correct and as I like them to be
+- [ ] I want MUCH better error messages when a variable was not found or some error happens, nunjucks does a really bad job here
 
 # V3.0.2
 
