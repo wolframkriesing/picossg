@@ -1,9 +1,9 @@
 ---
 layout: _base.njk
-title: Quick Start
+title: Create a Site
 ---
 
-# Quick Start Guide
+# Create a Site
 
 This guide will walk you through creating a simple website with PicoSSG. By the end, you'll have a functional site with multiple pages, templates, and styling.
 
@@ -165,7 +165,7 @@ I'm learning to build static sites with PicoSSG because it's:
 - Powerful enough for my needs
 ```
 
-## Page with a Date
+## Dynamic Page Data
 
 Create a blog directory and add a post:
 
@@ -188,7 +188,9 @@ Latest articles:
 - [My First Post](/blog/first-post/)
 ```
 
-Create `content/blog/first-post/index.html.md`:
+Create `content/blog/first-post/index.html.md.njk`, notice the file ending in `.njk` which
+allows us to write `{{ date }}` into the template to render the date into the file *before**
+the markdown will be processed. Also the `{{ title }}` is rendering using the nunjucks template engine.
 
 ```markdown
 ---
@@ -197,7 +199,7 @@ title: My First Blog Post
 date: 1st May 2025
 ---
 
-# My First Blog Post
+# {{ title }}
 
 This is my first blog post using PicoSSG.
 

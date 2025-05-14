@@ -5,24 +5,24 @@ const join = path.join;
 
 const buildNav = files => {
   const pages = new Map([
-    ['Getting Started', ['', 'install', 'quick-start']],
-    ['Concepts', ['file-mapping', 'markdown', 'templates', 'frontmatter']],
+    ['Getting Started', ['', 'install', 'create-site']],
+    ['Concepts', ['file-mapping', 'markdown', 'frontmatter', 'templates']],
     ['Advanced', ['components', 'custom-filters', 'diagrams']],
   ]);
   
   const nav = new Map();
   pages.keys().toArray().forEach(title => nav.set(title, []));
   
-  for (const [filename, data] of files) {
-    for (const [title, paths] of pages) {
-      for (const path of paths) {
+  for (const [title, pagePaths] of pages) {
+    for (const path of pagePaths) {
+      for (const [filename, data] of files) {
         if (filename.startsWith(join(path, 'index.html'))) {
           nav.get(title).push(data);
         }
       }
     }
   }
-  for (const [filename, data] of files) {
+  for (const [_, data] of files) {
     data.nav = nav;
   }
 };
