@@ -7,7 +7,7 @@ title: Quick Start
 
 This guide will walk you through creating a simple website with PicoSSG. By the end, you'll have a functional site with multiple pages, templates, and styling.
 
-## 1. Set Up Your Project
+## New Project
 
 First, let's create a new project and set up PicoSSG:
 
@@ -39,7 +39,7 @@ Edit your `package.json` to include these scripts:
 }
 ```
 
-## 2. Create Your First Page
+## First Page
 
 Let's create a simple homepage. Create a file at `content/index.html.md`:
 
@@ -48,16 +48,19 @@ Let's create a simple homepage. Create a file at `content/index.html.md`:
 
 Welcome to my website built with PicoSSG!
 
-# Features
+### Features
 
 - **Simple** - Easy to use and understand
 - **Fast** - Minimal processing overhead
 - **Flexible** - Use Markdown, Nunjucks, or both
 ```
 
-**Important**: Notice that we're using `.html.md` as the extension, not just `.md`. PicoSSG only removes the processed extensions (like `.md` and `.njk`) but doesn't replace them, so you need to include the final extension you want (`.html` in this case).
+**Important**: Notice that we're using `.html.md` as the extension, not just `.md`. PicoSSG only removes the 
+processed extensions (like `.md` and `.njk`) but doesn't replace them, so you need to include the final extension you want (`.html` in this case).
 
-## 3. Add a Layout Template
+Make sure to run `npm run build:watch` to build the site and `npm start` to serve it and open it in your browser at http://localhost:8000.
+
+## Create a Layout
 
 Let's create a layout template to apply consistent styling to all pages. Create `content/_base.njk`:
 
@@ -111,7 +114,10 @@ Let's create a layout template to apply consistent styling to all pages. Create 
 </html>
 ```
 
-## 4. Add Front Matter to Use the Layout
+NOTE: The `{{ content | safe }}` line is where the processed content of your page will be inserted. 
+The `| safe` filter tells Nunjucks to render the HTML without escaping it, it is safe to render as is.
+
+## Front Matter Header
 
 Now modify your `content/index.html.md` to use the layout:
 
@@ -125,16 +131,20 @@ title: Home
 
 Welcome to my website built with PicoSSG!
 
-# Features
+### Features
 
 - **Simple** - Easy to use and understand
 - **Fast** - Minimal processing overhead
 - **Flexible** - Use Markdown, Nunjucks, or both
 ```
 
-## 5. Add More Pages
+The `layout: _base.njk` line tells PicoSSG to use the `_base.njk` file as the layout for this page,
+which means the content of `index.html.md` will be rendered from markdown to HTML and inserted into the layout at the `{{ content | safe }}` placeholder.
+The `title: Home` line sets the title for the page.
 
-Let's add an about page. Create `content/about/index.html.md`:
+## One More Page
+
+Let's add the about page. Create `content/about/index.html.md`:
 
 ```markdown
 ---
@@ -146,7 +156,7 @@ title: About
 
 This is a demonstration site built with PicoSSG, the minimal static site generator.
 
-# About Me
+### About Me
 
 I'm learning to build static sites with PicoSSG because it's:
 
@@ -155,7 +165,7 @@ I'm learning to build static sites with PicoSSG because it's:
 - Powerful enough for my needs
 ```
 
-## 6. Create a Blog Post with a Date
+## Page with a Date
 
 Create a blog directory and add a post:
 
@@ -184,17 +194,17 @@ Create `content/blog/first-post/index.html.md`:
 ---
 layout: _base.njk
 title: My First Blog Post
-date: 2025-01-15
+date: 1st May 2025
 ---
 
 # My First Blog Post
 
 This is my first blog post using PicoSSG.
 
-The date of this post ({{ date | date: "%B %d, %Y" }}) is specified in the front matter!
+The date of this post ({{ date }}) is specified in the front matter!
 ```
 
-## 7. Build and Run Your Site
+## Build the Site
 
 Run these commands:
 
@@ -208,7 +218,7 @@ npm start
 
 Open your browser to http://localhost:8000 to see your site!
 
-## 8. What's Next?
+## What's Next?
 
 You now have a basic site with:
 
