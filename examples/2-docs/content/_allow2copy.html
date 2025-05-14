@@ -19,10 +19,14 @@
 
 <script>
   document.querySelectorAll('[class$="-allow2copy"]').forEach($el =>
-    $el.addEventListener('click', ($el) => {
+    $el.addEventListener('click', async ($el) => {
       const $node = $el.target;
       const content = $node.textContent;
-      navigator.clipboard.writeText(content);
+      try {
+        await navigator.clipboard.writeText(content);
+      } catch (error) {
+        console.error(error.message);
+      }
       $node.parentNode.classList.add('copied');
       setTimeout(($n => () => $n.classList.remove('copied'))($node.parentNode), 1000);
     })
