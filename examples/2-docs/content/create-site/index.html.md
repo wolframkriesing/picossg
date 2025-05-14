@@ -11,7 +11,7 @@ This guide will walk you through creating a simple website with PicoSSG. By the 
 
 First, let's create a new project and set up PicoSSG:
 
-```bash
+```bash-allow2copy
 # Create a project directory
 mkdir my-picossg-site
 cd my-picossg-site
@@ -27,7 +27,7 @@ npm init -y
 
 Edit your `package.json` to include these scripts:
 
-```json
+```json-allow2copy
 {
   "name": "my-picossg-site",
   "version": "1.0.0",
@@ -43,7 +43,7 @@ Edit your `package.json` to include these scripts:
 
 Let's create a simple homepage. Create a file at `content/index.html.md`:
 
-```markdown
+```markdown-allow2copy
 # My First PicoSSG Site
 
 Welcome to my website built with PicoSSG!
@@ -64,7 +64,7 @@ Make sure to run `npm run build:watch` to build the site and `npm start` to serv
 
 Let's create a layout template to apply consistent styling to all pages. Create `content/_base.njk`:
 
-```html
+```html-allow2copy
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -121,7 +121,7 @@ The `| safe` filter tells Nunjucks to render the HTML without escaping it, it is
 
 Now modify your `content/index.html.md` to use the layout:
 
-```markdown
+```markdown-allow2copy
 ---
 layout: _base.njk
 title: Home
@@ -146,7 +146,7 @@ The `title: Home` line sets the title for the page.
 
 Let's add the about page. Create `content/about/index.html.md`:
 
-```markdown
+```markdown-allow2copy
 ---
 layout: _base.njk
 title: About
@@ -169,13 +169,13 @@ I'm learning to build static sites with PicoSSG because it's:
 
 Create a blog directory and add a post:
 
-```bash
+```bash-allow2copy
 mkdir -p content/blog
 ```
 
 Create `content/blog/index.html.md`:
 
-```markdown
+```markdown-allow2copy
 ---
 layout: _base.njk
 title: Blog
@@ -192,7 +192,7 @@ Create `content/blog/first-post/index.html.md.njk`, notice the file ending in `.
 allows us to write `{{ date }}` into the template to render the date into the file *before**
 the markdown will be processed. Also the `{{ title }}` is rendering using the nunjucks template engine.
 
-```markdown
+```markdown-allow2copy
 ---
 layout: _base.njk
 title: My First Blog Post
@@ -210,7 +210,7 @@ The date of this post ({{ date }}) is specified in the front matter!
 
 Run these commands:
 
-```bash
+```bash-allow2copy
 # Start the build process with auto-rebuilding
 npm run build:watch
 
