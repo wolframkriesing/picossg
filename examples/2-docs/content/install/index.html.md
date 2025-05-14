@@ -5,20 +5,20 @@ title: Installation
 
 # Installation Guide
 
-Getting started with PicoSSG is quick and easy. This guide will walk you through the installation process and set you up to create your first static site.
+Getting started with PicoSSG is quick and easy. This guide will walk you through the installation 
+process and set you up to create your first static site.
 
 ## Prerequisites
 
 Before installing PicoSSG, you'll need:
 
-- **Node.js**: Version 14.x or higher (download from [nodejs.org](https://nodejs.org/))
+- **Node.js**: Version 23.x or higher (maybe older ones work too), download it from [nodejs.org](https://nodejs.org/)
 - **npm**: Usually comes with Node.js installation
 
 You can verify you have the right versions installed by running:
 
-```bash
-node --version
-npm --version
+```bash-allow2copy
+node --version; npm --version
 ```
 
 ## Installation Methods
@@ -29,11 +29,41 @@ There are two main ways to use PicoSSG:
 
 The simplest way to use PicoSSG without installing it globally is with `npx`, which comes with npm:
 
-```bash
+```bash-allow2copy
 npx @wolframkriesing/picossg -c content -o output
 ```
 
 This command runs PicoSSG, processing files from the `content` directory into the `output` directory.
+Running the command will maybe create very detailed output like this, when it works:
+```bash
+> npx @wolframkriesing/picossg -c content -o output
+
+🎬 Building with config: {
+    "contentDir": "content",
+    "outDir": "output",
+    "configFile": "_config.js"
+}
+✅  Loaded njk custom filters from:
+    /xxxxx/content/_njk-custom/filters.js
+    1 custom njk filters loaded: slug
+✅  Loaded user functions from:
+    /xxxxx/content/_config.js
+
+💾 Copy style.css => output/style.css ✅ 
+⏭️ Preprocessing done.
+⚙️ Process index.html.md.njk, 3.72 kB, .njk👍🏾.md👍🏾 layout: _base.njk👍🏾
+⚙️ Process components/index.html.md, 8.05 kB, .md👍🏾 layout: _base.njk👍🏾
+⚙️ Process custom-filters/index.html.md, 5.99 kB, .md👍🏾 layout: _base.njk👍🏾
+⚙️ Process diagrams/index.html.md, 5.46 kB, .md👍🏾 layout: _base.njk👍🏾
+⚙️ Process file-mapping/index.html.md, 4.00 kB, .md👍🏾 layout: _base.njk👍🏾
+✅  index.html.md.njk => index.html 9.00 kB
+✅  components/index.html.md => components/index.html 15.05 kB
+✅  custom-filters/index.html.md => custom-filters/index.html 11.31 kB
+✅  diagrams/index.html.md => diagrams/index.html 10.10 kB
+✅  file-mapping/index.html.md => file-mapping/index.html 9.38 kB
+
+⏱️ Processed 5 files in 0.04 seconds.
+```
 
 ### 2. Project-Based Installation (Recommended for Projects)
 
@@ -55,7 +85,7 @@ npm init -y
 3. Create a basic project structure:
 
 ```bash
-mkdir content output
+mkdir content
 ```
 
 4. Add PicoSSG scripts to your `package.json`:
@@ -91,7 +121,7 @@ PicoSSG supports the following command line options:
 Example usage:
 
 ```bash
-npx @wolframkriesing/picossg -c content -o output -x custom-config.js
+npx @wolframkriesing/picossg -c content -o output -x _custom-config.js
 ```
 
 ## Next Steps
