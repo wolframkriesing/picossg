@@ -26,7 +26,7 @@ It will process all files in the `content` directory and put them into the `outp
 | `post.html.md.njk` | Process as Nunjucks, then as Markdown | `post.html` |
 
 
-## PicoSSG Principals?
+## Guiding Principles
 
 - **Small Footprint** (and fast): Do only the work that is needed 
   ({{ srcStats.numFiles }} files source code, {{ srcStats.numLoc }} LOC)
@@ -41,27 +41,23 @@ It will process all files in the `content` directory and put them into the `outp
 
 ## Key Features
 
-### Simple File Processing
+### Simple File Processing Rules
 
 PicoSSG processes:
 - Markdown files (`.md`) using [markdown-it](https://markdown-it.github.io/)
 - Nunjucks templates (`.njk`) using [nunjucks](https://mozilla.github.io/nunjucks/)
-- Combined files (`.md.njk` or `.html.md`) - extensions processed from right to left
+- Combined files (`.md.njk` or `.njk.md`) - extensions processed from right to left
 - Static assets (copied as-is)
+- Files starting with underscore (`_`) are excluded from the output (`_config.js`, `_layouts/` will not land in the output directory)
+- Optional front matter for metadata and layouts
 
 ### Predictable Output
 
 One of PicoSSG's most valuable features is its predictable 1:1 mapping from source to output:
-- `content/about.md` becomes `output/about.html`
-- `content/posts/my-post.html.md` becomes `output/posts/my-post.html`
-- `content/css/style.css` is copied directly to `output/css/style.css`
-
-### Minimal "Magic"
-
-The only special behaviors in PicoSSG are:
-- Files starting with underscore (`_*`) are excluded from the output
-- Template files are processed based on their extensions
-- Optional front matter for metadata and layouts
+- `content/about.html.md` becomes `output/about.html`  
+   ⚠️ `content.md` will not become a URL `content/` it must be `content/index.html.md`
+- `content/posts/post.html.md.njk` becomes `output/posts/post.html`
+- `content/css/style.css` is copied as is to `output/css/style.css`
 
 ## Getting Started
 
@@ -74,9 +70,9 @@ Ready to start using PicoSSG? Check out:
 
 PicoSSG is built on the belief that a static site generator should be:
 
-1. **Simple to understand**: The codebase should be small and easy to understand
+1. **Simple to understand**: The codebase should be small and easy to understand ({{ srcStats.numLoc }} LOCs)
 2. **Predictable in operation**: No magic, no surprises
-3. **Minimal in configuration**: Works well out of the box
+3. **Minimal in configuration**: Works out of the box
 4. **Flexible when needed**: Provides escape hatches for advanced use cases
 
 This philosophy guides every decision in the development of PicoSSG.
@@ -86,7 +82,7 @@ This philosophy guides every decision in the development of PicoSSG.
 Looking for inspiration? Check out these sites built with PicoSSG:
 
 - [JSCraftCamp.org site for 2025](https://codeberg.org/wolframkriesing/jscc-site-2025)
-- [picostitch.com](https://picostitch.com) - Wolfram Kriesing's blog
+- [picostitch.com](https://picostitch.com) - Wolfram Kriesing's blog ([source code](https://codeberg.org/wolframkriesing/picostitch-com))
 
 ## Contribute
 
