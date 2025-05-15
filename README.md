@@ -89,3 +89,8 @@ The `npm test` runs a simple `diff` command, it compares the generated `dist` di
 
 Since the default `npm run build:watch` runs multiple times when you change the source code, e.g. `build.js`
 there is also `build:watch:dev` which only watches the code to be run and NOT the content to be generated.
+
+## Run it via docker
+
+- you can use `docker-compose run --rm --remove-orphans picossg_node node src/build-cli.js -c content -o _dist` to run the build
+- to build the docs into `_docs_dist` directory you can use `docker-compose run --rm --remove-orphans picossg_node npm run build`

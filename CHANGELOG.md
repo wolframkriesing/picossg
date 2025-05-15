@@ -4,6 +4,7 @@
 
 # V3.0.3
 
+- [x] add `npm run build_docs` to build the docs, mainly used for the live site picossg.dev, might move somewhere else later
 - [ ] make the docs correct and as I like them to be
 - [ ] I want MUCH better error messages when a variable was not found or some error happens, nunjucks does a really bad job here
 
