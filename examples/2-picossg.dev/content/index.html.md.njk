@@ -10,14 +10,14 @@ It processes your [markdown](https://markdown-it.github.io/), [nunjucks template
 
 ## Guiding Principles
 
+- **Minimal Magic**: Simple, predictable processing
+- **Zero Configuration**: Works out of the box with sensible defaults
+- **1:1 File Mapping**: Each source file maps directly to an output file
+- **Tiny Feature Set**: Only markdown, nunjucks and frontmatter processing, nothing more
 - **Small Footprint** (and fast): Do only the work that is needed 
   [({{ srcStats.numFiles }} files source code, {{ srcStats.numLoc }} LOC](https://codeberg.org/wolframkriesing/picossg/src/branch/main/src))
-- **Minimal Magic**: Simple, predictable processing
-- **1:1 File Mapping**: Each source file maps directly to an output file
 - **Straightforward Processing**: Markdown (`.md`), Nunjucks templates (`.njk`), or both combined
-- **Zero Configuration**: Works out of the box with sensible defaults
 - **Flexibility When Needed**: Optional hooks for preprocessing and postprocessing when you need more power
-- **Tiny Feature Set**: Only markdown, nunjucks and frontmatter processing, nothing more
 
 (Until now) There is no plan to support more template engines.
 
