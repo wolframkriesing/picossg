@@ -2,9 +2,10 @@
 
 - [ ] add sizes to the _file and _output, maybe also the time it took to process
 
-# V3.0.3
+# V3.1.0
 
-- [x] add `npm run build_docs` to build the docs, mainly used for the live site picossg.dev, might move somewhere else later
+- [x] add `npm run build_docs` to build the picossg.dev website, might move somewhere else later
+- [ ] use _config.js instead of _nunjuck-custom/filters.js
 - [ ] make the docs correct and as I like them to be
 - [ ] I want MUCH better error messages when a variable was not found or some error happens, nunjucks does a really bad job here
 

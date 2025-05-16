@@ -6,8 +6,8 @@ const join = path.join;
 const buildNav = files => {
   const pages = new Map([
     ['Getting Started', ['', 'install', 'create-site']],
-    ['Concepts', ['file-mapping', 'markdown', 'frontmatter', 'templates']],
-    ['Advanced', ['components', 'custom-filters', 'diagrams']],
+    // ['Concepts', ['file-mapping', 'markdown', 'frontmatter', 'templates']],
+    // ['Advanced', ['components', 'custom-filters', 'diagrams']],
   ]);
   
   const nav = new Map();
