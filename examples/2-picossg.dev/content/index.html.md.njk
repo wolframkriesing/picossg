@@ -8,6 +8,19 @@ title: Home
 PicoSSG is a minimal static site generator built on the philosophy of simplicity and predictability. 
 It processes your [markdown](https://markdown-it.github.io/), [nunjucks templates](https://mozilla.github.io/nunjucks/), and static files into a clean, static website with minimal configuration.
 
+## Guiding Principles
+
+- **Small Footprint** (and fast): Do only the work that is needed 
+  [({{ srcStats.numFiles }} files source code, {{ srcStats.numLoc }} LOC](https://codeberg.org/wolframkriesing/picossg/src/branch/main/src))
+- **Minimal Magic**: Simple, predictable processing
+- **1:1 File Mapping**: Each source file maps directly to an output file
+- **Straightforward Processing**: Markdown (`.md`), Nunjucks templates (`.njk`), or both combined
+- **Zero Configuration**: Works out of the box with sensible defaults
+- **Flexibility When Needed**: Optional hooks for preprocessing and postprocessing when you need more power
+- **Tiny Feature Set**: Only markdown, nunjucks and frontmatter processing, nothing more
+
+(Until now) There is no plan to support more template engines.
+
 ## How It Works
 
 Make sure you have [nodejs.org](https://nodejs.org/) installed and then run on the command line:
@@ -24,20 +37,6 @@ It will process all files in the `content` directory and put them into the `outp
 | `image.webp` | Copied as is | `image.webp` |
 | `page.html.njk` | Process as Nunjucks | `page.html` |
 | `post.html.md.njk` | Process as Nunjucks, then as Markdown | `post.html` |
-
-
-## Guiding Principles
-
-- **Small Footprint** (and fast): Do only the work that is needed 
-  ({{ srcStats.numFiles }} files source code, {{ srcStats.numLoc }} LOC)
-- **Minimal Magic**: Simple, predictable processing
-- **1:1 File Mapping**: Each source file maps directly to an output file
-- **Straightforward Processing**: Markdown (`.md`), Nunjucks templates (`.njk`), or both combined
-- **Zero Configuration**: Works out of the box with sensible defaults
-- **Flexibility When Needed**: Optional hooks for preprocessing and postprocessing when you need more power
-- **Tiny Feature Set**: Only markdown, nunjucks and frontmatter processing, nothing more
-
-(Until now) There is no plan to support more template engines.
 
 ## Key Features
 
