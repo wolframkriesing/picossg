@@ -108,7 +108,7 @@ Let's create a layout template to apply consistent styling to all pages. Create 
   </main>
   
   <footer>
-    Built with PicoSSG - {{ "now" | date }}
+    Built with PicoSSG - {{ date }}
   </footer>
 </body>
 </html>

@@ -45,6 +45,12 @@
         </details>
       {% endfor %}
     </nav>
+    
+    <br/>
+    <small>
+      Last update<br/>
+      <time datetime="{{ date }}">{{ date | readableDateTime }}</time>
+    </small>
   </aside>
 
   <main>
