@@ -4,7 +4,207 @@ title: Home
 {% extends '_base.njk' %}
 
 {% block body %}
+<style>
+  body {
+    font-family: monospace;
+    background: #111;
+    color: #0f0;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    text-align: center;
+  }
+  
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .glitch {
+    font-size: 80px;
+    font-weight: bold;
+    text-transform: uppercase;
+    position: relative;
+    text-shadow: 0.05em 0 0 rgba(255,0,0,.75), 
+                -0.025em -0.05em 0 rgba(0,255,0,.75),
+                0.025em 0.05em 0 rgba(0,0,255,.75);
+    animation: glitch 5000ms infinite;
+  }
+  
+  @keyframes glitch {
+    0% {
+      text-shadow: 0.05em 0 0 rgba(255,0,0,.75),
+                  -0.025em -0.05em 0 rgba(0,255,0,.75),
+                  0.025em 0.05em 0 rgba(0,0,255,.75);
+    }
+    14% {
+      text-shadow: 0.05em 0 0 rgba(255,0,0,.75),
+                  -0.025em -0.05em 0 rgba(0,255,0,.75),
+                  0.025em 0.05em 0 rgba(0,0,255,.75);
+    }
+    15% {
+      text-shadow: -0.05em -0.025em 0 rgba(255,0,0,.75),
+                  0.025em 0.025em 0 rgba(0,255,0,.75),
+                  -0.05em -0.05em 0 rgba(0,0,255,.75);
+    }
+    49% {
+      text-shadow: -0.05em -0.025em 0 rgba(255,0,0,.75),
+                  0.025em 0.025em 0 rgba(0,255,0,.75),
+                  -0.05em -0.05em 0 rgba(0,0,255,.75);
+    }
+    50% {
+      text-shadow: 0.025em 0.05em 0 rgba(255,0,0,.75),
+                  0.05em 0 0 rgba(0,255,0,.75),
+                  0 -0.05em 0 rgba(0,0,255,.75);
+    }
+    99% {
+      text-shadow: 0.025em 0.05em 0 rgba(255,0,0,.75),
+                  0.05em 0 0 rgba(0,255,0,.75),
+                  0 -0.05em 0 rgba(0,0,255,.75);
+    }
+    100% {
+      text-shadow: -0.025em 0 0 rgba(255,0,0,.75),
+                  -0.025em -0.025em 0 rgba(0,255,0,.75),
+                  -0.025em -0.05em 0 rgba(0,0,255,.75);
+    }
+  }
+  
+  .ascii-art {
+    font-size: 12px;
+    line-height: 12px;
+    white-space: pre;
+    margin: 40px auto;
+    max-width: 600px;
+  }
+  
+  .crt-lines {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 999;
+    pointer-events: none;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+    background-size: 100% 4px;
+  }
+  
+  .crt-flicker {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    pointer-events: none;
+    animation: flicker 0.15s infinite;
+    opacity: 0.1;
+  }
+  
+  @keyframes flicker {
+    0% { opacity: 0.1; }
+    50% { opacity: 0; }
+    100% { opacity: 0.1; }
+  }
+  
+  .tagline {
+    font-size: 24px;
+    margin: 40px 0;
+    color: #0f0;
+  }
+  
+  .features {
+    margin: 50px 0;
+    font-size: 18px;
+  }
+  
+  .feature {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    text-align: start;
+  }
+  
+  .feature:before {
+    content: ">";
+    margin-right: 10px;
+    color: #0f0;
+    animation: blink 1s step-end infinite;
+  }
+  
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+  
+  .action {
+    display: inline-block;
+    margin-top: 30px;
+    padding: 10px 20px;
+    background: #0f0;
+    color: #000;
+    text-decoration: none;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  
+  .action:hover {
+    background: #000;
+    color: #0f0;
+    box-shadow: 0 0 10px #0f0, 0 0 20px #0f0;
+  }
+  
+  .footer {
+    margin-top: 60px;
+    font-size: 14px;
+    opacity: 0.7;
+  }
+</style>
 
-  i am content
+<div class="crt-lines"></div>
+<div class="crt-flicker"></div>
+
+<div class="container">
+  <header>
+    <h1 class="glitch">PicoSSG</h1>
+  </header>
+  
+  <div style="margin-top: 20px;">
+    <code>npx @wolframkriesing/picossg -c content -o output</code>
+  </div>
+  
+  <div class="tagline">
+    The anti-framework static site generator.
+    <br>No config. No nonsense.
+    <br>Just files in, files out.
+  </div>
+  
+  <div class="features">
+    <div class="feature">1:1 file mapping – what you see is what you get</div>
+    <div class="feature">Markdown? Yes. Nunjucks? Yes. Both? Yes.</div>
+    <div class="feature">Files+dirs starting with _ are private. That's it.</div>
+    <div class="feature">Builds faster than you can say "overengineered"</div>
+    <div class="feature">Zero magic</div>
+  </div>
+  
+  <div style="text-align: center; font-size: 2rem;">
+    <a href="/docs/" class="action">READ THE DOCS</a>
+  </div>
+  
+  <div class="footer">
+    PicoSSG - Built for humans who just want static sites without the drama.
+  </div>
+  
+  <div class="ascii-art">
+    ____  _          ____ ____   ____ 
+   |  _ \(_) ___ ___/ ___/ ___| / ___|
+   | |_) | |/ __/ _ \___ \___ \| |  _ 
+   |  __/| | (_| (_) |__) |__) | |_| |
+   |_|   |_|\___\___/____/____/ \____|
+  </div>
+</div>
 
 {% endblock %}
