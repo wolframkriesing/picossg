@@ -56,6 +56,7 @@ const preprocess = (files) => {
   for (const [_, data] of files) {
     data.srcStats = srcStats;
     data._site = {
+      title: 'PicoSSG',
       abstract: 'PicoSSG is a minimal static site generator built on the philosophy of simplicity and predictability.',
       summaryImage: '/og-image.webp',
     }
