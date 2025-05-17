@@ -1,5 +1,5 @@
 ---
-layout: _base.njk
+layout: docs/_base.njk
 title: Templates
 ---
 
@@ -233,6 +233,7 @@ Use the `raw` tag to prevent processing:
 ### Navigation Highlighting
 
 ```html
+
 <nav>
   <a href="/" class="{% if page.url == '/' %}active{% endif %}">Home</a>
   <a href="/about/" class="{% if page.url == '/about/' %}active{% endif %}">About</a>

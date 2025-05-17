@@ -1,5 +1,5 @@
 ---
-layout: _base.njk
+layout: docs/_base.njk
 title: Diagrams
 ---
 

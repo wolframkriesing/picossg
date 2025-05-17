@@ -1,5 +1,5 @@
 ---
-layout: _base.njk
+layout: docs/_base.njk
 title: Components
 ---
 
@@ -37,6 +37,7 @@ content/
 Create a header component at `content/components/_header.njk`:
 
 ```html
+
 <header class="site-header">
   <div class="container">
     <a href="/" class="logo">My Site</a>

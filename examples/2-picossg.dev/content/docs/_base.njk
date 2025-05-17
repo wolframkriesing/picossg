@@ -1,0 +1,79 @@
+{% extends '_base.njk' %}
+
+{% block body %}
+<header>
+  <a href="/" class="logo">picoSSG</a>
+</header>
+
+<div class="content-wrapper">
+  <aside>
+    <nav>
+      {% for category, files in nav.entries() %}
+        <details open>
+          <summary>{{ category }}</summary>
+          <ul>
+            {% for file in files %}
+              <li>
+                <a href="{{ file.url }}" {% if url === file.url %}class="active"{% endif %}>{{ file.title }}</a>
+                
+                {% if url === file.url %}
+                  <ul class="secondLevelHeadlines">
+                    {% for h2 in file.firstLevelHeadlines %}
+                      <li><a href="#{{ h2 | slug }}">{{ h2 }}</a></li>
+                    {% endfor %}
+                  </ul>
+                {% endif %}
+              </li>
+            {% endfor %}
+          </ul>
+        </details>
+      {% endfor %}
+    </nav>
+    
+    <small class="meta">
+      <br/>
+      Last update<br/>
+      <time datetime="{{ date }}">{{ date | readableDateTime }}</time>
+    </small>
+  </aside>
+
+  <main>
+    {{ content | safe }}
+  </main>
+</div>
+
+{% include '_allow2copy.html' %}
+
+<style>
+  h2 {
+    scroll-margin-top: 4rem;
+  }
+  .secondLevelHeadlines {
+    font-size: smaller;
+  }
+  ul.secondLevelHeadlines {
+    margin-top: 0;
+  }
+  .secondLevelHeadlines li {
+    margin: 0;
+    white-space: nowrap;
+  }
+  .secondLevelHeadlines a {
+    padding: 0;
+  }
+</style>
+<script>
+  // Add IDs to h2 elements, so they can be navigated to, markdown per se does not add IDs to the headings
+  const $h2s = document.querySelectorAll('h2');
+  document.querySelectorAll('.secondLevelHeadlines a').forEach($ahref => {
+    const h2text = $ahref.innerText;
+    const h2id = $ahref.getAttribute('href').substring(1);
+    $h2s.forEach($h2 => {
+      if ($h2.innerText === h2text) {
+        $h2.id = h2id;
+      }
+    });
+  });
+</script>
+
+{% endblock %}

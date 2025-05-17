@@ -5,9 +5,9 @@ const join = path.join;
 
 const buildNav = files => {
   const pages = new Map([
-    ['Getting Started', ['', 'install', 'create-site']],
-    // ['Concepts', ['file-mapping', 'markdown', 'frontmatter', 'templates']],
-    // ['Advanced', ['components', 'custom-filters', 'diagrams']],
+    ['Getting Started', ['docs/', 'docs/install', 'docs/create-site']],
+    // ['Concepts', ['docs/file-mapping', 'docs/markdown', 'docs/frontmatter', 'docs/templates']],
+    // ['Advanced', ['docs/components', 'docs/custom-filters', 'docs/diagrams']],
   ]);
   
   const nav = new Map();
@@ -41,8 +41,10 @@ const collectSrcStats = () => {
 
 const addFirstLevelHeadlines = files => {
   for (const [_, data] of files) {
-    const lines = data.content.match(/^## .*/gm);
-    data.firstLevelHeadlines = lines.map(s => s.replace(/^## /, ''));
+    if (data._output.relativeFilePath.startsWith('/docs/')) {
+      const lines = data.content.match(/^## .*/gm);
+      data.firstLevelHeadlines = lines.map(s => s.replace(/^## /, ''));
+    }
   }  
 }
 
