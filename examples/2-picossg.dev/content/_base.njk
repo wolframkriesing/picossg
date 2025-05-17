@@ -12,6 +12,18 @@
   <script defer data-domain="picossg.dev" src="https://plausible.io/js/script.outbound-links.js"></script>
   <script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
   
+  <meta property="article:tag" content="ssg" />
+  <meta property="article:tag" content="JavaScript" />
+  <meta property="article:tag" content="static side generator" />
+  
+  <meta property="og:description" content="{{_site.abstract}}" />
+  <meta property="article:description" content="{{_site.abstract}}" />
+  <meta name="twitter:description" content="{{_site.abstract}}" />
+
+  <meta property="og:image" content="https://picossg.dev{{_site.summaryImage}}" />
+  <meta property="og:image:url"  content="https://picossg.dev{{_site.summaryImage}}" />
+  <meta name="twitter:image" content="https://picossg.dev{{_site.summaryImage}}" />
+  
   {% block head %}{% endblock %}
 </head>
 <body>
