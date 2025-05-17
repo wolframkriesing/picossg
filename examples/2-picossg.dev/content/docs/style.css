@@ -40,6 +40,8 @@ aside {
   border-right: 1px solid var(--border-color);
   overflow-y: auto;
   position: sticky;
+  height: 100vh;
+  top: 0;
 }
 
 main {
@@ -89,9 +91,8 @@ summary {
   user-select: none;
 }
 
-summary:before {
+summary::marker {
   content: "> ";
-  color: var(--primary-color);
 }
 
 h1, h2, h3, h4, h5, h6 {

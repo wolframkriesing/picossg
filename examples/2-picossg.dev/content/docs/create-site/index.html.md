@@ -233,8 +233,8 @@ You now have a basic site with:
 
 To continue learning PicoSSG, explore:
 
-- [File Mapping](/file-mapping/) - Understand how PicoSSG processes files
-- [Front Matter](/frontmatter/) - Add metadata to your pages
-- [Templates](/templates/) - Unleash the power of Nunjucks templating
-- [Components](/components/) - Build reusable components
-- [Custom Filters](/custom-filters/) - Extend Nunjucks with custom filters
+- [File Mapping](/docs/file-mapping/) - Understand how PicoSSG processes files
+- [Front Matter](/docs/frontmatter/) - Add metadata to your pages
+- [Templates](/docs/templates/) - Unleash the power of Nunjucks templating
+- [Components](/docs/components/) - Build reusable components
+- [Custom Filters](/docs/custom-filters/) - Extend Nunjucks with custom filters

@@ -41,7 +41,7 @@ const collectSrcStats = () => {
 
 const addFirstLevelHeadlines = files => {
   for (const [_, data] of files) {
-    if (data._output.relativeFilePath.startsWith('/docs/')) {
+    if (data._output.relativeFilePath.startsWith('docs/')) {
       const lines = data.content.match(/^## .*/gm);
       data.firstLevelHeadlines = lines.map(s => s.replace(/^## /, ''));
     }
