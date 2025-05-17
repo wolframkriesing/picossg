@@ -210,6 +210,10 @@ th {
     border-right: none;
     border-bottom: 1px solid var(--border-color);
   }
+  
+  aside .meta {
+    display: none;
+  }
 
   main {
     padding: 1.5rem;
