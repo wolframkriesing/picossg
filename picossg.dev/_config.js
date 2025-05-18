@@ -12,9 +12,24 @@ const picoSsgVersion = packageJson.version;
 
 const buildNav = files => {
   const pages = new Map([
-    ['Getting Started', [DOCS_DIR, path.join(DOCS_DIR, 'install'), path.join(DOCS_DIR, 'cli'), path.join(DOCS_DIR, 'create-site')]],
-    // ['Concepts', ['file-mapping', 'markdown', 'frontmatter', 'templates']],
-    // ['Advanced', ['components', 'custom-filters', 'diagrams']],
+    ['Getting Started', [
+      DOCS_DIR, 
+      path.join(DOCS_DIR, 'install'), 
+      path.join(DOCS_DIR, 'cli'), 
+      path.join(DOCS_DIR, 'create-site'),
+    ]],
+    ['Concepts', [
+      path.join(DOCS_DIR, 'file-mapping'), 
+      // path.join(DOCS_DIR, 'markdown'), 
+      // path.join(DOCS_DIR, 'frontmatter'), 
+      path.join(DOCS_DIR, 'templates'),
+    ]],
+    ['Advanced', [
+      // path.join(DOCS_DIR, 'config-js'),
+      // path.join(DOCS_DIR, 'components'),
+      // path.join(DOCS_DIR, 'custom-filters'),
+      // path.join(DOCS_DIR, 'diagrams'),
+    ]],
     ['About', ['changelog']],
   ]);
 

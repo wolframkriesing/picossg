@@ -5,52 +5,59 @@ title: File Mapping
 
 # File Mapping
 
-One of PicoSSG's core principles is its predictable **1:1 file mapping** system. This page explains how PicoSSG maps source files to output files.
+One of PicoSSG's core principles is its predictable **1:1 file mapping** from input (content) to output files.
+The output files are those served by a web server, your website structure.
+
+This page explains how PicoSSG maps source files to output files.
 
 ## Basic Principle
 
-PicoSSG follows a straightforward rule: **each source file in your content directory maps directly to an output file in your output directory, with the same relative path**.
+PicoSSG follows a straightforward rule: 
+**each source file in your content directory maps directly to an output file in your output directory, with the same relative path**.
 
 The only changes that happen are:
-1. Processing file content based on extensions
-2. Removing processed extensions from filenames
+1. Files are processed based on their extension(s) (`.njk`, `.md`)
+2. Processed extensions are removed from filenames when outputting
+3. Files and directories prefixed with `_` are excluded from the output
 
-## Extension Processing
+## File Processing
 
 PicoSSG processes files based on their extensions, from right to left. It only removes the extensions it processes and never replaces extensions:
 
-| Source File | Processing Steps | Output File |
+| Source File | Output File | Processing Steps  |
 |-------------|-----------------|-------------|
-| `about.html.md` | Process as Markdown | `about.html` |
-| `page.html.njk` | Process as Nunjucks | `page.html` |
-| `style.css.njk` | Process as Nunjucks | `style.css` |
-| `post.html.md.njk` | Process as Nunjucks, then as Markdown | `post.html` |
-| `style.css` | No processing, copy as-is | `style.css` |
+| `about.html.md` | `about.html` | Process as Markdown |
+| `page.html.njk` | `page.html` | Process as Nunjucks |
+| `style.css.njk` | `style.css` | Process as Nunjucks | 
+| `post.html.md.njk` | `post.html` | Process as Nunjucks, then as Markdown |
+| `style.css` | `style.css` | No processing, copy as-is |
+| `index.html` | `index.html` | No processing, copy as-is |
 
 **Important**: Notice that you must include the final extension in the filename. For example, use `about.html.md` instead of just `about.md`. PicoSSG only removes the processed extensions and does not add or replace any extensions.
 
-## Directory Structure Preservation
+## Directory Processing
 
 PicoSSG preserves your directory structure exactly:
 
 ```
 content/                   output/
 ├── index.html.md          ├── index.html
+├── _config.js             │
+├── _base.njk              │
 ├── about/                 ├── about/
 │   └── index.html.md      │   └── index.html
 ├── blog/                  ├── blog/
 │   └── post1.html.md      │   └── post1.html
+├── _components/           │
+│   └── base.njk           │
 └── css/                   └── css/
     └── style.css              └── style.css
 ```
 
-Notice that all Markdown files must be named with `.html.md` to generate HTML files, not just `.md`.
+All Markdown files must be named with `.html.md` to generate HTML files, not just `.md`.
+The files and directories starting with `_` are excluded from the output.
 
-## Special Files
-
-There are a few special rules for certain files:
-
-### Files Starting with Underscore (`_`)
+## `_*` Files/Directories
 
 Files and directories starting with an underscore are **excluded from the output**. This is perfect for:
 
@@ -68,71 +75,67 @@ content/                   output/
 └── about.html.md          └── about.html
 ```
 
-### Index Files
-
-Files named `index.html` (or that process to that name) create "pretty URLs":
-
-- `content/about/index.html.md` → `output/about/index.html`
-- Accessible at `/about/` rather than `/about/index.html`
-
-## How Processing Works
+## Processing Flow
 
 When PicoSSG builds your site, it:
 
 1. Scans the content directory recursively
 2. For each file, it determines if processing is needed
-3. Processes the file if needed (or copies it if not)
-4. Writes the result to the output directory
+3. Runs the `preprocess()` function if present in `_config.js`
+   - This function can modify the file content before processing
+   - If `_config.js` is not present, it skips this step
+4. Processes each file if needed (or copies it if not)
+   - If the file is a Nunjucks template, it processes it first
+   - If the file is Markdown, it processes it after Nunjucks
+   - If the file is a static asset (like CSS), it copies it as-is
+5. Runs the `postprocess()` function if present in `_config.js` 
+   - This function can modify the file content after processing
+   - If `_config.js` is not present, it skips this step
+6. Writes the result to the output directory
 
 The processing order for extensions is important: **extensions are processed from right to left**:
 
 - For a file named `page.html.md.njk`:
   1. First, it's processed as a Nunjucks template (`.njk`)
   2. Then, the result is processed as Markdown (`.md`)
-  3. Finally, it's output as an HTML file (`.html`)
+  3. Each extension is removed from the filename for the output filename, resulting in `page.html`
 
-## Practical Examples
+## Filename Examples
 
-### Basic HTML Content
+### Files Copied as-is
+
+The files below use no special extensions and are copied as-is, no matter their extension, 
+PicoSSG just moves them to the output directory:
 
 ```
 index.html → index.html (copied as-is)
+style.css → style.css (copied as-is)
+favicon.ico → favicon.ico (copied as-is)
+somefile.pdf → somefile.pdf (copied as-is)
 ```
 
 ### Markdown Content
 
+The files below are processed as Markdown, and the `.md` extension is removed in the output:
+
 ```
-about.md → about.html (processed as Markdown)
+about.html.md → about.html (processed as Markdown)
+about.md → about (processed as Markdown, ⚠️ no `.html` extension)
 ```
 
 ### Nunjucks Template
 
+If the file ends with `.njk`, it is processed as a Nunjucks template, and the `.njk` extension is removed in the output.
+Notice that multiple extensions are processed from right to left, so `file.html.md.njk` is possible too:
+
 ```
 contact.html.njk → contact.html (processed as Nunjucks)
-```
-
-### Markdown Content in Nunjucks Template
-
-```
 post.html.md.njk → post.html (processed as Nunjucks, then Markdown)
-```
-
-### CSS from Nunjucks Template
-
-```
 style.css.njk → style.css (processed as Nunjucks, output as CSS)
 ```
 
-## Best Practices
-
-- Use clear file naming conventions
-- Maintain a logical directory structure
-- Put reusable templates in `_includes` or similar underscore-prefixed directories
-- Use `index.html.md` files for clean URLs
-- Organize related content in subdirectories
-
 ## Related Topics
 
-- [Front Matter](/frontmatter/) - Adding metadata to your files
-- [Templates](/templates/) - Using Nunjucks for templating
-- [Components](/components/) - Creating reusable components
+- [Front Matter](/docs/frontmatter/) - Adding metadata to your files
+- [Templates](/docs/templates/) - Using Nunjucks for templating
+- [Components](/docs/components/) - Creating reusable components

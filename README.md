@@ -1,6 +1,7 @@
 # picossg
 
-The pico static site generator – the simplest one I ever wanted and hopefully "found"
+The pico static site generator – the simplest one I ever wanted and hopefully "found".
+See the [picossg.dev](https://picossg.dev) for more information.
 
 ## What it does
 
