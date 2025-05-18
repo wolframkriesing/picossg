@@ -11,6 +11,16 @@ const mdRender = (s) => md.render(s);
 const mdRenderInline = (s) => md.renderInline(s);
 
 /**
+ * Both paths are seen as absolute paths or files, so the function checks if `absoluteDirB` is inside `absoluteDirA`.
+ * E.g. isChildPath("/a/b" ,"/a/b/c/d") => true, but isChildPath("/a/b" ,"/e/f") => false.
+ */
+function isChildPath(absoluteDirA, absoluteDirB) {
+  const pathA = path.dirname(absoluteDirA);
+  const pathB = path.dirname(absoluteDirB);
+  return pathB.startsWith(pathA) && pathB.length > pathA.length;
+}
+
+/**
  * @typedef {string} Filename These are the filenames that will be copied or processed by picossg, e.g. `*.njk` or `*.md.njk` files.
  * @typedef {string} UrlPath The trailing part in a URL after the domain name, e.g. `/about` or `/blog/2023/01/01/my-post.html` and excluding the query string and hash.
  *
@@ -254,16 +264,23 @@ export async function buildAll(config) {
     console.log('⏭️ Postprocessing done.');
   }
 
+  const absoluteOutputPath = path.resolve(config.outDir);
   const writes = [];
   for (const [_, fileData] of files) {
     const inPath = fileData._file.relativeFilePath;
     const output = fileData._output;
+    if (!isChildPath(absoluteOutputPath, output.absoluteFilePath)) {
+      console.error(`❌  Output file path "${output.absoluteFilePath}" is outside of the output directory "${absoluteOutputPath}".`);
+      process.exit(1);
+    }
+    
+    ensureDir(output.absoluteFilePath);
     writes.push(fsPromise
       .writeFile(output.absoluteFilePath, fileData.content, 'utf8')
       .then(() => console.log(`✅  ${inPath} => ${output.relativeFilePath} ${toSize(fileData.content.length)}`))
     );
   }
-  await Promise.allSettled(writes);
+  await Promise.all(writes);
   const endTime = performance.now();
   console.log(`\n⏱️ Processed ${files.size} files in ${((endTime - startTime) / 1000).toFixed(2)} seconds.`);
 }

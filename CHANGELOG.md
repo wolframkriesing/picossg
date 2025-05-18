@@ -10,8 +10,11 @@
 - [ ] make the docs correct and as I like them to be
 - [ ] I want MUCH better error messages when a variable was not found or some error happens, nunjucks does a really bad job here
 - [x] move picossg.dev site into the [repo root in the dir `picossg.dev`](./picossg.dev) so we can 
-  - [ ] use/link changelog, package.json and other files directly from the source
+  - [x] use/link changelog, package.json and other files directly from the source
+  - [ ] link the ADRs in the docs too
 - [x] rename `dist` to `_output`, just to be consistent in naming
+- [x] ensure that the path output files are written to are child paths of the output dir, it might happen that one adds a `_output` 
+      object which accidentally writes to places it should not (actually just happened to me), this is basically a safeguard I feel worth having
 
 # V3.0.2
 

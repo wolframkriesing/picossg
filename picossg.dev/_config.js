@@ -54,7 +54,37 @@ const addFirstLevelHeadlines = files => {
   }
 }
 
-const preprocess = (files) => {
+function addChangelogFile(files, config) {
+  const relativeOutputFilePath = '/changelog/index.html';
+  const absoluteFilePath = path.join(__dirname, '../CHANGELOG.md');
+  const content = fs.readFileSync(absoluteFilePath, 'utf8');
+  const prettyUrlPath = '/changelog/';
+  files.set('../CHANGELOG.md', {
+    _file: {
+      content,
+      relativeFilePath: '../CHANGELOG.md',
+      absoluteFilePath: absoluteFilePath,
+      needsProcessing: true,
+      hasFrontmatterBlock: false,
+    },
+    _frontmatter: {
+      layout: 'docs/_base.njk',
+    },
+    _output: {
+      rawUrlPath: '/changelog/index.html',
+      prettyUrlPath: prettyUrlPath,
+      relativeFilePath: relativeOutputFilePath,
+      absoluteFilePath: path.resolve(path.join(config.outDir, relativeOutputFilePath)),
+    },
+    content,
+    url: prettyUrlPath,
+    date: new Date().toISOString(),
+    title: 'Changelog',
+  });
+}
+
+const preprocess = (files, config) => {
+  addChangelogFile(files, config)
   buildNav(files);
   const srcStats = collectSrcStats();
   addFirstLevelHeadlines(files);
