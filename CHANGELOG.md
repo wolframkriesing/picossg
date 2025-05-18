@@ -10,7 +10,7 @@
 - [ ] I want MUCH better error messages when a variable was not found or some error happens, nunjucks does a really bad job here
 - [x] move picossg.dev site into the [repo root in the dir `picossg.dev`](./picossg.dev) so we can 
   - [ ] use/link changelog, package.json and other files directly from the source
-- [ ] rename `dist` to `_output`, just to be consistent in naming
+- [x] rename `dist` to `_output`, just to be consistent in naming
 
 # V3.0.2
 

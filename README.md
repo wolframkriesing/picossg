@@ -83,14 +83,14 @@ To develop picossg, clone the repository and install the dependencies:
 - `npm run test:ci` runs all the tests, just not in watch mode
 - `npm run test:watch` runs the tests in watch mode, and re-runs on any content change
 - `test:preprocess:watch` runs the preprocess tests in watch mode, they can NOT run in parallel with the `npm run test:watch` tests,
-    since they are using the same `dist` directory and would overwrite each other, therefore the final `nom run test:ci` command does the "final" test before a release
+    since they are using the same `_output` directory and would overwrite each other, therefore the final `nom run test:ci` command does the "final" test before a release
 
-The `npm test` runs a simple `diff` command, it compares the generated `dist` directory with the expected output in `test/golden-ref`.
+The `npm test` runs a simple `diff` command, it compares the generated `_output` directory with the expected output in `test/golden-ref`.
 
 Since the default `npm run build:watch` runs multiple times when you change the source code, e.g. `build.js`
 there is also `build:watch:dev` which only watches the code to be run and NOT the content to be generated.
 
 ## Run it via docker
 
-- you can use `docker-compose run --rm --remove-orphans picossg_node node src/build-cli.js -c content -o _dist` to run the build
-- to build the docs into `_docs_dist` directory you can use `docker-compose run --rm --remove-orphans picossg_node npm run build`
+- you can use `docker-compose run --rm --remove-orphans picossg_node node src/build-cli.js -c content -o _output` to run the build
+- to build the docs into `_picossg.dev` directory you can use `docker-compose run --rm --remove-orphans picossg_node npm run build`

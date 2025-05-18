@@ -68,7 +68,7 @@ const testToBeProcessedFilesOutputObject = (files) => {
   assert.equal(o.prettyUrlPath, '/05-myindex.html');
   assert.equal(o.relativeFilePath, '05-myindex.html');
   const pwd = process.cwd();
-  const expectedFilePath = path.join(pwd, 'dist/05-myindex.html');
+  const expectedFilePath = path.join(pwd, '_output/05-myindex.html');
   assert.equal(o.absoluteFilePath, expectedFilePath);
   
   testSetSucceeded('To be processed files `_output` object');

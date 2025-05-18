@@ -20,7 +20,7 @@ PicoSSG is a minimal static site generator built on the philosophy of simplicity
 - Run tests: `npm test`
 - Run tests in watch mode: `npm run test:watch`
 
-The test system compares generated output in the `dist` directory with the expected output in `test/golden-ref`.
+The test system compares generated output in the `_output` directory with the expected output in `test/golden-ref`.
 
 ## Architecture
 

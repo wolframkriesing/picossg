@@ -1,4 +1,4 @@
-dist
+_output
 **/.claude/settings.local.json
 **/output
 _picossg.dev
