@@ -5,17 +5,21 @@ title: Home
 
 {% block body %}
 <style>
+  * {
+    color: #0f0;
+  }
+  
   body {
     font-family: monospace;
     background: #111;
-    color: #0f0;
     margin: 0;
     padding: 0;
     overflow-x: hidden;
     text-align: center;
+    padding-bottom: 5em;
   }
   
-  .container {
+  main {
     max-width: 800px;
     margin: 0 auto;
     padding: 20px;
@@ -110,12 +114,15 @@ title: Home
   .tagline {
     font-size: 24px;
     margin: 40px 0;
-    color: #0f0;
   }
   
   .features {
-    margin: 50px 0;
+    margin: auto;
     font-size: 18px;
+    
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
   }
   
   .feature {
@@ -128,7 +135,6 @@ title: Home
   .feature:before {
     content: ">";
     margin-right: 10px;
-    color: #0f0;
     animation: blink 1s step-end infinite;
   }
   
@@ -166,7 +172,7 @@ title: Home
 <div class="crt-lines"></div>
 <div class="crt-flicker"></div>
 
-<div class="container">
+<main>
   <header>
     <h1 class="glitch">PicoSSG</h1>
   </header>
@@ -200,6 +206,11 @@ title: Home
   <div class="ascii-art">
     {% include '_picossg_asciiart.txt' %}
   </div>
-</div>
+</main>
+  
+<footer>
+  <a href="/changelog">Changelog</a>
+  <a href="/docs">Docs</a>
+</footer>
 
 {% endblock %}
