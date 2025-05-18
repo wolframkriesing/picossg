@@ -5,6 +5,8 @@ Find here all changes tracked while developing picossg.
 ## (Maybe) Future Version
 
 - [ ] add sizes to the _file and _output, maybe also the time it took to process
+- [ ] link the ADRs in the docs too
+- [ ] I want MUCH better error messages when a variable was not found or some error happens, nunjucks does a really bad job here
 
 ## v4.0.0
 
@@ -12,10 +14,8 @@ Find here all changes tracked while developing picossg.
 - [x] use _config.js instead of _nunjuck-custom/filters.js (a breaking change)
 - [x] add `config` as second parameter to `preprocess` and `postprocess` functions, sometimes you need to know the config instead of assuming e.g. the output-path
 - [ ] make the docs correct and as I like them to be
-- [ ] I want MUCH better error messages when a variable was not found or some error happens, nunjucks does a really bad job here
 - [x] move picossg.dev site into the [repo root in the dir `picossg.dev`](./picossg.dev) so we can 
   - [x] use/link changelog, package.json and other files directly from the source
-  - [ ] link the ADRs in the docs too
 - [x] rename `dist` to `_output`, just to be consistent in naming
 - [x] ensure that the path output files are written to are child paths of the output dir, it might happen that one adds a `_output` 
       object which accidentally writes to places it should not (actually just happened to me), this is basically a safeguard I feel worth having
