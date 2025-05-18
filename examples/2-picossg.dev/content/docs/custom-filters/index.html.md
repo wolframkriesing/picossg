@@ -19,31 +19,23 @@ PicoSSG includes a few built-in filters like `md` and `mdinline`, but you can ad
 
 ## Adding Custom Filters
 
-To add custom filters, create a file at `_njk-custom/filters.js` in your content directory:
-
-```
-content/
-├── _njk-custom/
-│   └── filters.js
-├── index.html.md
-└── ...
-```
-
+To add custom filters, create function `configureNjk()` in the `_config.js` in your content directory:
 This file should export a default function that receives the Nunjucks environment:
 
 ```javascript
-// content/_njk-custom/filters.js
-export default function(env) {
-  // Add your custom filters here
-  env.addFilter('uppercase', function(str) {
+// content/_config.js
+const configureNjk = (njk) => {
+  njk.addFilter('uppercase', function(str) {
     return str.toUpperCase();
   });
   
-  env.addFilter('formatDate', function(date, format) {
+  njk.addFilter('formatDate', function(date, format) {
     // Date formatting logic
     return formattedDate;
   });
 }
+
+export {configureNjk};
 ```
 
 ## Custom Filter Examples
@@ -223,13 +215,13 @@ export default function(env) {
 If you're having issues with custom filters:
 
 1. Check the console for errors when PicoSSG starts
-2. Verify your `filters.js` file is in the correct location (`_njk-custom/filters.js`)
-3. Make sure the export syntax is correct (default export function)
+2. Verify your `_config.js` file is in the correct location, in your content directory root
+3. Make sure the export syntax is correct `export {configureNjk};`
 4. Add console.log statements in your filters to debug values
 5. Try using simpler filters first to ensure the system is working
 
 ## Related Topics
 
-- [Templates](/templates/) - Using filters in Nunjucks templates 
-- [User Functions](/user-functions/) - Adding custom preprocessing and postprocessing
-- [Components](/components/) - Building reusable template components
+- [Templates](/docs/templates/) - Using filters in Nunjucks templates 
+- [User Functions](/docs/user-functions/) - Adding custom preprocessing and postprocessing
+- [Components](/docs/components/) - Building reusable template components

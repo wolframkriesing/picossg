@@ -23,24 +23,6 @@ const mdRenderInline = (s) => md.renderInline(s);
  * @typedef {Map<string|symbol, function(*, *): *>} ProcessorMap
  */
 
-async function loadNjkCustomStuff(config, njk) {
-  const njkFilterFile = path.join(process.cwd(), config.contentDir, '_njk-custom/filters.js');
-  try {
-    const mod = await import(njkFilterFile);
-    if (mod.default) {
-      mod.default(njk);
-    }
-  } catch (e) {
-    if (e.code === 'ERR_MODULE_NOT_FOUND') {
-      console.error(`⏭️ NO (valid) custom njk filters loaded, searched at:\n     ${njkFilterFile}`);
-      return;
-    }
-    console.log(`❌ Error loading njk custom filters:\n    ${njkFilterFile}`);
-    throw e;
-  }
-  console.log(`✅  Loaded njk custom filters from:\n    ${njkFilterFile}`);
-}
-
 async function loadUserFunctions(config) {
   const userFunctionsFile = path.join(process.cwd(), config.contentDir, config.configFile);
   let module;
@@ -55,16 +37,22 @@ async function loadUserFunctions(config) {
     throw e;
   }
   if (module) {
-    console.log(`✅  Loaded user functions from:\n    ${userFunctionsFile}`);
+    console.log(`✅  Loaded _config.js from:\n    ${userFunctionsFile}`);
     return module;
   }
-  console.error(`⏭️ NO (valid) user functions loaded, searched at:\n     ${userFunctionsFile}`);
+  console.error(`⏭️ NO (valid) _config.js loaded, searched at:\n     ${userFunctionsFile}`);
+}
+
+function userConfiguredNjk(userFunctions, njk) {
+  if (userFunctions?.configureNjk) {
+    userFunctions.configureNjk(njk);
+  }
 }
 
 /**
  * @return {Promise<ProcessorMap>}
  */
-async function createProcessors(config) {
+async function createProcessors(config, userFunctions) {
   const nunjucksOptions = {
     autoescape: true,
     throwOnUndefined: true,
@@ -75,9 +63,9 @@ async function createProcessors(config) {
   njk.addFilter('md', (s) => mdRender(s));
   njk.addFilter('mdinline', (s) => mdRenderInline(s));
   const coreFilters = Object.keys(njk.filters);
-  await loadNjkCustomStuff(config, njk);
+  userConfiguredNjk(userFunctions, njk);
   const newFilters = Object.keys(njk.filters).filter((f) => !coreFilters.includes(f));
-  console.log(`    ${newFilters.length} custom njk filters loaded: ${newFilters.join(', ')}`);
+  console.log(`    ${newFilters.length} user-defined njk filters loaded: ${newFilters.join(', ')}`);
 
   return new Map([
     ['.njk', (content, data) => njk.renderString(content, data)],
@@ -209,8 +197,8 @@ const toRootProps = (picossgObject) => {
 export async function buildAll(config) {
   const startTime = performance.now();
   fs.rmSync(config.outDir, {recursive: true, force: true});
-  const processors = await createProcessors(config);
   const userFunctions = await loadUserFunctions(config);
+  const processors = await createProcessors(config, userFunctions);
   console.log('');
 
   // Go through all files and fill the files map, with the relative filename and all data for it.

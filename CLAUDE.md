@@ -54,12 +54,12 @@ The test system compares generated output in the `dist` directory with the expec
 ## Extension Points
 
 1. **Custom Nunjucks Filters**:
-   - Create `_njk-custom/filters.js` in the content directory to define custom filters
    - Export a default function that receives the Nunjucks environment
 
 2. **User Functions**:
    - Create `_config.js` in the content directory
-   - Export a `preprocess` function that can transform content and data before rendering
+   - Export a `preprocess` and/or `postprocess` function that can transform content and data before/after processing
+   - Configure nunjucks by providing `configureNjk` which receives `njk` as parameter
 
 ## Roadmap (from CHANGELOG)
 

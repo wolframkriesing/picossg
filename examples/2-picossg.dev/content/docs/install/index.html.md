@@ -43,11 +43,9 @@ Running the command will maybe create very detailed output like this, when it wo
     "outDir": "output",
     "configFile": "_config.js"
 }
-✅  Loaded njk custom filters from:
-    /xxxxx/content/_njk-custom/filters.js
-    1 custom njk filters loaded: slug
-✅  Loaded user functions from:
+✅  Loaded _config.js from:
     /xxxxx/content/_config.js
+    1 user-defined njk filters loaded: slug
 
 💾 Copy style.css => output/style.css ✅ 
 ⏭️ Preprocessing done.
