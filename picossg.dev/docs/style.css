@@ -97,7 +97,16 @@ summary {
 }
 
 summary::marker {
-  content: "> ";
+  content: none;
+}
+summary::before {
+  content: ">";
+  margin-right: 0.5rem;
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+details[open] summary::before {
+  transform: rotate(90deg);
 }
 
 h1, h2, h3, h4, h5, h6 {
