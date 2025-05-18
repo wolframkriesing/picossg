@@ -1,13 +1,14 @@
 import {fileURLToPath} from 'url';
 import path, {dirname} from 'path';
 import fs from 'fs';
+import packageJson from '../package.json' with {type: 'json'};
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const DOCS_DIR = 'docs/';
 const SRC_DIR = path.resolve(path.join(__dirname, '../src'));
 
-const join = path.join;
+const picoSsgVersion = packageJson.version;
 
 const buildNav = files => {
   const pages = new Map([
@@ -20,9 +21,9 @@ const buildNav = files => {
   pages.keys().toArray().forEach(title => nav.set(title, []));
 
   for (const [title, pagePaths] of pages) {
-    for (const path of pagePaths) {
+    for (const pagePath of pagePaths) {
       for (const [filename, data] of files) {
-        if (filename.startsWith(join(DOCS_DIR, path, 'index.html'))) {
+        if (filename.startsWith(path.join(DOCS_DIR, pagePath, 'index.html'))) {
           nav.get(title).push(data);
         }
       }
@@ -64,6 +65,7 @@ const preprocess = (files) => {
       title: 'PicoSSG',
       abstract: 'PicoSSG is a minimal static site generator built on the philosophy of simplicity and predictability.',
       summaryImage: '/og-image.webp',
+      picoSsgVersion,
     }
   }
 }

@@ -28,6 +28,11 @@ header {
   border-bottom: 1px solid var(--primary-color);
 }
 
+hr {
+  border: none;
+  border-bottom: 1px solid var(--primary-color);
+}
+
 .content-wrapper {
   display: flex;
   flex: 1;
