@@ -24,6 +24,7 @@ const testAllFilesAreFound = (files) => {
     '23-has-date.html.md',
     '40-preprocess.txt.njk',
     '41-postprocess.txt.njk',
+    '42-config-param.txt.njk',
     '50-picossg-findPages.txt.njk',
     'README.md',
     'in-dir/index.html.md'

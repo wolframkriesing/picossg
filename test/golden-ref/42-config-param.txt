@@ -1,0 +1,4 @@
+    contentDir: test/content,
+    outDir: _output,
+    configFile: _config.js,
+  

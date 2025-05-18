@@ -6,6 +6,7 @@
 
 - [x] add `npm run build_docs` to build the picossg.dev website, might move somewhere else later
 - [x] use _config.js instead of _nunjuck-custom/filters.js (a breaking change)
+- [x] add `config` as second parameter to `preprocess` and `postprocess` functions, sometimes you need to know the config instead of assuming e.g. the output-path
 - [ ] make the docs correct and as I like them to be
 - [ ] I want MUCH better error messages when a variable was not found or some error happens, nunjucks does a really bad job here
 - [x] move picossg.dev site into the [repo root in the dir `picossg.dev`](./picossg.dev) so we can 

@@ -8,10 +8,13 @@ const findPages = (files, startsWith = '') => {
   return filtered;
 }
 
-const preprocess = (files) => {
+const preprocess = (files, config) => {
   const file40 = files.get('40-preprocess.txt.njk');
   file40.content = 'This is all the content, coming from the preprocessor. And the <<<{{title}}>>>';
   file40.title = 'Hi-jacked';
+
+  const file42 = files.get('42-config-param.txt.njk');
+  file42.config = config;
 
   const file50 = files.get('50-picossg-findPages.txt.njk');
   file50.allPagesStartingWith2 = findPages(files, '2');
