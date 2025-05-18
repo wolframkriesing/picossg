@@ -25,7 +25,7 @@ node --version; npm --version
 
 There are two main ways to use PicoSSG:
 
-### 1. Use with npx (Recommended for First-Time Users)
+### 1. Use with npx (Recommended for Quick Setup)
 
 The simplest way to use PicoSSG without installing it globally is with `npx`, which comes with npm:
 
@@ -34,7 +34,7 @@ npx @wolframkriesing/picossg -c content -o output
 ```
 
 This command runs PicoSSG, processing files from the `content` directory into the `output` directory.
-Running the command will maybe create very detailed output like this, when it works:
+Running the command will maybe hopefully create detailed output like this:
 ```bash
 > npx @wolframkriesing/picossg -c content -o output
 
@@ -105,27 +105,10 @@ With this setup, you can:
 - Run `npm start` to serve your site on http://localhost:8000
 - Run `npm run build:watch` to rebuild your site automatically when files change
 
-## Command Line Options
-
-PicoSSG supports the following command line options:
-
-| Option | Short | Description |
-|--------|-------|-------------|
-| `--content` | `-c` | Source directory (required) |
-| `--out` | `-o` | Output directory (required) |
-| `--config` | `-x` | Config file name (default: `_config.js`) |
-| `--help` | `-h` | Show help message |
-
-Example usage:
-
-```bash
-npx @wolframkriesing/picossg -c content -o output -x _custom-config.js
-```
-
 ## Next Steps
 
 Now that you have PicoSSG installed, you're ready to start building your site:
 
-- Continue to the [Quick Start Guide](/quick-start/) to build your first site
-- Learn about [File Mapping](/file-mapping/) to understand how PicoSSG processes files
-- Explore [Templates](/templates/) to take advantage of Nunjucks templating
+- Continue to the [Create a Site](/docs/create-site/) guide to build your first site
+- Learn about [File Mapping](/docs/file-mapping/) to understand how PicoSSG processes files
+- Explore [Templates](/docs/templates/) to take advantage of Nunjucks templating

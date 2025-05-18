@@ -12,7 +12,7 @@ const picoSsgVersion = packageJson.version;
 
 const buildNav = files => {
   const pages = new Map([
-    ['Getting Started', [DOCS_DIR, path.join(DOCS_DIR, 'install'), path.join(DOCS_DIR, 'create-site')]],
+    ['Getting Started', [DOCS_DIR, path.join(DOCS_DIR, 'install'), path.join(DOCS_DIR, 'cli'), path.join(DOCS_DIR, 'create-site')]],
     // ['Concepts', ['file-mapping', 'markdown', 'frontmatter', 'templates']],
     // ['Advanced', ['components', 'custom-filters', 'diagrams']],
     ['About', ['changelog']],
@@ -49,7 +49,7 @@ const collectSrcStats = () => {
 const addFirstLevelHeadlines = files => {
   for (const [_, data] of files) {
     if (data._output.relativeFilePath.startsWith('docs/') || data.url.startsWith('/changelog/')) {
-      const lines = data.content.match(/^## .*/gm);
+      const lines = data.content.match(/^## .*/gm) ?? [];
       data.firstLevelHeadlines = lines.map(s => s.replace(/^## /, ''));
     }
   }
