@@ -30,7 +30,7 @@
     "testdiffs": "cat /tmp/diffout",
     
     "build:site": "node src/build-cli.js -c picossg.dev -o _picossg.dev",
-    "build:site:watch": "npx nodemon --quiet --legacy-watch --watch picossg.dev --ext '*' --exec \"bash -c 'npm run build:site'\"",
+    "build:site:watch": "npx nodemon --quiet --legacy-watch --watch picossg.dev --watch CHANGELOG.md --ext '*' --exec \"bash -c 'npm run build:site'\"",
     "serve:site": "npx http-server _picossg.dev -p 8000"
   },
   "keywords": [
