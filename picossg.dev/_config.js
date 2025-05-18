@@ -1,22 +1,28 @@
-import path from 'path';
+import {fileURLToPath} from 'url';
+import path, {dirname} from 'path';
 import fs from 'fs';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+const DOCS_DIR = 'docs/';
+const SRC_DIR = path.resolve(path.join(__dirname, '../src'));
 
 const join = path.join;
 
 const buildNav = files => {
   const pages = new Map([
-    ['Getting Started', ['docs/', 'docs/install', 'docs/create-site']],
-    // ['Concepts', ['docs/file-mapping', 'docs/markdown', 'docs/frontmatter', 'docs/templates']],
-    // ['Advanced', ['docs/components', 'docs/custom-filters', 'docs/diagrams']],
+    ['Getting Started', ['', 'install', 'create-site']],
+    // ['Concepts', ['file-mapping', 'markdown', 'frontmatter', 'templates']],
+    // ['Advanced', ['components', 'custom-filters', 'diagrams']],
   ]);
-  
+
   const nav = new Map();
   pages.keys().toArray().forEach(title => nav.set(title, []));
-  
+
   for (const [title, pagePaths] of pages) {
     for (const path of pagePaths) {
       for (const [filename, data] of files) {
-        if (filename.startsWith(join(path, 'index.html'))) {
+        if (filename.startsWith(join(DOCS_DIR, path, 'index.html'))) {
           nav.get(title).push(data);
         }
       }
@@ -29,10 +35,9 @@ const buildNav = files => {
 
 const collectSrcStats = () => {
   // count the number of files in 'src' and count the number of lines of code in total in that directory
-  const statsDir = path.resolve(process.cwd() + '../../../src');
-  const files = fs.readdirSync(statsDir);
+  const files = fs.readdirSync(SRC_DIR);
   const numFiles = files.length;
-  const numLoc = files.map(file => fs.readFileSync(path.join(statsDir, file), 'utf8').split('\n').length);
+  const numLoc = files.map(file => fs.readFileSync(path.join(SRC_DIR, file), 'utf8').split('\n').length);
   return {
     numFiles,
     numLoc: numLoc.reduce((a, b) => a + b, 0),
@@ -45,14 +50,14 @@ const addFirstLevelHeadlines = files => {
       const lines = data.content.match(/^## .*/gm);
       data.firstLevelHeadlines = lines.map(s => s.replace(/^## /, ''));
     }
-  }  
+  }
 }
 
 const preprocess = (files) => {
   buildNav(files);
   const srcStats = collectSrcStats();
   addFirstLevelHeadlines(files);
-  
+
   for (const [_, data] of files) {
     data.srcStats = srcStats;
     data._site = {
@@ -60,12 +65,16 @@ const preprocess = (files) => {
       abstract: 'PicoSSG is a minimal static site generator built on the philosophy of simplicity and predictability.',
       summaryImage: '/og-image.webp',
     }
-  }  
+  }
 }
 
 const configureNjk = (njk) => {
   njk.addFilter('slug', (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''));
-  njk.addFilter('readableDateTime', (date) => new Date(date).toLocaleString('en-EN', {dateStyle: 'long', timeStyle: 'medium', hourCycle: 'h24'}));
+  njk.addFilter('readableDateTime', (date) => new Date(date).toLocaleString('en-EN', {
+    dateStyle: 'long',
+    timeStyle: 'medium',
+    hourCycle: 'h24'
+  }));
 }
 
 export {preprocess, configureNjk}

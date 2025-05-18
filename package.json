@@ -19,7 +19,6 @@
   },
   "scripts": {
     "build": "node src/build-cli.js -c test/content -o dist",
-    "build_docs": "cd examples/2-picossg.dev && node ../../src/build-cli.js -c content -o ../../_docs_dist",
     "serve": "npx http-server dist -p 8899",
     "test:preprocess": "node src/build-cli.js -c test/content -o dist -x _config_preprocess_assertions.js",
     "test:preprocess:watch": "node --watch src/build-cli.js -c test/content -o dist -x _config_preprocess_assertions.js",
@@ -28,7 +27,11 @@
     "test": "diff -ru test/golden-ref dist > /tmp/diffout; cat /tmp/diffout | diffstat; if [ -s /tmp/diffout ]; then echo ❌ Differences found; else echo ✅ OK; fi",
     "test:watch": "npx nodemon --quiet --legacy-watch --watch dist --watch test/golden-ref --watch src/build.js --ext '*' --exec \"bash -c 'npm test --silent'\"",
     "test:ci": "npm run test:preprocess && npm run build && npm run test",
-    "testdiffs": "cat /tmp/diffout"
+    "testdiffs": "cat /tmp/diffout",
+    
+    "build:site": "node src/build-cli.js -c picossg.dev -o _picossg.dev",
+    "build:site:watch": "npx nodemon --quiet --legacy-watch --watch picossg.dev --ext '*' --exec \"bash -c 'npm run build:site'\"",
+    "serve:site": "npx http-server _picossg.dev -p 8000"
   },
   "keywords": [
     "static-site-generator",
