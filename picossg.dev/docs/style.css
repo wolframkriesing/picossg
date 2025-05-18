@@ -7,11 +7,6 @@
   --sidebar-width: 280px;
 }
 
-* {
-  box-sizing: border-box;
-  scroll-behavior: smooth;
-}
-
 body {
   font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
   color: var(--text-color);
@@ -58,19 +53,18 @@ main {
 
 nav ul {
   list-style: none;
-  padding-left: 1rem;
-  margin: 0.5rem 0;
+  padding-left: 2rem;
+  margin: 0;
 }
 
 nav ul li {
-  margin: 0.5rem 0;
+  margin: 0;
 }
 
 nav a {
   color: var(--text-color);
   text-decoration: none;
   display: block;
-  padding: 0.25rem 0;
   transition: color 0.2s;
 }
 
