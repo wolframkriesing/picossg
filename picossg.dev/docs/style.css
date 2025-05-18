@@ -1,6 +1,6 @@
 :root {
   --primary-color: #0f0;
-  --primary-hover: #00ff00;
+  --primary-hover: white;
   --text-color: #0f0;
   --light-bg: #1a1a1a;
   --border-color: #333;
@@ -61,20 +61,13 @@ nav ul li {
   margin: 0;
 }
 
-nav a {
-  color: var(--text-color);
-  text-decoration: none;
-  display: block;
-  transition: color 0.2s;
-}
-
 nav a:hover {
   color: var(--primary-hover);
   text-decoration: none;
 }
 
 nav a.active {
-  color: var(--primary-color);
+  color: var(--primary-hover);
   font-weight: 500;
   text-decoration: underline;
 }
@@ -127,11 +120,24 @@ h3 {
 
 a {
   color: var(--primary-color);
-  text-decoration: none;
+}
+a:hover {
+  color: var(--primary-hover);
 }
 
-a:hover {
+nav a {
+  color: var(--text-color);
+  text-decoration: none;
+  display: block;
+  transition: color 0.2s;
+}
+
+nav a:hover {
   text-decoration: underline;
+}
+
+header a {
+  text-decoration: none;
 }
 
 p, ul, ol {
