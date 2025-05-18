@@ -12,9 +12,10 @@ const picoSsgVersion = packageJson.version;
 
 const buildNav = files => {
   const pages = new Map([
-    ['Getting Started', ['', 'install', 'create-site']],
+    ['Getting Started', [DOCS_DIR, path.join(DOCS_DIR, 'install'), path.join(DOCS_DIR, 'create-site')]],
     // ['Concepts', ['file-mapping', 'markdown', 'frontmatter', 'templates']],
     // ['Advanced', ['components', 'custom-filters', 'diagrams']],
+    ['About', ['changelog']],
   ]);
 
   const nav = new Map();
@@ -23,7 +24,7 @@ const buildNav = files => {
   for (const [title, pagePaths] of pages) {
     for (const pagePath of pagePaths) {
       for (const [filename, data] of files) {
-        if (filename.startsWith(path.join(DOCS_DIR, pagePath, 'index.html'))) {
+        if (filename.startsWith(path.join(pagePath, 'index.html'))) {
           nav.get(title).push(data);
         }
       }
@@ -47,7 +48,7 @@ const collectSrcStats = () => {
 
 const addFirstLevelHeadlines = files => {
   for (const [_, data] of files) {
-    if (data._output.relativeFilePath.startsWith('docs/')) {
+    if (data._output.relativeFilePath.startsWith('docs/') || data.url.startsWith('/changelog/')) {
       const lines = data.content.match(/^## .*/gm);
       data.firstLevelHeadlines = lines.map(s => s.replace(/^## /, ''));
     }
@@ -59,7 +60,7 @@ function addChangelogFile(files, config) {
   const absoluteFilePath = path.join(__dirname, '../CHANGELOG.md');
   const content = fs.readFileSync(absoluteFilePath, 'utf8');
   const prettyUrlPath = '/changelog/';
-  files.set('../CHANGELOG.md', {
+  files.set('changelog/index.html.md', {
     _file: {
       content,
       relativeFilePath: '../CHANGELOG.md',
