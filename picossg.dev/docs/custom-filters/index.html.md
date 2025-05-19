@@ -179,28 +179,6 @@ env.addFilter('fetchData', async function(url) {
 }, true); // true flag indicates async filter
 ```
 
-## Accessing Nunjucks Environment
-
-You can access and modify the Nunjucks environment directly:
-
-```javascript
-export default function(env) {
-  // Change delimiter syntax
-  env.opts.autoescape = false;
-  
-  // Add globals
-  env.addGlobal('site', {
-    title: 'My Awesome Site',
-    url: 'https://example.com'
-  });
-  
-  // Add filters
-  env.addFilter('myFilter', function(str) {
-    return str;
-  });
-}
-```
-
 ## Best Practices
 
 1. **Keep filters simple**: Each filter should do one thing well

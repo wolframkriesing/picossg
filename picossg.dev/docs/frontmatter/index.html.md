@@ -7,7 +7,12 @@ title: Front Matter
 
 Front matter is a powerful feature in PicoSSG that allows you to include metadata at the top of your content files. This metadata can be used for layouts, content organization, and custom data processing.
 
-## What is Front Matter?
+> Front matter is the initial section of a book
+
+Says [wikipedia](https://en.wikipedia.org/wiki/Book_design#Front_matter) about the origin of the term.
+
+
+## What is it?
 
 Front matter is a YAML block at the beginning of a file, enclosed by triple dashes (`---`). It looks like this:
 
@@ -17,22 +22,24 @@ title: My Page Title
 layout: _base.njk
 date: 2025-01-15
 author: Jane Doe
-tags: [tutorial, beginner]
+tags: 
+  - tutorial
+  - beginner
 ---
 ```
 
 PicoSSG uses the [yaml](https://www.npmjs.com/package/yaml) package to parse front matter.
 
-## How Front Matter Works in PicoSSG
+## How it works
 
-When PicoSSG processes a file:
+When PicoSSG processes a file (excluding copied as-is files like `.css`), it performs the following steps:
 
 1. It checks for a front matter block at the beginning
 2. If found, it extracts and parses the YAML data
-3. The data becomes available in the page context for templating
-4. The front matter block is removed from the final output
+3. The data becomes available in the page context in the variable `_frontmatter` for templating
+4. The front matter block is removed before further processing
 
-## Common Front Matter Properties
+## Properties
 
 While you can include any properties you want in front matter, certain properties have special meaning in PicoSSG:
 
@@ -76,108 +83,6 @@ date: 2025-01-15
 
 PicoSSG automatically reads the file's modification time if no date is specified in the front matter.
 
-## Using Front Matter in Templates
-
-All front matter data is available directly in your templates. For example, with this front matter:
-
-```yaml
----
-title: My Page
-subtitle: A great page
-author: Jane Doe
-tags: [important, featured]
----
-```
-
-You can use the data in your Nunjucks templates:
-
-```html
-<h1>{{ title }}</h1>
-<h2>{{ subtitle }}</h2>
-<p>Written by {{ author }}</p>
-
-<ul>
-{% for tag in tags %}
-  <li>{{ tag }}</li>
-{% endfor %}
-</ul>
-```
-
-## Front Matter and Layouts
-
-The most common use of front matter is to specify layouts. Here's how it works:
-
-1. Create a layout file (e.g., `_base.njk`):
-   ```html
-   <!DOCTYPE html>
-   <html>
-   <head>
-     <title>{{ title }}</title>
-   </head>
-   <body>
-     <header>My Site</header>
-     <main>
-       {{ content | safe }}
-     </main>
-     <footer>Copyright {{ "now" | date: "%Y" }}</footer>
-   </body>
-   </html>
-   ```
-
-2. Use the layout in your content file:
-   ```markdown
-   ---
-   layout: _base.njk
-   title: Welcome
-   ---
-   
-   # Welcome to my site
-   
-   This is my homepage.
-   ```
-
-3. The output will combine both files, with your content inserted into the layout.
-
-## Complex Data in Front Matter
-
-Front matter supports complex YAML structures:
-
-```yaml
----
-title: Products
-products:
-  - name: Product A
-    price: 19.99
-    features:
-      - Fast
-      - Reliable
-  - name: Product B
-    price: 29.99
-    features:
-      - Premium
-      - Durable
----
-```
-
-You can then iterate through this data in your templates:
-
-```html
-<h1>{{ title }}</h1>
-
-<div class="products">
-  {% for product in products %}
-    <div class="product">
-      <h2>{{ product.name }} - ${{ product.price }}</h2>
-      <ul>
-        {% for feature in product.features %}
-          <li>{{ feature }}</li>
-        {% endfor %}
-      </ul>
-    </div>
-  {% endfor %}
-</div>
-```
-
 ## Best Practices
 
 1. **Keep it consistent**: Use the same properties across similar types of content
@@ -206,6 +111,5 @@ If your front matter data isn't available in templates:
 
 ## Related Topics
 
-- [Templates](/templates/) - Using front matter in Nunjucks templates
-- [User Functions](/user-functions/) - Accessing front matter data in user functions
-- [Custom Filters](/custom-filters/) - Working with front matter in filters
+- [Templates](/docs/templates/) - Using front matter in Nunjucks templates
+- [Custom Filters](/docs/custom-filters/) - Working with front matter in filters

@@ -21,13 +21,13 @@ const buildNav = files => {
     ['Concepts', [
       path.join(DOCS_DIR, 'file-mapping'), 
       // path.join(DOCS_DIR, 'markdown'), 
-      // path.join(DOCS_DIR, 'frontmatter'), 
+      path.join(DOCS_DIR, 'frontmatter'), 
       path.join(DOCS_DIR, 'templates'),
     ]],
     ['Advanced', [
       // path.join(DOCS_DIR, 'config-js'),
-      // path.join(DOCS_DIR, 'components'),
-      // path.join(DOCS_DIR, 'custom-filters'),
+      path.join(DOCS_DIR, 'components'),
+      path.join(DOCS_DIR, 'custom-filters'),
       // path.join(DOCS_DIR, 'diagrams'),
     ]],
     ['About', ['changelog']],

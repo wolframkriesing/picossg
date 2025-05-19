@@ -5,13 +5,20 @@ title: Templates
 
 # Templates in PicoSSG
 
-PicoSSG uses [Nunjucks](https://mozilla.github.io/nunjucks/) as its templating engine. Nunjucks is a powerful, flexible templating language with a syntax similar to Jinja2 (Python) and Twig (PHP).
+PicoSSG uses [Nunjucks](https://mozilla.github.io/nunjucks/) as its templating engine. 
+Nunjucks is a powerful, flexible templating language with a syntax inspired by
+[Django templates](https://docs.djangoproject.com/en/dev/topics/templates/#syntax),
+[Jinja2 (Python)](https://jinja.palletsprojects.com/en/stable/) and [Twig (PHP)](https://twig.symfony.com/).
 
-## Basic Template Usage
+## Basics
 
 Files with the `.njk` extension are processed by Nunjucks. Here's a simple example:
 
 ```html
+---
+title: My Page
+---
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,11 +27,25 @@ Files with the `.njk` extension are processed by Nunjucks. Here's a simple examp
 <body>
   <h1>{{ title }}</h1>
   <p>Welcome to my website!</p>
+
+  {% for number in [1, 2, 3, 4, 5] %}
+    {% if number % 2 == 0 %}
+      <p>Even Number: {{ number }}</p>
+    {% else %}
+      <p>Odd Number: {{ number }}</p>
+    {% endif %}
+  {% endfor %}
+
 </body>
 </html>
 ```
 
-## Variable Output
+In this example, the `title` variable is defined in the [front matter](/docs/frontmatter) and used in the template.
+The `for` loop iterates over a list of numbers, and the `if` statement checks if each number is even or odd.
+
+## Syntax
+
+### Variable Output
 
 To output a variable, use double curly braces:
 
@@ -38,9 +59,9 @@ For safety, HTML characters are escaped by default. To output raw HTML, use the 
 {{ variable | safe }}
 ```
 
-## Control Structures
+### Control Structures
 
-### Conditionals
+#### Conditionals
 
 ```
 {% if user %}
@@ -50,7 +71,7 @@ For safety, HTML characters are escaped by default. To output raw HTML, use the 
 {% endif %}
 ```
 
-### Loops
+#### Loops
 
 ```
 <ul>
@@ -72,7 +93,49 @@ With an else block for empty collections:
 </ul>
 ```
 
-## Template Inheritance
+### Template Comments
+
+Add comments that won't appear in the output:
+
+```
+{# This is a comment and won't be rendered #}
+```
+
+### Set Variables
+
+Create or modify variables within templates:
+
+```
+{% set greeting = "Hello" %}
+{{ greeting }}, World!
+```
+
+### Whitespace Control
+
+Control whitespace with the `-` character:
+
+```
+{% for item in items -%}
+  {{ item }}
+{%- endfor %}
+```
+
+### Raw Content
+
+Use the `raw` tag to prevent processing:
+
+```
+{% raw %}
+  This {{ will not be }} processed.
+{% endraw %}
+```
+
+### Much More
+
+See the [Nunjucks documentation](https://mozilla.github.io/nunjucks/templating.html) for all the features, 
+there are a lot of built-in filters, more control structures, macros, and asynchronous templates.
+
+## Inheritance `{% extends %}`
 
 Nunjucks supports template inheritance, which is extremely useful for creating consistent layouts.
 
@@ -123,7 +186,7 @@ Extend the base template and override specific blocks:
 {% endblock %}
 ```
 
-## Including Templates
+## Includes `{% include %}`
 
 You can include other templates using the `include` tag:
 
@@ -137,37 +200,27 @@ You can include other templates using the `include` tag:
 {% include "_footer.njk" %}
 ```
 
-## Special PicoSSG Integration
+## `layout` and `{{ content }}`
 
-### The `content` Variable
+In PicoSSG, when you specify a `layout` in the front matter of a Markdown file, 
+the rendered content is passed to that layout via the `content` variable.
 
-When using a layout specified in front matter, the processed content is available as the `content` variable:
+```html
+---
+layout: _base.njk
+---
+
+my md content ...
+```
+
+In order to render the content of the file above, you can use the `{{ content }}` variable in your layout,
+which is the `_base.njk` file in this case (the one referenced as `layout` in the front matter above):
 
 ```html
 {{ content | safe }}
 ```
 
-### Combining with Markdown
-
-PicoSSG can combine Nunjucks and Markdown processing:
-
-1. Files with `.md.njk` extension are first processed by Nunjucks, then by Markdown
-2. Files with `.html.md` are processed by Markdown and output as HTML
-
-### Front Matter Integration
-
-Front matter data is automatically available in your templates:
-
-```
----
-title: My Page
-author: John Doe
----
-
-{% if author %}
-  <p>Written by {{ author }}</p>
-{% endif %}
-```
+Note: Using `{{ content | safe }}` is important to prevent HTML escaping, allowing the rendered Markdown to be displayed correctly.
 
 ## Built-in Filters
 
@@ -181,78 +234,24 @@ Processes a string as Markdown:
 {{ "**Bold text** and *italic text*" | md | safe }}
 ```
 
+this will render
+
+```html
+<p><strong>Bold text</strong> and <em>italic text</em></p>
+```
+
 ### `mdinline`
 
-Processes a string as inline Markdown (no block elements):
+Processes a string as inline Markdown, it does NOT add surrounding `<p>` elements as `md` does:
 
 ```
 <p>Click {{ "[here](https://example.com)" | mdinline | safe }} to visit our site.</p>
 ```
 
-## Advanced Template Features
-
-### Template Comments
-
-Add comments that won't appear in the output:
-
-```
-{# This is a comment and won't be rendered #}
-```
-
-### Set Variables
-
-Create or modify variables within templates:
-
-```
-{% set greeting = "Hello" %}
-{{ greeting }}, World!
-```
-
-### Whitespace Control
-
-Control whitespace with the `-` character:
-
-```
-{% for item in items -%}
-  {{ item }}
-{%- endfor %}
-```
-
-### Raw Content
-
-Use the `raw` tag to prevent processing:
-
-```
-{% raw %}
-  This {{ will not be }} processed.
-{% endraw %}
-```
-
-## Common Patterns
-
-### Navigation Highlighting
+renders
 
 ```html
-
-<nav>
-  <a href="/" class="{% if page.url == '/' %}active{% endif %}">Home</a>
-  <a href="/about/" class="{% if page.url == '/about/' %}active{% endif %}">About</a>
-  <a href="/contact/" class="{% if page.url == '/contact/' %}active{% endif %}">Contact</a>
-</nav>
-```
-
-### Working with Dates
-
-```html
-<p>Published: {{ date | date: "%B %d, %Y" }}</p>
-```
-
-### Conditionally Including Content
-
-```html
-{% if env == "production" %}
-  <script src="/analytics.js"></script>
-{% endif %}
+<p>Click <a href="https://example.com">here</a> to visit our site.</p>
 ```
 
 ## Best Practices
@@ -266,6 +265,6 @@ Use the `raw` tag to prevent processing:
 
 ## Related Topics
 
-- [Custom Filters](/custom-filters/) - Adding your own Nunjucks filters
-- [Front Matter](/frontmatter/) - Using metadata in templates
-- [Components](/components/) - Creating reusable components
+- [Custom Filters](/docs/custom-filters/) - Adding your own Nunjucks filters
+- [Front Matter](/docs/frontmatter/) - Using metadata in templates
+- [Components](/docs/components/) - Creating reusable components
