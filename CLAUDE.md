@@ -28,7 +28,6 @@ The test system compares generated output in the `_output` directory with the ex
 
 - `src/build-cli.js` - CLI entry point for the PicoSSG tool
 - `src/build.js` - Core build process implementation
-- `src/picossg.js` - PicoSSG class with utilities for page finding and processing
 
 ### Build Process
 
@@ -60,13 +59,6 @@ The test system compares generated output in the `_output` directory with the ex
    - Create `_config.js` in the content directory
    - Export a `preprocess` and/or `postprocess` function that can transform content and data before/after processing
    - Configure nunjucks by providing `configureNjk` which receives `njk` as parameter
-
-## Roadmap (from CHANGELOG)
-
-The project is moving toward v3.0.0 with plans to:
-- Allow preprocessing and postprocessing functions that receive ALL files
-- Support page minification 
-- Restructure tests
 
 ## Coding Guidelines
 

@@ -20,7 +20,7 @@ PicoSSG includes a few built-in filters like `md` and `mdinline`, but you can ad
 ## Adding Custom Filters
 
 To add custom filters, create function `configureNjk()` in the `_config.js` in your content directory:
-This file should export a default function that receives the Nunjucks environment:
+This file should export the function that receives the Nunjucks environment:
 
 ```javascript
 // content/_config.js
