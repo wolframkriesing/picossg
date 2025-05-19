@@ -13,6 +13,10 @@ Find here all changes tracked while developing picossg.
   - [ ] document the second parameter to the `preprocess` and `postprocess` functions
   - [ ] link the ADRs in the docs too
 
+## v4.0.1
+
+- [ ] minor docs updates
+
 ## v4.0.0
 
 - [x] add `npm run build:site` to build the picossg.dev website, might move somewhere else later

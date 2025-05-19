@@ -127,13 +127,8 @@ a:hover {
 
 nav a {
   color: var(--text-color);
-  text-decoration: none;
   display: block;
   transition: color 0.2s;
-}
-
-nav a:hover {
-  text-decoration: underline;
 }
 
 header a {
