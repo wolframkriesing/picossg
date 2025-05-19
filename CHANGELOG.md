@@ -9,13 +9,14 @@ Find here all changes tracked while developing picossg.
 - [ ] I want MUCH better error messages when a variable was not found or some error happens, nunjucks does a really bad job here
 - [ ] a link checker would be nice
 - [ ] add to the docs how to use PicoSSG when running `npm install` in a project
+- [ ] make the docs correct and as I like them to be
 
 ## v4.0.0
 
 - [x] add `npm run build_docs` to build the picossg.dev website, might move somewhere else later
 - [x] use _config.js instead of _nunjuck-custom/filters.js (a breaking change)
 - [x] add `config` as second parameter to `preprocess` and `postprocess` functions, sometimes you need to know the config instead of assuming e.g. the output-path
-- [ ] make the docs correct and as I like them to be
+- [x] improved the docs significantly
 - [x] move picossg.dev site into the [repo root in the dir `picossg.dev`](./picossg.dev) so we can 
   - [x] use/link changelog, package.json and other files directly from the source
 - [x] rename `dist` to `_output`, just to be consistent in naming
