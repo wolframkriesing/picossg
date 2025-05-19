@@ -33,7 +33,7 @@ Edit your `package.json` to include these scripts:
   "version": "1.0.0",
   "scripts": {
     "build": "npx @wolframkriesing/picossg -c content -o output",
-    "start": "npx http-server output -p 8000",
+    "start": "npx http-server output -p 0",
     "build:watch": "npx nodemon --quiet --legacy-watch --watch content --ext '*' --exec \"bash -c 'npm run build'\""
   }
 }
@@ -58,7 +58,10 @@ Welcome to my website built with PicoSSG!
 **Important**: Notice that we're using `.html.md` as the extension, not just `.md`. PicoSSG only removes the 
 processed extensions (like `.md` and `.njk`) but doesn't replace them, so you need to include the final extension you want (`.html` in this case).
 
-Make sure to run `npm run build:watch` to build the site and `npm start` to serve it and open it in your browser at http://localhost:8000.
+Run `npm run build` once to build the site, then `npm start` to serve it (usually at http://localhost:8080, 
+but check the terminal output — `-p 0` picks a free port).  
+Stop the server with Ctrl+C.
+Use `npm run build:watch` to rebuild on changes, and `npm start` in another terminal to serve while watching.
 
 ## Create a Layout
 
@@ -142,9 +145,39 @@ The `layout: _base.njk` line tells PicoSSG to use the `_base.njk` file as the la
 which means the content of `index.html.md` will be rendered from markdown to HTML and inserted into the layout at the `{{ content | safe }}` placeholder.
 The `title: Home` line sets the title for the page.
 
+If you run `npm run build` now, you should see the following:
+
+```bash
+> npm run build
+
+🎬 Building with config: {
+    "contentDir": "content",
+    "outDir": "output",
+    "configFile": "_config.js"
+}
+⏭️ NO (valid) user functions loaded, searched at:
+    /you/dir/content/_config.js
+    0 user-defined njk filters loaded: 
+
+⚙️ Process index.html.md, 217 Bytes, .md👍🏾 layout: _base.njk👍🏾
+✅  index.html.md => index.html 1.16 kB
+
+⏱️ Processed 1 files in 0.01 seconds.
+```
+
+Note the `⚙️ Process index.html.md, 217 Bytes, .md👍🏾 layout: _base.njk👍🏾` line,
+this indicates that the file was processed as a Markdown file and then the layout was applied to it.
+And the `👍🏾` just tells it worked; otherwise you would see an error.
+
+If you start the webserver again via `npm start` and open your browser to http://localhost:8080 (use the right port!), 
+you should see the homepage with the layout applied.
+
+![The site with a layout](./site-with-layout.webp)
+
 ## One More Page
 
-Let's add the about page. Create `content/about/index.html.md`:
+Let's add the about page. Create the directory first `mkdir -p content/about`
+and put `content/about/index.html.md` in there.
 
 ```markdown-allow2copy
 ---
