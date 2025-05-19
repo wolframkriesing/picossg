@@ -80,18 +80,26 @@ content/                   output/
 When PicoSSG builds your site, it:
 
 1. Scans the content directory recursively
-2. For each file, it determines if processing is needed
-3. Runs the `preprocess()` function if present in `_config.js`
+1. For each file, it determines if processing is needed
+1. All files that just need to be copied (like CSS, images, etc.) they are copied as-is, the process is done for them at this point
+1. From here on the following files are processed:
+   - Markdown files (`.md`)
+   - Nunjucks templates (`.njk`)
+   - Combined files (like `.njk.md`)
+1. Extracts and remove front matter if present
+   - Front matter is YAML metadata at the top of the file
+   - It can include layout information, title, and any metadata
+1. Runs the `preprocess()` function if present in `_config.js`
    - This function can modify the file content before processing
    - If `_config.js` is not present, it skips this step
-4. Processes each file if needed (or copies it if not)
+1. Processes each file if needed
    - If the file is a Nunjucks template, it processes it first
    - If the file is Markdown, it processes it after Nunjucks
    - If the file is a static asset (like CSS), it copies it as-is
-5. Runs the `postprocess()` function if present in `_config.js` 
+1. Runs the `postprocess()` function if present in `_config.js` 
    - This function can modify the file content after processing
    - If `_config.js` is not present, it skips this step
-6. Writes the result to the output directory
+1. Writes the result to the output directory
 
 The processing order for extensions is important: **extensions are processed from right to left**:
 
