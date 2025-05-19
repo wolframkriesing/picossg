@@ -15,7 +15,7 @@ Find here all changes tracked while developing picossg.
 
 ## v4.0.0
 
-- [x] add `npm run build_docs` to build the picossg.dev website, might move somewhere else later
+- [x] add `npm run build:site` to build the picossg.dev website, might move somewhere else later
 - [x] use _config.js instead of _nunjuck-custom/filters.js (a breaking change)
 - [x] add `config` as second parameter to `preprocess` and `postprocess` functions, sometimes you need to know the config instead of assuming e.g. the output-path
 - [x] improved the docs significantly
