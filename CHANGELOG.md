@@ -15,7 +15,7 @@ Find here all changes tracked while developing picossg.
 
 ## v4.0.1
 
-- [ ] minor docs updates
+- [x] continuous docs updates
 
 ## v4.0.0
 
