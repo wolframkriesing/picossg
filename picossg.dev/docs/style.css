@@ -151,6 +151,11 @@ code {
   color: #ff8;
 }
 
+nav li code {
+  border: none;
+  padding: 0;
+}
+
 pre {
   background-color: #000;
   padding: 1rem;
