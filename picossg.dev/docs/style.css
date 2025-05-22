@@ -127,6 +127,10 @@ a:hover {
   color: var(--primary-hover);
 }
 
+a[href^="http"]:not([href*="picossg.dev"])::after {
+  content: "↗";
+}
+
 nav a {
   color: var(--text-color);
   display: block;
