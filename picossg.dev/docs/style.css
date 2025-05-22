@@ -86,13 +86,15 @@ summary {
 summary::marker {
   content: none;
 }
-summary::before {
+summary::after {
   content: ">";
   margin-right: 0.5rem;
   display: inline-block;
   transition: transform 0.2s ease;
+  position: absolute;
+  right: 1rem;
 }
-details[open] summary::before {
+details[open] summary::after {
   transform: rotate(90deg);
 }
 
