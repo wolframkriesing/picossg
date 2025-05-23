@@ -5,7 +5,8 @@ title: Front Matter
 
 # Front Matter
 
-Front matter is a powerful feature in PicoSSG that allows you to include metadata at the top of your content files. This metadata can be used for layouts, content organization, and custom data processing.
+Front matter has become a standard feature in markdown files that allows you to include metadata at the
+top of your content files. This metadata can be used for layouts, content organization, and custom data processing.
 
 > Front matter is the initial section of a book
 
@@ -14,7 +15,8 @@ Says [wikipedia](https://en.wikipedia.org/wiki/Book_design#Front_matter) about t
 
 ## What is it?
 
-Front matter is a YAML block at the beginning of a file, enclosed by triple dashes (`---`). It looks like this:
+Front matter is a YAML block that must start on the first line of the file! 
+It is enclosed by triple dashes (`---`). It looks like this:
 
 ```yaml
 ---
@@ -65,7 +67,7 @@ title: About Us
 ---
 ```
 
-Then in your layout:
+Then in your content you can write:
 
 ```html
 <title>{{ title }} - My Site</title>

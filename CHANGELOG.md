@@ -6,12 +6,11 @@ Find here all changes tracked while developing picossg.
 
 - [ ] add sizes to the _file and _output, maybe also the time it took to process
 - [ ] I want MUCH better error messages when a variable was not found or some error happens, nunjucks does a really bad job here
-- [ ] a link checker would be nice
+- [ ] a link checker would be nice, maybe something for a picossg-utils project
 - [ ] improve docs
   - [ ] make the docs correct and as I like them to be
   - [ ] add to the docs how to use PicoSSG when running `npm install` in a project
   - [ ] document the second parameter to the `preprocess` and `postprocess` functions
-  - [ ] link the ADRs in the docs too
 
 ## v4.0.1
 
