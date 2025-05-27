@@ -1,4 +1,4 @@
-import {loadModule} from '../../src/build.js';
+import {loadModule} from '../build.js';
 import path from "path";
 
 /**
@@ -7,14 +7,14 @@ import path from "path";
  * file, those might also contain a `_config.js` file.
  * E.g. if `files` contains `one/two/file.txt.njk`, then the implicit dirs is `one`.
  */
-function collectAllRelativePaths(files) {
+function collectRelativePaths(files) {
   const dirsInFiles = new Set();
   for (const [relativeFilename, _] of files) {
     dirsInFiles.add(path.dirname(relativeFilename));
   }
   // Remove the root directory if it exists, the "normal" _config.js file is in the root directory, that is processed by picossg, so do not load it here.
   dirsInFiles.delete('.');
-  
+
   const allDirs = new Set();
   for (const dir of dirsInFiles) {
     let builtDir = [];
@@ -26,9 +26,7 @@ function collectAllRelativePaths(files) {
   return allDirs;
 }
 
-const loadDataFromConfigs = async (files, config) => {
-  const allRelativePaths = collectAllRelativePaths(files);
-  
+async function loadData(allRelativePaths, config) {
   // Load the esm module from (<dir>/_config.js) for each directory in `allRelativePaths`
   const modules = new Map();
   for (const relativePath of allRelativePaths) {
@@ -40,7 +38,10 @@ const loadDataFromConfigs = async (files, config) => {
       // nothing to do here, loadModule() already produced an output
     }
   }
-  
+  return modules;
+}
+
+function deepMergeData(modules) {
   // Merge the data of parent dirs into the data of child dirs.
   // e.g. data in `one/two/three` will contain all data from `one` and `one/two` as well.
   // merged bottom up, so `one/two/three` is merged onto `one/two`, which is merged onto `one`.
@@ -54,7 +55,9 @@ const loadDataFromConfigs = async (files, config) => {
     }
     modules.set(relativePath, {...mergedData, ...data});
   }
-  
+}
+
+function setDataPropertyInFiles(files, modules) {
   // Provide `_data` in all the files that have data in `modules`.
   for (const [filename, file] of files) {
     const relativePath = path.dirname(filename);
@@ -64,6 +67,18 @@ const loadDataFromConfigs = async (files, config) => {
       file._data = {};
     }
   }
+}
+
+/**
+ * Load all `_config.js` files from all the directories in `files`.
+ * Merge the data from child directories into their parent directories, across all levels.
+ * And set the `_data` property in each file to the data from the corresponding directory.
+ */
+const loadDataFromConfigs = async (files, config) => {
+  const relativePaths = collectRelativePaths(files);
+  const data = await loadData(relativePaths, config);
+  deepMergeData(data);
+  setDataPropertyInFiles(files, data);
 };
 
 export {loadDataFromConfigs};
