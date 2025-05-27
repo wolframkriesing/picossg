@@ -1,3 +1,5 @@
+import {loadDataFromConfigs} from '../../src/utils/configs.js'
+
 const findPages = (files, startsWith = '') => {
   const filtered = new Map();
   for (const [key, value] of files) {
@@ -8,7 +10,9 @@ const findPages = (files, startsWith = '') => {
   return filtered;
 }
 
-const preprocess = (files, config) => {
+const preprocess = async (files, config) => {
+  await loadDataFromConfigs(files);
+
   const file40 = files.get('40-preprocess.txt.njk');
   file40.content = 'This is all the content, coming from the preprocessor. And the <<<{{title}}>>>';
   file40.title = 'Hi-jacked';

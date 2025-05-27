@@ -1,0 +1,4 @@
+All _data vars:
+
+  addOns: utils,config.js
+  some: data
