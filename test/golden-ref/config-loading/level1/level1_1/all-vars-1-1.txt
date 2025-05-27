@@ -1,0 +1,11 @@
+All _data vars at config-loading/level1/level1_1/all-vars-1-1.txt.njk
+
+  addOns: utils,config.js
+  some: data
+  isLevel0: true
+  isLevel1: true
+  isLevel1_1: true
+
+Is this level 0? true
+Is this level 1? true
+Is this level 1-1? true

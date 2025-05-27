@@ -1,0 +1,9 @@
+All _data vars at {{ _file.relativeFilePath }}
+
+{% for k, v in _data %}
+  {{ k }}: {{ v }}
+{% endfor %}
+
+Is this level 0? {{ _data.isLevel0 | default('-') }}
+Is this level 1? {{ _data.isLevel1 | default('-') }}
+Is this level 1-1? {{ _data.isLevel1_1 | default('-') }}
