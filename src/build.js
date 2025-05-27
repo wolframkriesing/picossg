@@ -33,24 +33,33 @@ function isChildPath(absoluteDirA, absoluteDirB) {
  * @typedef {Map<string|symbol, function(*, *): *>} ProcessorMap
  */
 
-async function loadUserFunctions(config) {
-  const userFunctionsFile = path.join(process.cwd(), config.contentDir, config.configFile);
+export async function loadModule(filePath, whatWasLoaded) {
+  const filename = path.basename(filePath);
   let module;
   try {
-    module = await import(userFunctionsFile);
+    module = await import(filePath);
   } catch (e) {
     if (e.code === 'ERR_MODULE_NOT_FOUND') {
-      console.error(`⏭️ NO (valid) user functions loaded, searched at:\n     ${userFunctionsFile}`);
+      console.error(`⏭️ NO (valid) ${whatWasLoaded} loaded, searched at:\n     ${filePath}`);
       return;
     }
-    console.log(`❌ Error loading user functions:\n    ${userFunctionsFile}`);
+    console.log(`❌ Error loading ${whatWasLoaded}:\n    ${filePath}`);
     throw e;
   }
   if (module) {
-    console.log(`✅  Loaded _config.js from:\n    ${userFunctionsFile}`);
+    console.log(`✅  Loaded ${filename} from:\n    ${filePath}`);
     return module;
   }
-  console.error(`⏭️ NO (valid) _config.js loaded, searched at:\n     ${userFunctionsFile}`);
+  console.error(`⏭️ NO (valid) ${filename} loaded, searched at:\n     ${filePath}`);
+}
+
+async function loadUserFunctions(config) {
+  const userFunctionsFile = path.join(process.cwd(), config.contentDir, config.configFile);
+  try {
+    return await loadModule(userFunctionsFile, 'user functions');
+  } catch (e) {
+    throw e;
+  }
 }
 
 function userConfiguredNjk(userFunctions, njk) {
