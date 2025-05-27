@@ -4,6 +4,7 @@ Find here all changes tracked while developing picossg.
 
 ## (Maybe) Future Version
 
+- [ ] ignore .DS_Store files (or turn it around and allow only certain files)
 - [ ] add sizes to the _file and _output, maybe also the time it took to process
 - [ ] utils: a link checker would be nice
 - [ ] utils: applying config.js files per directory, that applies to all files in that directory, and the child dirs
