@@ -7,7 +7,6 @@ Find here all changes tracked while developing picossg.
 - [ ] ignore .DS_Store files (or turn it around and allow only certain files)
 - [ ] add sizes to the _file and _output, maybe also the time it took to process
 - [ ] utils: a link checker would be nice
-- [ ] utils: applying config.js files per directory, that applies to all files in that directory, and the child dirs
 - [ ] utils: I want MUCH better error messages when a variable was not found or some error happens, nunjucks does a really bad job here
 - [ ] docs: make the docs correct and as I like them to be
 - [ ] docs: add to the docs how to use PicoSSG when running `npm install` in a project
@@ -17,6 +16,8 @@ Find here all changes tracked while developing picossg.
 ## v4.0.1
 
 - [x] continuous docs updates
+- [x] utils: applying config.js files per directory, that applies to all files in that directory, and the child dirs
+      this is implemented in `src/utils/configs.js` and can be called like this in a `preprocess()` `loadDataFromConfigs(files, config)`
 
 ## v4.0.0
 

@@ -2,6 +2,7 @@ All _data vars at config-loading/all-vars-0.txt.njk
 
   addOns: utils,config.js
   some: data
+  override: root
   isLevel0: true
 
 Is this level 0? true

@@ -11,7 +11,7 @@ const findPages = (files, startsWith = '') => {
 }
 
 const preprocess = async (files, config) => {
-  await loadDataFromConfigs(files);
+  await loadDataFromConfigs(files, config);
 
   const file40 = files.get('40-preprocess.txt.njk');
   file40.content = 'This is all the content, coming from the preprocessor. And the <<<{{title}}>>>';
