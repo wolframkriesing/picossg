@@ -52,9 +52,10 @@ const buildNav = files => {
 
 const collectSrcStats = () => {
   // count the number of files in 'src' and count the number of lines of code in total in that directory
-  const files = fs.readdirSync(SRC_DIR);
+  const files = fs.readdirSync(SRC_DIR, {withFileTypes:true}).filter(file => file.isFile());
   const numFiles = files.length;
-  const numLoc = files.map(file => fs.readFileSync(path.join(SRC_DIR, file), 'utf8').split('\n').length);
+  const numLoc = files
+    .map(({name: file}) =>  fs.readFileSync(path.join(SRC_DIR, file), 'utf8').split('\n').length);
   return {
     numFiles,
     numLoc: numLoc.reduce((a, b) => a + b, 0),
