@@ -66,14 +66,14 @@
 {% include '_allow2copy.html' %}
 
 <script>
-  // Add IDs to h2 elements, so they can be navigated to, markdown per se does not add IDs to the headings
+  // Add IDs to all h2 elements, so they can be navigated to, markdown does not add IDs to the headings.
   const $h2s = document.querySelectorAll('h2');
   document.querySelectorAll('.secondLevelHeadlines a').forEach($ahref => {
-    const h2text = $ahref.innerText;
-    const h2id = $ahref.getAttribute('href').substring(1);
+    const aText = $ahref.textContent;
+    const aId = $ahref.getAttribute('href').substring(1);
     $h2s.forEach($h2 => {
-      if ($h2.innerText === h2text) {
-        $h2.id = h2id;
+      if ($h2.innerText === aText) {
+        $h2.id = aId;
       }
     });
   });
