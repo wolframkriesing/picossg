@@ -1,8 +1,11 @@
 {% extends '_base.njk' %}
 
 {% block head %}
-<link rel="stylesheet" href="/docs/style.css">
+  <link rel="stylesheet" href="/docs/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@wolframkriesing/spaish/dist/spaish.min.js"></script>
 {%  endblock %}
+
+{% set detailsSelectors = [] %}
 
 {% block body %}
 <header>
@@ -14,8 +17,12 @@
 <div class="content-wrapper">
   <aside>
     <nav>
-      {% for category, files in nav.entries() %}
-        <details open>
+      {% for category, data in nav.entries() %}
+        {% set files = data.items %}
+        {% set detailsId = 'toc-'+data.id %}
+        {% set detailsSelectors = (detailsSelectors.push('#'+detailsId), detailsSelectors) %}
+        
+        <details id="{{ detailsId }}">
           <summary>{{ category }}</summary>
           <ul>
             {% for file in files %}
@@ -72,4 +79,13 @@
   });
 </script>
 
+{% endblock %}
+
+{% block footer %}
+  <script>
+    {
+      const detailsSelectors = {{ detailsSelectors | dump | safe }};
+      spaish.detailsReopen('picossg-docs', detailsSelectors);
+    }
+  </script>
 {% endblock %}

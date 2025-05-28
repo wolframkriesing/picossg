@@ -4,6 +4,8 @@ import fs from 'fs';
 import packageJson from '../package.json' with {type: 'json'};
 import {addChangelogFile} from "./docs/changelog/_config.js";
 
+const toSlug = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const DOCS_DIR = 'docs/';
@@ -14,15 +16,15 @@ const picoSsgVersion = packageJson.version;
 const buildNav = files => {
   const pages = new Map([
     ['Getting Started', [
-      DOCS_DIR, 
-      path.join(DOCS_DIR, 'install'), 
-      path.join(DOCS_DIR, 'cli'), 
+      DOCS_DIR,
+      path.join(DOCS_DIR, 'install'),
+      path.join(DOCS_DIR, 'cli'),
       path.join(DOCS_DIR, 'create-site'),
     ]],
     ['Concepts', [
-      path.join(DOCS_DIR, 'file-mapping'), 
+      path.join(DOCS_DIR, 'file-mapping'),
       // path.join(DOCS_DIR, 'markdown'), 
-      path.join(DOCS_DIR, 'frontmatter'), 
+      path.join(DOCS_DIR, 'frontmatter'),
       path.join(DOCS_DIR, 'templates'),
     ]],
     ['Advanced', [
@@ -37,13 +39,13 @@ const buildNav = files => {
   ]);
 
   const nav = new Map();
-  pages.keys().toArray().forEach(title => nav.set(title, []));
+  pages.keys().toArray().forEach(title => nav.set(title, {id: toSlug(title), items: []}));
 
   for (const [title, pagePaths] of pages) {
     for (const pagePath of pagePaths) {
       for (const [filename, data] of files) {
         if (filename.startsWith(path.join(pagePath, 'index.html'))) {
-          nav.get(title).push(data);
+          nav.get(title).items.push(data);
         }
       }
     }
@@ -55,10 +57,10 @@ const buildNav = files => {
 
 const collectSrcStats = () => {
   // count the number of files in 'src' and count the number of lines of code in total in that directory
-  const files = fs.readdirSync(SRC_DIR, {withFileTypes:true}).filter(file => file.isFile());
+  const files = fs.readdirSync(SRC_DIR, {withFileTypes: true}).filter(file => file.isFile());
   const numFiles = files.length;
   const numLoc = files
-    .map(({name: file}) =>  fs.readFileSync(path.join(SRC_DIR, file), 'utf8').split('\n').length);
+    .map(({name: file}) => fs.readFileSync(path.join(SRC_DIR, file), 'utf8').split('\n').length);
   return {
     numFiles,
     numLoc: numLoc.reduce((a, b) => a + b, 0),
@@ -92,7 +94,7 @@ const preprocess = async (files, config) => {
 }
 
 const configureNjk = (njk) => {
-  njk.addFilter('slug', (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''));
+  njk.addFilter('slug', toSlug);
   njk.addFilter('readableDateTime', (date) => new Date(date).toLocaleString('en-EN', {
     dateStyle: 'long',
     timeStyle: 'medium',
