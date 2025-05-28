@@ -1,8 +1,17 @@
 /* Doc-specific styles that extend the base style.css */
 
+:root {
+  --header-height: 80px;
+}
+
 header {
   display: flex;
   border-bottom: 1px solid var(--primary-color);
+  position: sticky;
+  top: 0;
+  background-color: #111;
+  z-index: 100;
+  height: var(--header-height);
 }
 
 .secondLevelHeadlines {
@@ -41,4 +50,9 @@ ul.secondLevelHeadlines {
 }
 .secondLevelHeadlines a {
   padding: 0;
+}
+
+/* Add scroll offset for main content to account for sticky header */
+main h2 {
+  scroll-margin-top: calc(var(--header-height) + 1rem);
 }
