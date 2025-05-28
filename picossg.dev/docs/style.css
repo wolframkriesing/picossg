@@ -7,7 +7,31 @@ header {
 
 .secondLevelHeadlines {
   font-size: smaller;
+  position: absolute;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  transition-delay: 0.5s;
+  background: #111;
+  border: 1px solid var(--primary-color);
+  border-radius: 4px;
+  padding: 8px;
+  z-index: 10;
+  left: 100%;
+  top: 0;
+  min-width: 200px;
 }
+
+nav li {
+  position: relative;
+}
+
+nav li:hover .secondLevelHeadlines {
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 0s;
+}
+
 ul.secondLevelHeadlines {
   margin-top: 0;
 }

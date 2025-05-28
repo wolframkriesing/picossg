@@ -27,9 +27,13 @@
           <ul>
             {% for file in files %}
               <li>
-                <a href="{{ file.url }}" {% if url === file.url %}class="active"{% endif %}>{{ file.title }}</a>
-                
                 {% if url === file.url %}
+                  <a href="{{ file.url }}" class="active">{{ file.title }}</a>
+                {% else %}
+                  <a href="{{ file.url }}">{{ file.title }}</a>
+                {% endif %}
+                
+                {% if url === file.url and file.firstLevelHeadlines|length %}
                   <ul class="secondLevelHeadlines">
                     {% for h2 in file.firstLevelHeadlines %}
                       <li><a href="#{{ h2 | slug }}">{{ h2 | mdinline | safe }}</a></li>

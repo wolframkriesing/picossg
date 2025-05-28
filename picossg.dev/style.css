@@ -42,7 +42,6 @@ aside {
   padding: 1.5rem;
   background-color: #000;
   border-right: 1px solid var(--border-color);
-  overflow-y: auto;
   position: sticky;
   height: 100vh;
   top: 0;
@@ -63,6 +62,7 @@ nav ul {
 
 nav ul li {
   margin: 0;
+  width: fit-content;
 }
 
 nav a:hover {
@@ -74,6 +74,10 @@ nav a.active {
   color: var(--primary-hover);
   font-weight: 500;
   text-decoration: underline;
+}
+nav :has(.secondLevelHeadlines) a.active::after {
+  content: " >";
+  text-decoration: none;
 }
 
 details {
