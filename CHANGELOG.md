@@ -31,17 +31,17 @@ Find here all changes tracked while developing picossg.
 - [x] ensure that the path output files are written to are child paths of the output dir, it might happen that one adds a `_output` 
       object which accidentally writes to places it should not (actually just happened to me), this is basically a safeguard I feel worth having
 
-## v3.0.2
+## v3.0.2 (332 LOC)
 
 - [x] add some real docs
 - [x] 🐛 fixed a bug, `npm run build` did not work, I had the wrong path to `build-cli.js` in there
 
-## v3.0.1
+## v3.0.1 (332 LOC)
 
 - [x] update the README to be useful and correct
 - [x] provide example(s)
 
-## v3.0.0
+## v3.0.0 (332 LOC)
 
 - [x] rebuild tests to be at least somehow grouped/sorted
 - [x] ~~make the components directory be _includes, just like in nunjucks no need to invent names~~ actually this is good as it is, the components have files that will be built and served, so its mixed purpose
@@ -61,7 +61,7 @@ Find here all changes tracked while developing picossg.
 - [x] add absolute and relative filePath to _output, to provide where the file will be stored to
 - [x] remove -i command line option, just make the includes root be the content dir, simple
 
-## v2.0.0
+## v2.0.0 (281 LOC)
 
 - [x] make `npx run @wolframkriesing/picossg -c content -o out` work in other projects
 - [x] allow loading njk filters
@@ -74,7 +74,7 @@ Find here all changes tracked while developing picossg.
   - [x] pass the data into the layout template too, so e.g. a `title` of a page will be seen in the _base.njk template
 - [x] add _config.js/ts to allow pre-processing 
 
-## v1.0.0
+## v1.0.0 (138 LOC)
 
 - [x] serve and process njk files
 - [x] serve and process md files
