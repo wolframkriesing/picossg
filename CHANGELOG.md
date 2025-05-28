@@ -13,7 +13,7 @@ Find here all changes tracked while developing picossg.
 - [ ] docs: document the second parameter to the `preprocess` and `postprocess` functions
 - [ ] provide a playground to see play with the converter online
 
-## v4.0.1
+## v4.0.1 (in the works)
 
 - [x] continuous docs updates
 - [x] utils: applying config.js files per directory, that applies to all files in that directory, and the child dirs
