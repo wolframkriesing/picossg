@@ -79,13 +79,10 @@
   });
 </script>
 
-{% endblock %}
-
-{% block footer %}
-  <script>
-    {
-      const detailsSelectors = {{ detailsSelectors | dump | safe }};
-      spaish.detailsReopen('picossg-docs', detailsSelectors);
-    }
-  </script>
+<script>
+  {
+    const detailsSelectors = {{ detailsSelectors | dump | safe }};
+    spaish.detailsReopen('picossg-docs', detailsSelectors);
+  }
+</script>
 {% endblock %}
