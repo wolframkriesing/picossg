@@ -19,7 +19,7 @@ Find here all changes tracked while developing picossg.
 - [x] utils: applying config.js files per directory, that applies to all files in that directory, and the child dirs
       this is implemented in `src/utils/configs.js` and can be called like this in a `preprocess()` `loadDataFromConfigs(files, config)`
 
-## v4.0.0
+## v4.0.0 (339 LOC)
 
 - [x] add `npm run build:site` to build the picossg.dev website, might move somewhere else later
 - [x] use _config.js instead of _nunjuck-custom/filters.js (a breaking change)
