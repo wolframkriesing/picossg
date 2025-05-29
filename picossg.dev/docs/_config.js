@@ -48,18 +48,8 @@ const addPropertyNav = (files, {toSlug}) => {
   }
 };
 
-const addPropertyFirstLevelHeadlines = files => {
-  for (const [_, data] of files) {
-    if (data._output.relativeFilePath.startsWith(DOCS_DIR)) {
-      const lines = data.content.match(/^## .*/gm) ?? [];
-      data.firstLevelHeadlines = lines.map(s => s.replace(/^## /, ''));
-    }
-  }
-}
-
 const preprocess = (files, {toSlug}) => {
   addPropertyNav(files, {toSlug});
-  addPropertyFirstLevelHeadlines(files);
 }
 
 export {preprocess};
