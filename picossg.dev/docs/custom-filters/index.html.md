@@ -19,12 +19,12 @@ PicoSSG includes a few built-in filters like `md` and `mdinline`, but you can ad
 
 ## Adding Custom Filters
 
-To add custom filters, create function `configureNjk()` in the `_config.js` in your content directory:
-This file should export the function that receives the Nunjucks environment:
+To add custom filters, create the function `configure()` in the `_config.js` in your content directory:
+This file should export that function like so:
 
 ```javascript
 // content/_config.js
-const configureNjk = (njk) => {
+const configure = ({njk}) => {
   njk.addFilter('uppercase', function(str) {
     return str.toUpperCase();
   });
@@ -35,7 +35,7 @@ const configureNjk = (njk) => {
   });
 }
 
-export {configureNjk};
+export {configure};
 ```
 
 ## Custom Filter Examples
@@ -194,7 +194,7 @@ If you're having issues with custom filters:
 
 1. Check the console for errors when PicoSSG starts
 2. Verify your `_config.js` file is in the correct location, in your content directory root
-3. Make sure the export syntax is correct `export {configureNjk};`
+3. Make sure the export syntax is correct `export {configure};`
 4. Add console.log statements in your filters to debug values
 5. Try using simpler filters first to ensure the system is working
 

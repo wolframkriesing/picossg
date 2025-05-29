@@ -58,7 +58,7 @@ The test system compares generated output in the `_output` directory with the ex
 2. **User Functions**:
    - Create `_config.js` in the content directory
    - Export a `preprocess` and/or `postprocess` function that can transform content and data before/after processing
-   - Configure nunjucks by providing `configureNjk` which receives `njk` as parameter
+   - Configure nunjucks and/or markdown by providing a function `configure({njk, md})`
 
 ## Coding Guidelines
 
