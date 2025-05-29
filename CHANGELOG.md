@@ -12,6 +12,7 @@ Find here all changes tracked while developing picossg.
 - [ ] docs: add to the docs how to use PicoSSG when running `npm install` in a project
 - [ ] docs: document the second parameter to the `preprocess` and `postprocess` functions
 - [ ] provide a playground to see play with the converter online
+- [ ] utils: render social-exported.json (e.g. tweets.json) to HTML, so it can be used in the site
 
 ## v4.0.1 (in the works)
 
