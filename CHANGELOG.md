@@ -13,12 +13,15 @@ Find here all changes tracked while developing picossg.
 - [ ] docs: document the second parameter to the `preprocess` and `postprocess` functions
 - [ ] provide a playground to see play with the converter online
 - [ ] utils: render social-exported.json (e.g. tweets.json) to HTML, so it can be used in the site
+- [ ] utils: a `{% toc %}` for md pages would be cool to render the table of contents 
 
-## v4.0.1 (in the works)
+## v4.1.0 (in the works)
 
 - [x] continuous docs updates
 - [x] utils: applying config.js files per directory, that applies to all files in that directory, and the child dirs
       this is implemented in `src/utils/configs.js` and can be called like this in a `preprocess()` `loadDataFromConfigs(files, config)`
+- [...] rename `configureNjk()` to `configure()` and pass it all processors, so the user can configure as they like
+- [ ] document the `throwOnUndefined` default configuration for nunjucks and why 
 
 ## v4.0.0 (339 LOC)
 
