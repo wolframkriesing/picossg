@@ -25,7 +25,7 @@ const testAllFilesAreFound = (files) => {
     '40-preprocess.txt.njk',
     '41-postprocess.txt.njk',
     '42-config-param.txt.njk',
-    '50-picossg-findPages.txt.njk',
+    '50-utils-stats.txt.njk',
     'README.md',
     'config-loading/all-vars-0.txt.njk',
     'config-loading/level1/level1_1/all-vars-1-1.txt.njk',

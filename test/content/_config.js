@@ -1,17 +1,9 @@
 import {loadDataFromConfigs} from '../../src/utils/configs.js'
-
-const findPages = (files, startsWith = '') => {
-  const filtered = new Map();
-  for (const [key, value] of files) {
-    if (key.startsWith(startsWith)) {
-      filtered.set(key, value);
-    }
-  }
-  return filtered;
-}
+import {addStatsProperty} from "../../src/utils/stats.js";
 
 const preprocess = async (files, config) => {
   await loadDataFromConfigs(files, config);
+  addStatsProperty(files);
 
   const file40 = files.get('40-preprocess.txt.njk');
   file40.content = 'This is all the content, coming from the preprocessor. And the <<<{{title}}>>>';
@@ -19,9 +11,6 @@ const preprocess = async (files, config) => {
 
   const file42 = files.get('42-config-param.txt.njk');
   file42.config = config;
-
-  const file50 = files.get('50-picossg-findPages.txt.njk');
-  file50.allPagesStartingWith2 = findPages(files, '2');
 }
 
 const postprocess = (files) => {

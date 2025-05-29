@@ -32,6 +32,10 @@ function isChildPath(absoluteDirA, absoluteDirB) {
  * @typedef {PicossgObjects & RootProps} FileData All the data each file has.
  *
  * @typedef {Map<string|symbol, function(*, *): *>} ProcessorMap
+ * 
+ * Define one value of the Map like the following line, just to be able to use `FilesValue` in other places, I didn't know TypeScript must make it so complicated. 
+ * @typedef {[Filename, FileData]} FilesValue
+ * @typedef {Map<FilesValue[0], FilesValue[1]>} FilesMap
  */
 
 export async function loadModule(filePath, whatWasLoaded) {
@@ -222,8 +226,7 @@ export async function buildAll(config) {
   console.log('');
 
   // Go through all files and fill the files map, with the relative filename and all data for it.
-  /** @type {Map<Filename, FileData>} */
-  const files = new Map();
+  const files = /** @type {FilesMap} */ new Map();
   for (const absoluteFilePath of walk(config.contentDir)) {
     const relativeFilePath = path.relative(config.contentDir, absoluteFilePath);
     const [shouldHandleFile, needsProcessing] = isFileToHandle(relativeFilePath, config, processors);

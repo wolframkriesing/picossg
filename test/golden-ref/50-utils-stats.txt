@@ -1,0 +1,6 @@
+  filename
+  dateISO
+  prettyUrlPath
+
+Testing the values here would mean a change every time the tests are touched.
+So we just check the keys are there. Better ideas come fwd please!

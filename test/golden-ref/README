@@ -5,6 +5,6 @@
 <li><code>02-*</code> - Front Matter, metadata, layout</li>
 <li><code>03-*</code> - still unsued</li>
 <li><code>04-*</code> - pre- and postprocessing via _config.js</li>
-<li><code>05-*</code> - the functions provided by <code>picossg.*</code></li>
+<li><code>05-*</code> - utils</li>
 </ul>
 <p>And various static files, like <a href="http://README.md">README.md</a>, *.css, favicon.ico, etc.</p>

@@ -6,6 +6,6 @@ What do the prefixes for the test files mean?
 - `02-*` - Front Matter, metadata, layout
 - `03-*` - still unsued
 - `04-*` - pre- and postprocessing via _config.js
-- `05-*` - the functions provided by `picossg.*`
+- `05-*` - utils
 
 And various static files, like README.md, *.css, favicon.ico, etc.

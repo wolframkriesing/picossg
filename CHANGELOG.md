@@ -22,7 +22,8 @@ Find here all changes tracked while developing picossg.
       this is implemented in `src/utils/configs.js` and can be called like this in a `preprocess()` `loadDataFromConfigs(files, config)`
 - [x] continuous docs updates
 - [x] document the `throwOnUndefined` default configuration for nunjucks and why 
-- [...] utils: provide `{{ _stats.lastModified.{dateTime|filename} }}`
+- [x] utils: provide `{{ _stats.lastModified.{dateTime|filename} }}`
+- [ ] check the LOCs to work!
 
 ## v4.0.0 (339 LOC)
 
