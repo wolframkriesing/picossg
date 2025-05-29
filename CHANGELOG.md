@@ -6,24 +6,25 @@ Find here all changes tracked while developing picossg.
 
 - [ ] ignore .DS_Store files (or turn it around and allow only certain files)
 - [ ] add sizes to the _file and _output, maybe also the time it took to process
-- [ ] utils: a link checker would be nice
-- [ ] utils: I want MUCH better error messages when a variable was not found or some error happens, nunjucks does a really bad job here
+- [ ] plugins: a link checker would be nice
+- [ ] plugins: I want MUCH better error messages when a variable was not found or some error happens, nunjucks does a really bad job here
 - [ ] docs: make the docs correct and as I like them to be
 - [ ] docs: add to the docs how to use PicoSSG when running `npm install` in a project
 - [ ] docs: document the second parameter to the `preprocess` and `postprocess` functions
 - [ ] provide a playground to see play with the converter online
-- [ ] utils: render social-exported.json (e.g. tweets.json) to HTML, so it can be used in the site
-- [ ] utils: a `{% toc %}` for md pages would be cool to render the table of contents 
+- [ ] plugins: render social-exported.json (e.g. tweets.json) to HTML, so it can be used in the site
+- [ ] plugins: a `{% toc %}` for md pages would be cool to render the table of contents 
 
 ## v5.0.0 (in the works)
 
 - [x] BREAKING: rename `configureNjk()` to `configure()` and pass it all processors, so the user can configure as they like
-- [x] utils: applying config.js files per directory, that applies to all files in that directory, and the child dirs
-      this is implemented in `src/utils/configs.js` and can be called like this in a `preprocess()` `loadDataFromConfigs(files, config)`
+- [x] BREAKING: rename "utils" to "plugins" 
+- [x] plugins: applying config.js files per directory, that applies to all files in that directory, and the child dirs
+      this is implemented in `src/plugins/configs.js` and can be called like this in a `preprocess()` `loadDataFromConfigs(files, config)`
 - [x] continuous docs updates
 - [x] docs: for `throwOnUndefined` default configuration for nunjucks and why 
-- [x] utils: provide `{{ _stats.lastModified.{dateTime|filename} }}`
-- [...] docs: for stats util `addStatsProperty(files)`
+- [x] plugins: provide `{{ _stats.lastModified.{dateTime|filename} }}`
+- [...] docs: for stats plugin `addStatsProperty(files)`
 - [ ] check the LOCs to work!
 
 ## v4.0.0 (339 LOC)

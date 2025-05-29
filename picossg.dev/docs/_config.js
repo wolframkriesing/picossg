@@ -22,6 +22,10 @@ const addPropertyNav = (files, {toSlug}) => {
       'custom-filters',
       // 'diagrams',
     ]],
+    ['plugins', [
+      'plugins',
+      'plugins/stats',
+    ]],
     ['About', [
       'changelog',
     ]],

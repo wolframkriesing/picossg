@@ -1,5 +1,5 @@
-import {loadDataFromConfigs} from '../../src/utils/configs.js'
-import {addStatsProperty} from "../../src/utils/stats.js";
+import {loadDataFromConfigs} from '../../src/plugins/configs.js'
+import {addStatsProperty} from "../../src/plugins/stats.js";
 
 const preprocess = async (files, config) => {
   await loadDataFromConfigs(files, config);
