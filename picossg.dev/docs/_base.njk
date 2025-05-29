@@ -59,6 +59,9 @@
       <br/>
       Last update<br/>
       <time datetime="{{ date }}">{{ _stats.lastModified.dateISO | readableDateTime }}</time>
+      <div style="font-size: x-small">
+        in <a href="{{ _stats.lastModified.prettyUrlPath }}">{{ _stats.lastModified.filename }}</a>
+      </div>
     </small>
   </aside>
 
