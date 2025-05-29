@@ -23,8 +23,8 @@ Find here all changes tracked while developing picossg.
       this is implemented in `src/plugins/configs.js` and can be called like this in a `preprocess()` `loadDataFromConfigs(files, config)`
 - [x] continuous docs updates
 - [x] docs: for `throwOnUndefined` default configuration for nunjucks and why 
-- [x] plugins: provide `{{ _stats.lastModified.{dateTime|filename} }}`
-- [...] docs: for stats plugin `addStatsProperty(files)`
+- [x] plugins: provide `{{ _stats.lastModified.* }}` and `{{ _stats.files }}`
+- [x] docs: for stats plugin `addStatsProperty(files)`
 - [ ] check the LOCs to work!
 
 ## v4.0.0 (339 LOC)
