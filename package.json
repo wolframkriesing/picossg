@@ -8,8 +8,7 @@
   "main": "src/build-cli.js",
   "type": "module",
   "files": [
-    "src/build.js",
-    "src/build-cli.js",
+    "src",
     "README.md",
     "LICENSE.md",
     "CHANGELOG.md"
