@@ -25,7 +25,7 @@ function isChildPath(absoluteDirA, absoluteDirB) {
  * @typedef {string} UrlPath The trailing part in a URL after the domain name, e.g. `/about` or `/blog/2023/01/01/my-post.html` and excluding the query string and hash.
  *
  * @typedef {{url: UrlPath, content: string, date: Date}} RootProps
- * @typedef {{relativeFilePath: Filename, absoluteFilePath: Filename, content: string, needsProcessing: boolean, hasFrontmatterBlock: boolean}} FileObject
+ * @typedef {{relativeFilePath: Filename, absoluteFilePath: Filename, content: string, needsProcessing: boolean, hasFrontmatterBlock: boolean, lastModified: Date}} FileObject
  * @typedef {{rawUrlPath: UrlPath, prettyUrlPath: UrlPath, relativeFilePath: Filename, absoluteFilePath: Filename}} OutputObject
  * @typedef {{_file: FileObject, _frontmatter: object, _output: OutputObject, _site: object}} PicossgObjects
  * @typedef {PicossgObjects & RootProps} FileData All the data each file has.
@@ -229,11 +229,12 @@ export async function buildAll(config) {
     if (shouldHandleFile) {
       if (needsProcessing) {
         const fileContent = fs.readFileSync(absoluteFilePath, 'utf8');
+        const stats = fs.statSync(absoluteFilePath);
         const [hasFrontmatterBlock, frontmatter, content] = needsProcessing
           ? readMetadataAndContent(fileContent)
           : [false, {}, ''];
         const picossgObject = {
-          _file: {relativeFilePath, absoluteFilePath, content, needsProcessing, hasFrontmatterBlock},
+          _file: {relativeFilePath, absoluteFilePath, content, needsProcessing, hasFrontmatterBlock, lastModified: stats.mtime.toISOString()},
           _frontmatter: frontmatter,
           _output: toOutputObject(relativeFilePath, config, processors),
           _site: {},

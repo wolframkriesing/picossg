@@ -27,6 +27,8 @@ const testAllFilesAreFound = (files) => {
     '42-config-param.txt.njk',
     '50-picossg-findPages.txt.njk',
     'README.md',
+    'config-loading/all-vars-0.txt.njk',
+    'config-loading/level1/level1_1/all-vars-1-1.txt.njk',
     'in-dir/index.html.md'
   ]);
   
@@ -42,6 +44,7 @@ const testToBeProcessedFilesFileObject = (files) => {
   assert.equal(f.relativeFilePath, '02-markdown.html.md');
   assert.ok(f.absoluteFilePath.endsWith('test/content/02-markdown.html.md')); // the absolute path depends on the local fs, so we just check what we know for sure.
   assert.equal(f.content, '# Headline\n\nparagraph');
+  assert.equal(f.lastModified, '2025-05-10T10:07:20.889Z');
   
   // A file with a frontmatter block, that block should NOT be part of `_file.content`.
   const fileWithFrontmatterBlock = files.get('21-with-layout.html.md')._file;
