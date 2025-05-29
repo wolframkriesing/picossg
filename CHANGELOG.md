@@ -15,6 +15,10 @@ Find here all changes tracked while developing picossg.
 - [ ] plugins: render social-exported.json (e.g. tweets.json) to HTML, so it can be used in the site
 - [ ] plugins: a `{% toc %}` for md pages would be cool to render the table of contents 
 
+## v5.0.1 (in the works)
+
+- [ ] docs: link docs in the changelog to the docs site
+
 ## v5.0.0 (349 LOC)
 
 - [x] BREAKING: rename `configureNjk()` to `configure()` and pass it all processors, so the user can configure as they like
