@@ -29,8 +29,8 @@ const postprocess = (files) => {
   file50.content = file50.content.split('\n').filter((line) => line.trim().length > 0).join('\n');
 };
 
-const configure = ({njk: njkEnv}) => {
-  njkEnv.addFilter('filterWithJustOneOutput', () => 'This is from the filter with just 1 output');
+const configure = ({njk}) => {
+  njk.addFilter('filterWithJustOneOutput', () => 'This is from the filter with just 1 output');
 }
 
 

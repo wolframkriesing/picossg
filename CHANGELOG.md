@@ -21,7 +21,7 @@ Find here all changes tracked while developing picossg.
 - [x] utils: applying config.js files per directory, that applies to all files in that directory, and the child dirs
       this is implemented in `src/utils/configs.js` and can be called like this in a `preprocess()` `loadDataFromConfigs(files, config)`
 - [x] continuous docs updates
-- [ ] document the `throwOnUndefined` default configuration for nunjucks and why 
+- [x] document the `throwOnUndefined` default configuration for nunjucks and why 
 
 ## v4.0.0 (339 LOC)
 

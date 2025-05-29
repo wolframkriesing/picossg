@@ -58,6 +58,15 @@ One of PicoSSG's most valuable features is its predictable 1:1 mapping from sour
 - `content/posts/post.html.md.njk` becomes `output/posts/post.html`
 - `content/css/style.css` is copied as is to `output/css/style.css`
 
+### `throwOnUndefined` Configuration
+
+Out of the box PicoSSG is configured so that missing template variables halt execution, 
+if you use `{% raw %}{{ unknownVar }}{% endraw %}` in a nunjuck template the processing will fail.
+
+Why? This is a best practice in order to prevent delivering code or content that
+"should do" but doesn't. Missing variables or misconfigured data are often a time eater,
+even worse when it only is noticed eventually once the content is already online for a while.
+
 ## Getting Started
 
 Ready to start using PicoSSG? Check out:
