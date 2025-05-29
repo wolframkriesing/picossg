@@ -48,7 +48,7 @@ const configure = ({njk}) => {
   njk.addFilter('readableDateTime', (date) => new Date(date).toLocaleString('en-EN', {
     dateStyle: 'long',
     timeStyle: 'medium',
-    hourCycle: 'h24'
+    hourCycle: 'h23'
   }));
 }
 
