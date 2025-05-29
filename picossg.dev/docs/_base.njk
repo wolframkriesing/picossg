@@ -78,11 +78,11 @@
   document.querySelectorAll('.secondLevelHeadlines a').forEach($ahref => {
     // Use `textContent` here because the <a> might be inside an not-yet-opened <details> tag and is therefore
     // invisible to `innerText`!
-    const aText = $ahref.textContent;
+    const aText = $ahref.textContent.trim();
     
     const aId = $ahref.getAttribute('href').substring(1);
     $h2s.forEach($h2 => {
-      if ($h2.innerText === aText) {
+      if ($h2.innerText.trim() === aText) {
         $h2.id = aId;
       }
     });
