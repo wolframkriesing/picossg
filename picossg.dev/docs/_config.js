@@ -16,15 +16,15 @@ const addPropertyNav = (files, {toSlug}) => {
       'frontmatter',
       'templates',
     ]],
+    ['Plugins', [
+      'plugins',
+      'plugins/stats',
+    ]],
     ['Advanced', [
       // 'config-js',
       'components',
       'custom-filters',
       // 'diagrams',
-    ]],
-    ['plugins', [
-      'plugins',
-      'plugins/stats',
     ]],
     ['About', [
       'changelog',

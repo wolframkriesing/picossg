@@ -4,6 +4,7 @@ import fs from 'fs';
 import packageJson from '../package.json' with {type: 'json'};
 import {addChangelogFile} from "./docs/changelog/_config.js";
 import * as docs from "./docs/_config.js";
+import {addStatsProperty} from "../src/plugins/stats.js";
 
 const toSlug = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
@@ -28,6 +29,7 @@ const collectSrcStats = () => {
 const preprocess = async (files, config) => {
   addChangelogFile(files);
   docs.preprocess(files, {toSlug});
+  addStatsProperty(files);
   const srcStats = collectSrcStats();
 
   for (const [_, data] of files) {
