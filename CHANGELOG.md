@@ -25,7 +25,6 @@ Find here all changes tracked while developing picossg.
 - [x] docs: for `throwOnUndefined` default configuration for nunjucks and why 
 - [x] plugins: provide `{{ _stats.lastModified.* }}` and `{{ _stats.files }}`
 - [x] docs: for stats plugin `addStatsProperty(files)`
-- [ ] check the LOCs to work!
 
 ## v4.0.0 (339 LOC)
 
