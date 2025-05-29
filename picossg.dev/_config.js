@@ -3,57 +3,15 @@ import path, {dirname} from 'path';
 import fs from 'fs';
 import packageJson from '../package.json' with {type: 'json'};
 import {addChangelogFile} from "./docs/changelog/_config.js";
+import * as docs from "./docs/_config.js";
 
 const toSlug = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-const DOCS_DIR = 'docs/';
 const SRC_DIR = path.resolve(path.join(__dirname, '../src'));
 
 const picoSsgVersion = packageJson.version;
-
-const buildNav = files => {
-  const pages = new Map([
-    ['Getting Started', [
-      DOCS_DIR,
-      path.join(DOCS_DIR, 'install'),
-      path.join(DOCS_DIR, 'cli'),
-      path.join(DOCS_DIR, 'create-site'),
-    ]],
-    ['Concepts', [
-      path.join(DOCS_DIR, 'file-mapping'),
-      // path.join(DOCS_DIR, 'markdown'), 
-      path.join(DOCS_DIR, 'frontmatter'),
-      path.join(DOCS_DIR, 'templates'),
-    ]],
-    ['Advanced', [
-      // path.join(DOCS_DIR, 'config-js'),
-      path.join(DOCS_DIR, 'components'),
-      path.join(DOCS_DIR, 'custom-filters'),
-      // path.join(DOCS_DIR, 'diagrams'),
-    ]],
-    ['About', [
-      path.join(DOCS_DIR, 'changelog'),
-    ]],
-  ]);
-
-  const nav = new Map();
-  pages.keys().toArray().forEach(title => nav.set(title, {id: toSlug(title), items: []}));
-
-  for (const [title, pagePaths] of pages) {
-    for (const pagePath of pagePaths) {
-      for (const [filename, data] of files) {
-        if (filename.startsWith(path.join(pagePath, 'index.html'))) {
-          nav.get(title).items.push(data);
-        }
-      }
-    }
-  }
-  for (const [_, data] of files) {
-    data.nav = nav;
-  }
-};
 
 const collectSrcStats = () => {
   // count the number of files in 'src' and count the number of lines of code in total in that directory
@@ -67,20 +25,10 @@ const collectSrcStats = () => {
   }
 }
 
-const addFirstLevelHeadlines = files => {
-  for (const [_, data] of files) {
-    if (data._output.relativeFilePath.startsWith('docs/') || data.url.startsWith('/changelog/')) {
-      const lines = data.content.match(/^## .*/gm) ?? [];
-      data.firstLevelHeadlines = lines.map(s => s.replace(/^## /, ''));
-    }
-  }
-}
-
 const preprocess = async (files, config) => {
-  addChangelogFile(files, config);
-  buildNav(files);
+  addChangelogFile(files);
+  docs.preprocess(files, {toSlug});
   const srcStats = collectSrcStats();
-  addFirstLevelHeadlines(files);
 
   for (const [_, data] of files) {
     data.srcStats = srcStats;

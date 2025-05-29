@@ -6,7 +6,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const relativePathToChangelog = '../../../CHANGELOG.md';
 
-const addChangelogFile = (files, config) => {
+const addChangelogFile = (files) => {
   const absoluteFilePath = path.join(__dirname, relativePathToChangelog);
   const content = fs.readFileSync(absoluteFilePath, 'utf8');
 
