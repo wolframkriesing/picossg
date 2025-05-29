@@ -62,9 +62,9 @@ async function loadUserFunctions(config) {
   }
 }
 
-function userConfiguredNjk(userFunctions, njk) {
-  if (userFunctions?.configureNjk) {
-    userFunctions.configureNjk(njk);
+function userConfigured(userFunctions, processors) {
+  if (userFunctions?.configure) {
+    userFunctions.configure(processors);
   }
 }
 
@@ -82,7 +82,7 @@ async function createProcessors(config, userFunctions) {
   njk.addFilter('md', (s) => mdRender(s));
   njk.addFilter('mdinline', (s) => mdRenderInline(s));
   const coreFilters = Object.keys(njk.filters);
-  userConfiguredNjk(userFunctions, njk);
+  userConfigured(userFunctions, {njk, md});
   const newFilters = Object.keys(njk.filters).filter((f) => !coreFilters.includes(f));
   console.log(`    ${newFilters.length} user-defined njk filters loaded: ${newFilters.join(', ')}`);
 

@@ -93,7 +93,7 @@ const preprocess = async (files, config) => {
   }
 }
 
-const configureNjk = (njk) => {
+const configure = ({njk}) => {
   njk.addFilter('slug', toSlug);
   njk.addFilter('readableDateTime', (date) => new Date(date).toLocaleString('en-EN', {
     dateStyle: 'long',
@@ -102,4 +102,4 @@ const configureNjk = (njk) => {
   }));
 }
 
-export {preprocess, configureNjk}
+export {preprocess, configure}
