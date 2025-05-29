@@ -6,20 +6,6 @@ import {parse as parseYaml} from 'yaml'
 
 import MarkdownIt from 'markdown-it';
 
-const md = new MarkdownIt({html: true, linkify: true});
-const mdRender = (s) => md.render(s);
-const mdRenderInline = (s) => md.renderInline(s);
-
-/**
- * Both paths are seen as absolute paths or files, so the function checks if `absoluteDirB` is inside `absoluteDirA`.
- * E.g. isChildPath("/a/b" ,"/a/b/c/d") => true, but isChildPath("/a/b" ,"/e/f") => false.
- */
-function isChildPath(absoluteDirA, absoluteDirB) {
-  const pathA = path.dirname(absoluteDirA);
-  const pathB = path.dirname(absoluteDirB);
-  return pathB.startsWith(pathA) && pathB.length > pathA.length;
-}
-
 /**
  * @typedef {string} Filename These are the filenames that will be copied or processed by picossg, e.g. `*.njk` or `*.md.njk` files.
  * @typedef {string} UrlPath The trailing part in a URL after the domain name, e.g. `/about` or `/blog/2023/01/01/my-post.html` and excluding the query string and hash.
@@ -32,11 +18,21 @@ function isChildPath(absoluteDirA, absoluteDirB) {
  * @typedef {PicossgObjects & RootProps} FileData All the data each file has.
  *
  * @typedef {Map<string|symbol, function(*, *): *>} ProcessorMap
- * 
- * Define one value of the Map like the following line, just to be able to use `FilesValue` in other places, I didn't know TypeScript must make it so complicated. 
+ *
+ * Define one value of the Map like the following line, just to be able to use `FilesValue` in other places, I didn't know TypeScript must make it so complicated.
  * @typedef {[Filename, FileData]} FilesValue
  * @typedef {Map<FilesValue[0], FilesValue[1]>} FilesMap
  */
+
+/**
+ * Both paths are seen as absolute paths or files, so the function checks if `absoluteDirB` is inside `absoluteDirA`.
+ * E.g. isChildPath("/a/b" ,"/a/b/c/d") => true, but isChildPath("/a/b" ,"/e/f") => false.
+ */
+function isChildPath(absoluteDirA, absoluteDirB) {
+  const pathA = path.dirname(absoluteDirA);
+  const pathB = path.dirname(absoluteDirB);
+  return pathB.startsWith(pathA) && pathB.length > pathA.length;
+}
 
 export async function loadModule(filePath, whatWasLoaded) {
   const filename = path.basename(filePath);
@@ -77,6 +73,7 @@ function userConfigured(userFunctions, processors) {
  * @return {Promise<ProcessorMap>}
  */
 async function createProcessors(config, userFunctions) {
+  const md = new MarkdownIt({html: true, linkify: true});
   const nunjucksOptions = {
     autoescape: true,
     throwOnUndefined: true,
@@ -84,8 +81,8 @@ async function createProcessors(config, userFunctions) {
     lstripBlocks: true,
   };
   const njk = nunjucks.configure(config.contentDir, nunjucksOptions);
-  njk.addFilter('md', (s) => mdRender(s));
-  njk.addFilter('mdinline', (s) => mdRenderInline(s));
+  njk.addFilter('md', (s) => md.render(s));
+  njk.addFilter('mdinline', (s) => md.renderInline(s));
   const coreFilters = Object.keys(njk.filters);
   userConfigured(userFunctions, {njk, md});
   const newFilters = Object.keys(njk.filters).filter((f) => !coreFilters.includes(f));
@@ -93,7 +90,7 @@ async function createProcessors(config, userFunctions) {
 
   return new Map([
     ['.njk', (content, data) => njk.renderString(content, data)],
-    ['.md', (content, _) => mdRender(content)],
+    ['.md', (content, _) => md.render(content)],
 
     // The processor below is not for a file extension but just for rendering the "layout" given as (front-matter) attribute in the metadata.
     [Symbol.for('njk-layout'), (filename, data) => njk.render(filename, data)],
@@ -238,7 +235,14 @@ export async function buildAll(config) {
           ? readMetadataAndContent(fileContent)
           : [false, {}, ''];
         const picossgObject = {
-          _file: {relativeFilePath, absoluteFilePath, content, needsProcessing, hasFrontmatterBlock, lastModifiedISO: stats.mtime.toISOString()},
+          _file: {
+            relativeFilePath,
+            absoluteFilePath,
+            content,
+            needsProcessing,
+            hasFrontmatterBlock,
+            lastModifiedISO: stats.mtime.toISOString()
+          },
           _frontmatter: frontmatter,
           _output: toOutputObject(relativeFilePath, config, processors),
           _site: {},
@@ -287,7 +291,7 @@ export async function buildAll(config) {
       console.error(`❌  Output file path "${output.absoluteFilePath}" is outside of the output directory "${absoluteOutputPath}".`);
       process.exit(1);
     }
-    
+
     ensureDir(output.absoluteFilePath);
     writes.push(fsPromise
       .writeFile(output.absoluteFilePath, fileData.content, 'utf8')
