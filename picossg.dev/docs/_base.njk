@@ -78,6 +78,14 @@
       }
     });
   };
+  const showLinkForAllSections = () => {
+    const $sections = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+    $sections.forEach(($section) => {
+      // the following is quite ugly, it changes the width of the section and may add a linebreak, better position
+      // it absolute left of the section, but simple, how?
+      $section.innerHTML += ` <a href="#${$section.id}" class="anchor-link" aria-label="Link to this section">#</a>`;
+    });
+  };
   makeAllSectionsLinkable();
   
   const $h2s = document.querySelectorAll('h2');
@@ -85,12 +93,11 @@
   $h2s.forEach(($h2) => {
     // Add: <li><a href="#section-slug">title</a></li>
     const $li = document.createElement('li');
-    const $a = document.createElement('a');
-    $a.href = `#${$h2.id}`;
-    $a.textContent = $h2.textContent;
-    $li.appendChild($a);
+    $li.innerHTML = `<a href="#${$h2.id}">${$h2.textContent}</a>`;
     $toc.appendChild($li);
   });
+
+  showLinkForAllSections();
 </script>
 
 <script>

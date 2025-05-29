@@ -22,10 +22,10 @@ Find here all changes tracked while developing picossg.
 ## v5.0.0 (349 LOC)
 
 - [x] BREAKING: rename `configureNjk()` to `configure()` and pass it all processors, so the user can configure as they like
-- [x] BREAKING: rename "utils" to "plugins" 
+- [x] BREAKING: rename "utils" to ["plugins"](https://picossg.dev/docs/plugins/) 
 - [x] docs: multiple updates
-- [x] docs: for `throwOnUndefined` default configuration for nunjucks and why 
-- [x] docs: for stats plugin `addStatsProperty(files)`
+- [x] [docs: for `throwOnUndefined`](https://picossg.dev/docs/#section-throwonundefined-configuration) default configuration for nunjucks and why 
+- [x] [docs: for stats plugin](https://picossg.dev/docs/plugins/stats/) `addStatsProperty(files)`
 - [x] plugins: applying config.js files per directory, that applies to all files in that directory, and the child dirs
       this is implemented in `src/plugins/configs.js` and can be called like this in a `preprocess()` `loadDataFromConfigs(files, config)`
       I am NOT documenting this plugin yet, I feel like it is not going to last
