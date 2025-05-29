@@ -23,9 +23,10 @@ function isChildPath(absoluteDirA, absoluteDirB) {
 /**
  * @typedef {string} Filename These are the filenames that will be copied or processed by picossg, e.g. `*.njk` or `*.md.njk` files.
  * @typedef {string} UrlPath The trailing part in a URL after the domain name, e.g. `/about` or `/blog/2023/01/01/my-post.html` and excluding the query string and hash.
+ * @typedef {string} DateISO
  *
- * @typedef {{url: UrlPath, content: string, date: Date}} RootProps
- * @typedef {{relativeFilePath: Filename, absoluteFilePath: Filename, content: string, needsProcessing: boolean, hasFrontmatterBlock: boolean, lastModified: Date}} FileObject
+ * @typedef {{url: UrlPath, content: string, date: DateISO}} RootProps
+ * @typedef {{relativeFilePath: Filename, absoluteFilePath: Filename, content: string, needsProcessing: boolean, hasFrontmatterBlock: boolean, lastModifiedISO: DateISO}} FileObject
  * @typedef {{rawUrlPath: UrlPath, prettyUrlPath: UrlPath, relativeFilePath: Filename, absoluteFilePath: Filename}} OutputObject
  * @typedef {{_file: FileObject, _frontmatter: object, _output: OutputObject, _site: object}} PicossgObjects
  * @typedef {PicossgObjects & RootProps} FileData All the data each file has.
@@ -234,7 +235,7 @@ export async function buildAll(config) {
           ? readMetadataAndContent(fileContent)
           : [false, {}, ''];
         const picossgObject = {
-          _file: {relativeFilePath, absoluteFilePath, content, needsProcessing, hasFrontmatterBlock, lastModified: stats.mtime.toISOString()},
+          _file: {relativeFilePath, absoluteFilePath, content, needsProcessing, hasFrontmatterBlock, lastModifiedISO: stats.mtime.toISOString()},
           _frontmatter: frontmatter,
           _output: toOutputObject(relativeFilePath, config, processors),
           _site: {},

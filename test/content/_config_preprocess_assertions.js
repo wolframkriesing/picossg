@@ -44,7 +44,7 @@ const testToBeProcessedFilesFileObject = (files) => {
   assert.equal(f.relativeFilePath, '02-markdown.html.md');
   assert.ok(f.absoluteFilePath.endsWith('test/content/02-markdown.html.md')); // the absolute path depends on the local fs, so we just check what we know for sure.
   assert.equal(f.content, '# Headline\n\nparagraph');
-  assert.equal(f.lastModified, '2025-05-10T10:07:20.889Z');
+  assert.equal(f.lastModifiedISO, '2025-05-10T10:07:20.889Z');
   
   // A file with a frontmatter block, that block should NOT be part of `_file.content`.
   const fileWithFrontmatterBlock = files.get('21-with-layout.html.md')._file;
