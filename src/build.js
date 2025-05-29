@@ -118,14 +118,14 @@ function* walk(dir) {
   }
 }
 
-function needsProcessing(relPath, processors) {
+const needsProcessing = (relPath, processors) => {
   for (const ext of processors.keys()) {
     if (typeof ext === 'string' && relPath.endsWith(ext)) {
       return true;
     }
   }
   return false;
-}
+};
 
 const isIgnoredFile = (filename) => filename.startsWith('_');
 
@@ -181,9 +181,7 @@ function isFileToHandle(relPath, config, processors) {
   return [true, needsProcessing(relPath, processors)];
 }
 
-/**
- * @return {OutputObject}
- */
+/** @return {OutputObject} */
 const toOutputObject = (relativeFilePath, config, processors) => {
   let outRelativePath = relativeFilePath;
   while (processors.has(path.extname(outRelativePath))) { // process all known extensions
@@ -199,6 +197,7 @@ const toOutputObject = (relativeFilePath, config, processors) => {
   };
 };
 
+/** @return {RootProps} */
 const toRootProps = (fileData) => {
   return {
     url: fileData._output.prettyUrlPath,
