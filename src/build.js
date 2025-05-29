@@ -199,25 +199,12 @@ const toOutputObject = (relativeFilePath, config, processors) => {
   };
 };
 
-/**
- * This function just prevents `fs.statSync` to be run for files where `date` is already set in the frontmatter.
- * So it's just reducing processing load (for now).
- */
-const readRootPropDate = (picossgObject) => {
-  const frontmatter = picossgObject._frontmatter;
-  if (frontmatter.date) {
-    return frontmatter.date;
-  }
-  const stats = fs.statSync(picossgObject._file.absoluteFilePath);
-  return stats.mtime.toISOString();
-};
-
-const toRootProps = (picossgObject) => {
+const toRootProps = (fileData) => {
   return {
-    url: picossgObject._output.prettyUrlPath,
-    content: picossgObject._file.content,
-    date: readRootPropDate(picossgObject),
-    ...picossgObject._frontmatter,
+    url: fileData._output.prettyUrlPath,
+    content: fileData._file.content,
+    date: fileData._frontmatter?.date ?? fileData._file.lastModifiedISO,
+    ...fileData._frontmatter,
   }
 };
 
@@ -240,7 +227,7 @@ export async function buildAll(config) {
         const [hasFrontmatterBlock, frontmatter, content] = needsProcessing
           ? readMetadataAndContent(fileContent)
           : [false, {}, ''];
-        const picossgObject = {
+        const fileData = {
           _file: {
             relativeFilePath,
             absoluteFilePath,
@@ -254,8 +241,8 @@ export async function buildAll(config) {
           _site: {},
         };
         files.set(relativeFilePath, {
-          ...picossgObject,
-          ...toRootProps(picossgObject),
+          ...fileData,
+          ...toRootProps(fileData),
         });
       } else {
         // File needs no processing => only copy the file

@@ -59,6 +59,7 @@ const testToBeProcessedFilesFrontmatterObject = files => {
   
   assert.equal(f.title, 'Simple Meta Data');
   assert.equal(f.dateCreated, "2023-10-01 10:00:00");
+  assert.equal(f.date, "2023-10-01");
   assert.deepEqual(f.tags, ['simple', 'SSG']);
   
   testSetSucceeded('To be processed files `_frontmatter` object');
