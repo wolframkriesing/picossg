@@ -24,6 +24,18 @@ import MarkdownIt from 'markdown-it';
  * @typedef {Map<FilesValue[0], FilesValue[1]>} FilesMap
  */
 
+const nunjucksOptions = {
+  autoescape: true,
+  throwOnUndefined: true,
+  trimBlocks: true,
+  lstripBlocks: true,
+};
+
+const markdownOptions = {
+  html: true,
+  linkify: true,
+};
+
 /**
  * Both paths are seen as absolute paths or files, so the function checks if `absoluteDirB` is inside `absoluteDirA`.
  * E.g. isChildPath("/a/b" ,"/a/b/c/d") => true, but isChildPath("/a/b" ,"/e/f") => false.
@@ -73,13 +85,7 @@ function userConfigured(userFunctions, processors) {
  * @return {Promise<ProcessorMap>}
  */
 async function createProcessors(config, userFunctions) {
-  const md = new MarkdownIt({html: true, linkify: true});
-  const nunjucksOptions = {
-    autoescape: true,
-    throwOnUndefined: true,
-    trimBlocks: true,
-    lstripBlocks: true,
-  };
+  const md = new MarkdownIt(markdownOptions);
   const njk = nunjucks.configure(config.contentDir, nunjucksOptions);
   njk.addFilter('md', (s) => md.render(s));
   njk.addFilter('mdinline', (s) => md.renderInline(s));
