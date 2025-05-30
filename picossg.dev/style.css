@@ -6,9 +6,18 @@
   --primary-color: #0f0;
   --primary-hover: white;
   --text-color: var(--primary-color);
-  --light-bg: #1a1a1a;
+  --bg-primary: #111;
+  --bg-secondary: #000;
+  --bg-tertiary: #1a1a1a;
   --border-color: #333;
   --sidebar-width: 280px;
+  --code-bg: #000;
+  --code-text: #ff8;
+  --blockquote-text: #aaa;
+  --crt-overlay: rgba(0, 0, 0, 0.25);
+  --theme-toggle-bg: var(--bg-secondary);
+  --theme-toggle-border: var(--border-color);
+  --theme-toggle-text: var(--primary-color);
 }
 
 * {
@@ -24,7 +33,7 @@ body {
   margin: 0;
   line-height: 1.6;
   min-height: 100vh;
-  background-color: #111;
+  background-color: var(--bg-primary);
 }
 
 hr {
@@ -40,7 +49,7 @@ hr {
 aside {
   width: var(--sidebar-width);
   padding: 1.5rem;
-  background-color: #000;
+  background-color: var(--bg-secondary);
   border-right: 1px solid var(--border-color);
   position: sticky;
   height: calc(100vh - var(--header-height, 0px));
@@ -154,12 +163,12 @@ p, ul, ol {
 
 code {
   font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
-  background-color: #000;
+  background-color: var(--code-bg);
   padding: 0.2rem 0.4rem;
   border-radius: 3px;
   font-size: 0.9em;
-  border: 1px solid #333;
-  color: #ff8;
+  border: 1px solid var(--border-color);
+  color: var(--code-text);
 }
 
 nav li code {
@@ -168,7 +177,7 @@ nav li code {
 }
 
 pre {
-  background-color: #000;
+  background-color: var(--code-bg);
   padding: 1rem;
   border-radius: 5px;
   overflow-x: auto;
@@ -186,7 +195,7 @@ blockquote {
   border-left: 4px solid var(--primary-color);
   margin-left: 0;
   padding-left: 1rem;
-  color: #aaa;
+  color: var(--blockquote-text);
 }
 
 table {
@@ -201,7 +210,7 @@ th, td {
 }
 
 th {
-  background-color: #000;
+  background-color: var(--bg-secondary);
   font-weight: 600;
   text-align: left;
 }
@@ -211,7 +220,7 @@ th {
   margin: 1.5rem 0;
   border-radius: 5px;
   border-left: 4px solid var(--primary-color);
-  background-color: #1a1a1a;
+  background-color: var(--bg-tertiary);
 }
 
 .callout-title {
@@ -227,7 +236,7 @@ body::after {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, var(--crt-overlay) 50%);
   background-size: 100% 3px;
   z-index: 1000;
   pointer-events: none;
@@ -262,5 +271,94 @@ body::after {
   white-space: pre;
 }
 strong {
-  color: color-mix(in srgb, var(--text-color), white 75%);
+  color: color-mix(in srgb, var(--text-color), var(--primary-hover) 75%);
+}
+
+/* Theme toggle button */
+.theme-toggle {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  background: var(--theme-toggle-bg);
+  border: 1px solid var(--theme-toggle-border);
+  color: var(--theme-toggle-text);
+  padding: 0.5rem;
+  border-radius: 3px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.8rem;
+  z-index: 1001;
+  transition: all 0.2s ease;
+}
+
+.theme-toggle:hover {
+  color: var(--primary-hover);
+  border-color: var(--primary-color);
+}
+
+/* Light mode styles */
+@media (prefers-color-scheme: light) {
+  :root {
+    --primary-color: #007700;
+    --primary-hover: #005500;
+    --text-color: #333;
+    --bg-primary: #fff;
+    --bg-secondary: #f5f5f5;
+    --bg-tertiary: #e8e8e8;
+    --border-color: #ddd;
+    --code-bg: #f8f8f8;
+    --code-text: #d73a49;
+    --blockquote-text: #666;
+    --crt-overlay: rgba(200, 200, 200, 0.1);
+    --theme-toggle-bg: var(--bg-secondary);
+    --theme-toggle-border: var(--border-color);
+    --theme-toggle-text: var(--text-color);
+  }
+  
+  body::after {
+    opacity: 0.05;
+  }
+}
+
+/* Explicit theme overrides */
+[data-theme="light"] {
+  --primary-color: #007700;
+  --primary-hover: #005500;
+  --text-color: #333;
+  --bg-primary: #fff;
+  --bg-secondary: #f5f5f5;
+  --bg-tertiary: #e8e8e8;
+  --border-color: #ddd;
+  --code-bg: #f8f8f8;
+  --code-text: #d73a49;
+  --blockquote-text: #666;
+  --crt-overlay: rgba(200, 200, 200, 0.1);
+  --theme-toggle-bg: var(--bg-secondary);
+  --theme-toggle-border: var(--border-color);
+  --theme-toggle-text: var(--text-color);
+}
+
+[data-theme="light"] body::after {
+  opacity: 0.05;
+}
+
+[data-theme="dark"] {
+  --primary-color: #0f0;
+  --primary-hover: white;
+  --text-color: var(--primary-color);
+  --bg-primary: #111;
+  --bg-secondary: #000;
+  --bg-tertiary: #1a1a1a;
+  --border-color: #333;
+  --code-bg: #000;
+  --code-text: #ff8;
+  --blockquote-text: #aaa;
+  --crt-overlay: rgba(0, 0, 0, 0.25);
+  --theme-toggle-bg: var(--bg-secondary);
+  --theme-toggle-border: var(--border-color);
+  --theme-toggle-text: var(--text-color);
+}
+
+[data-theme="dark"] body::after {
+  opacity: 0.15;
 }

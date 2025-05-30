@@ -4,14 +4,15 @@ title: Home
 {% extends '_base.njk' %}
 
 {% block body %}
+<button class="theme-toggle" onclick="toggleTheme()">💡</button>
 <style>
   * {
-    color: #0f0;
+    color: var(--primary-color);
   }
   
   body {
     font-family: monospace;
-    background: #111;
+    background: var(--bg-primary);
     margin: 0;
     padding: 0;
     overflow-x: hidden;
@@ -147,8 +148,8 @@ title: Home
     display: inline-block;
     margin-top: 30px;
     padding: 10px 20px;
-    background: #0f0;
-    color: #000;
+    background: var(--primary-color);
+    color: var(--bg-primary);
     text-decoration: none;
     font-weight: bold;
     border: none;
@@ -157,9 +158,9 @@ title: Home
   }
   
   .action:hover {
-    background: #000;
-    color: #0f0;
-    box-shadow: 0 0 10px #0f0, 0 0 20px #0f0;
+    background: var(--bg-primary);
+    color: var(--primary-color);
+    box-shadow: 0 0 10px var(--primary-color), 0 0 20px var(--primary-color);
   }
   
   .footer {

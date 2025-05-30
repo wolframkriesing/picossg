@@ -9,7 +9,7 @@ header {
   border-bottom: 1px solid var(--primary-color);
   position: sticky;
   top: 0;
-  background-color: #111;
+  background-color: var(--bg-primary);
   z-index: 100;
   height: var(--header-height);
 }
@@ -21,7 +21,7 @@ header {
   visibility: hidden;
   transition: opacity 0.3s ease, visibility 0.3s ease;
   transition-delay: 0.5s;
-  background: #111;
+  background: var(--bg-primary);
   border: 1px solid var(--primary-color);
   border-radius: 4px;
   padding: 8px;

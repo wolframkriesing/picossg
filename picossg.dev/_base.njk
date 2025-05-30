@@ -32,5 +32,19 @@
 </head>
 <body>
   {% block body %}{% endblock %}
+  <script>
+    function toggleTheme() {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+    }
+
+    // Initialize theme from localStorage or system preference
+    const savedTheme = localStorage.getItem('theme');
+    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const initialTheme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-theme', initialTheme);
+  </script>
 </body>
 </html>
