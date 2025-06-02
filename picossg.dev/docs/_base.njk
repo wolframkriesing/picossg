@@ -2,7 +2,6 @@
 
 {% block head %}
   <link rel="stylesheet" href="/docs/style.css">
-  <script src="https://cdn.jsdelivr.net/npm/@wolframkriesing/spaish/dist/spaish.min.js"></script>
 {%  endblock %}
 
 {% set detailsSelectors = [] %}
@@ -102,9 +101,7 @@
 </script>
 
 <script>
-  {
-    const detailsSelectors = {{ detailsSelectors | dump | safe }};
-    spaish.detailsReopen('picossg-docs', detailsSelectors);
-  }
+  const detailsSelectors = {{ detailsSelectors | dump | safe }};
+  document.addEventListener('DOMContentLoaded', () => spaish.detailsReopen('picossg-docs', detailsSelectors));
 </script>
 {% endblock %}
