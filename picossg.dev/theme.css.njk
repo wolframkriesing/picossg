@@ -9,9 +9,16 @@
   '--code-bg': ['#000', '#f8f8f8'],
   '--code-text': ['#ff8', '#d73a49'],
   '--blockquote-text': ['#aaa', '#666'],
-  '--crt-overlay': ['rgba(0, 0, 0, 0.25)', 'rgba(200, 200, 200, 0.1)']
+  '--crt-overlay': ['rgba(0, 0, 0, 0.25)', 'rgba(200, 200, 200, 0.1)'],
+  '--body-after-opacity': ['0.15', '0.05']
 } %}
 
+/**
+ * The default is the dark mode, define all cases here.
+ * The 
+ * - case 1 is `:root` the default, 
+ * - case 2 "[data-theme="dark"]" is when it is explicitly set (via JS), see end of this file.
+ */
 :root {
   {% for key, value in dark_and_light %}
     {{ key }}: {{ value[0] }};
@@ -23,36 +30,43 @@
   --theme-toggle-text: var(--text-color);
 }
 
-/* Light mode styles */
+/**
+ * Light mode styles, again 2 cases,
+ * - case 1 `@media (prefers-color-scheme: light)` the user prefers light mode, this provided by the browser/OS.
+ * - case 2 "[data-theme="light"]" is when it is explicitly set (via JS).
+ */
 @media (prefers-color-scheme: light) {
   :root {
     {% for key, value in dark_and_light %}
-      --{{ key }}: {{ value[1] }};
+      {{ key }}: {{ value[1] }};
     {% endfor %}
   }
   
   body::after {
-    opacity: 0.05;
+    opacity: var({{ dark_and_light['--body-after-opacity'][1] }});
   }
 }
 
-/* Explicit theme overrides */
 [data-theme="light"] {
   {% for key, value in dark_and_light %}
-    --{{ key }}: {{ value[1] }};
+    {{ key }}: {{ value[1] }};
   {% endfor %}
 }
 
 [data-theme="light"] body::after {
-  opacity: 0.05;
+  opacity: var({{ dark_and_light['--body-after-opacity'][1] }});
 }
 
+/**
+ * This MUST be below `@media (prefers-color-scheme: light)` otherwise the light mode
+ * styles would always be used if the user prefers light mode.
+ */
 [data-theme="dark"] {
   {% for key, value in dark_and_light %}
-    --{{ key }}: {{ value[0] }};
+    {{ key }}: {{ value[0] }};
   {% endfor %}
 }
 
 [data-theme="dark"] body::after {
-  opacity: 0.15;
+  opacity: var({{ dark_and_light['--body-after-opacity'][0] }});
 }
