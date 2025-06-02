@@ -1,0 +1,120 @@
+/**
+ * The default is the dark mode, define all cases here.
+ * The 
+ * - case 1 is `:root` the default, 
+ * - case 2 "[data-theme="dark"]" is when it is explicitly set (via JS), see end of this file.
+ */
+:root {
+  --dark-primary-color: #0f0;
+  --dark-primary-hover: white;
+  --dark-text-color: #0f0;
+  --dark-bg-primary: #111;
+  --dark-bg-secondary: #000;
+  --dark-bg-tertiary: #1a1a1a;
+  --dark-border-color: #333;
+  --dark-code-bg: #000;
+  --dark-code-text: #ff8;
+  --dark-blockquote-text: #aaa;
+  --dark-crt-overlay: rgba(0, 0, 0, 0.25);
+  --dark-body-after-opacity: 0.15;
+  
+  --light-primary-color: #007700;
+  --light-primary-hover: #005500;
+  --light-text-color: #333;
+  --light-bg-primary: #fff;
+  --light-bg-secondary: #f5f5f5;
+  --light-bg-tertiary: #e8e8e8;
+  --light-border-color: #ddd;
+  --light-code-bg: #f8f8f8;
+  --light-code-text: #d73a49;
+  --light-blockquote-text: #666;
+  --light-crt-overlay: rgba(200, 200, 200, 0.1);
+  --light-body-after-opacity: 0.05;
+  
+  /* Define the default mode, dark */
+  --primary-color: var(--dark-primary-color);
+  --primary-hover: var(--dark-primary-hover);
+  --text-color: var(--dark-text-color);
+  --bg-primary: var(--dark-bg-primary);
+  --bg-secondary: var(--dark-bg-secondary);
+  --bg-tertiary: var(--dark-bg-tertiary);
+  --border-color: var(--dark-border-color);
+  --code-bg: var(--dark-code-bg);
+  --code-text: var(--dark-code-text);
+  --blockquote-text: var(--dark-blockquote-text);
+  --crt-overlay: var(--dark-crt-overlay);
+  --body-after-opacity: var(--dark-body-after-opacity);
+  
+  --sidebar-width: 280px;
+  --theme-toggle-bg: var(--bg-secondary);
+  --theme-toggle-border: var(--border-color);
+  --theme-toggle-text: var(--text-color);
+}
+
+/**
+ * Light mode styles, again 2 cases,
+ * - case 1 `@media (prefers-color-scheme: light)` the user prefers light mode, this provided by the browser/OS.
+ * - case 2 "[data-theme="light"]" is when it is explicitly set (via JS).
+ */
+@media (prefers-color-scheme: light) {
+  :root {
+    --primary-color: var(--light-primary-color);
+    --primary-hover: var(--light-primary-hover);
+    --text-color: var(--light-text-color);
+    --bg-primary: var(--light-bg-primary);
+    --bg-secondary: var(--light-bg-secondary);
+    --bg-tertiary: var(--light-bg-tertiary);
+    --border-color: var(--light-border-color);
+    --code-bg: var(--light-code-bg);
+    --code-text: var(--light-code-text);
+    --blockquote-text: var(--light-blockquote-text);
+    --crt-overlay: var(--light-crt-overlay);
+    --body-after-opacity: var(--light-body-after-opacity);
+  }
+  
+  body::after {
+    opacity: var(--dark-body-after-opacity);
+  }
+}
+
+[data-theme="light"] {
+  --primary-color: var(--light-primary-color);
+  --primary-hover: var(--light-primary-hover);
+  --text-color: var(--light-text-color);
+  --bg-primary: var(--light-bg-primary);
+  --bg-secondary: var(--light-bg-secondary);
+  --bg-tertiary: var(--light-bg-tertiary);
+  --border-color: var(--light-border-color);
+  --code-bg: var(--light-code-bg);
+  --code-text: var(--light-code-text);
+  --blockquote-text: var(--light-blockquote-text);
+  --crt-overlay: var(--light-crt-overlay);
+  --body-after-opacity: var(--light-body-after-opacity);
+}
+
+[data-theme="light"] body::after {
+  opacity: var(--light-body-after-opacity);
+}
+
+/**
+ * This MUST be below `@media (prefers-color-scheme: light)` otherwise the light mode
+ * styles would always be used if the user prefers light mode.
+ */
+[data-theme="dark"] {
+  --primary-color: var(--dark-primary-color);
+  --primary-hover: var(--dark-primary-hover);
+  --text-color: var(--dark-text-color);
+  --bg-primary: var(--dark-bg-primary);
+  --bg-secondary: var(--dark-bg-secondary);
+  --bg-tertiary: var(--dark-bg-tertiary);
+  --border-color: var(--dark-border-color);
+  --code-bg: var(--dark-code-bg);
+  --code-text: var(--dark-code-text);
+  --blockquote-text: var(--dark-blockquote-text);
+  --crt-overlay: var(--dark-crt-overlay);
+  --body-after-opacity: var(--dark-body-after-opacity);
+}
+
+[data-theme="dark"] body::after {
+  opacity: var(--dark-body-after-opacity);
+}
