@@ -1,0 +1,58 @@
+{% set dark_and_light = {
+  '--primary-color': ['#0f0', '#007700'],
+  '--primary-hover': ['white', '#005500'],
+  '--text-color': ['#0f0', '#333'],
+  '--bg-primary': ['#111', '#fff'],
+  '--bg-secondary': ['#000', '#f5f5f5'],
+  '--bg-tertiary': ['#1a1a1a', '#e8e8e8'],
+  '--border-color': ['#333', '#ddd'],
+  '--code-bg': ['#000', '#f8f8f8'],
+  '--code-text': ['#ff8', '#d73a49'],
+  '--blockquote-text': ['#aaa', '#666'],
+  '--crt-overlay': ['rgba(0, 0, 0, 0.25)', 'rgba(200, 200, 200, 0.1)']
+} %}
+
+:root {
+  {% for key, value in dark_and_light %}
+    {{ key }}: {{ value[0] }};
+  {% endfor %}
+  
+  --sidebar-width: 280px;
+  --theme-toggle-bg: var(--bg-secondary);
+  --theme-toggle-border: var(--border-color);
+  --theme-toggle-text: var(--text-color);
+}
+
+/* Light mode styles */
+@media (prefers-color-scheme: light) {
+  :root {
+    {% for key, value in dark_and_light %}
+      --{{ key }}: {{ value[1] }};
+    {% endfor %}
+  }
+  
+  body::after {
+    opacity: 0.05;
+  }
+}
+
+/* Explicit theme overrides */
+[data-theme="light"] {
+  {% for key, value in dark_and_light %}
+    --{{ key }}: {{ value[1] }};
+  {% endfor %}
+}
+
+[data-theme="light"] body::after {
+  opacity: 0.05;
+}
+
+[data-theme="dark"] {
+  {% for key, value in dark_and_light %}
+    --{{ key }}: {{ value[0] }};
+  {% endfor %}
+}
+
+[data-theme="dark"] body::after {
+  opacity: 0.15;
+}
