@@ -4,7 +4,7 @@ title: Home
 {% extends '_base.njk' %}
 
 {% block body %}
-<button class="theme-toggle" onclick="spaish.toggleColorScheme()">💡</button>
+<button class="theme-toggle" onclick="spaish.colorScheme.toggle()">💡</button>
 <style>
   * {
     color: var(--primary-color);

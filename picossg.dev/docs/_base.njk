@@ -7,7 +7,7 @@
 {% set detailsSelectors = [] %}
 
 {% block body %}
-<button class="theme-toggle" onclick="spaish.toggleColorScheme()">💡</button>
+<button class="theme-toggle" onclick="spaish.colorScheme.toggle()">💡</button>
 <header>
   <a href="/" class="ascii-art">
     {% include '_picossg_asciiart.txt' %}
@@ -102,6 +102,6 @@
 
 <script>
   const detailsSelectors = {{ detailsSelectors | dump | safe }};
-  document.addEventListener('DOMContentLoaded', () => spaish.detailsReopen('picossg-docs', detailsSelectors));
+  document.addEventListener('DOMContentLoaded', () => spaish.details.reopen('picossg-docs', detailsSelectors));
 </script>
 {% endblock %}

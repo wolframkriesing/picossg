@@ -28,15 +28,16 @@
   <meta property="og:image" content="https://picossg.dev{{_site.summaryImage}}" />
   <meta property="og:image:url"  content="https://picossg.dev{{_site.summaryImage}}" />
   <meta name="twitter:image" content="https://picossg.dev{{_site.summaryImage}}" />
+  <script src="https://cdn.jsdelivr.net/npm/@wolframkriesing/spaish@1.0.4/dist/spaish.min.js"></script>
   
   {% block head %}{% endblock %}
 </head>
 <body>
+
   {% block body %}{% endblock %}
   
-  <script src="https://cdn.jsdelivr.net/npm/@wolframkriesing/spaish/dist/spaish.min.js"></script>
   <script>
-    spaish.restoreLastColorScheme();
+    spaish.colorScheme.restoreLast();
   </script>
 </body>
 </html>
