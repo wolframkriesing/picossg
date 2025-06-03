@@ -81,34 +81,27 @@
   const showLinkForAllSections = () => {
     const showLinkIcon = (e) => {
       e.preventDefault();
-      const $el = e.currentTarget;
-      if ($el.dataset.hasSpaishLink) {
+      const $section = e.currentTarget;
+      if ($section.dataset.hasSpaishLink) {
         return;
       }
       
-      $el.style.position = 'relative';
+      $section.style.position = 'relative';
       const link = document.createElement('a');
-      link.setAttribute('href', `#${$el.id}`);
+      link.setAttribute('href', `#${$section.id}`);
       link.innerHTML = '#';
       link.style.position = 'absolute';
       link.style.left = '0';
       link.style.transform = 'translateX(-100%)';
       link.style.paddingInlineEnd = '0.2em';
-      link.style.background = 'red';
-      $el.appendChild(link);
-      $el.dataset.hasSpaishLink = 'true';
+      $section.appendChild(link);
+      $section.dataset.hasSpaishLink = 'true';
 
-      const removeHandler = (($el, link) => (el) => {
-console.log('remove the handler', el);
-//         if ($el === el.target) { // Do not remove then handler when we are over the '#'
-// console.log('same yea');          
-// //           return;
-//         }
-// console.log("el= ", el.currentTarget);        
-//         $el.dataset.hasSpaishLink = '';
-//         $el.removeChild(link);
-      })($el, link);
-      $el.addEventListener('pointerout', removeHandler, {once: true});
+      const removeHandler = (($el, link) => () => {
+        $el.dataset.hasSpaishLink = '';
+        $el.removeChild(link);
+      })($section, link);
+      $section.addEventListener('pointerleave', removeHandler, {once: true});
     };
     
     document.querySelectorAll('h1, h2, h3, h4, h5, h6')
