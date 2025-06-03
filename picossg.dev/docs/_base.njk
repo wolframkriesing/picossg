@@ -79,24 +79,55 @@
     });
   };
   const showLinkForAllSections = () => {
-    const $sections = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
-    $sections.forEach(($section) => {
-      // the following is quite ugly, it changes the width of the section and may add a linebreak, better position
-      // it absolute left of the section, but simple, how?
-      $section.innerHTML += ` <a href="#${$section.id}" class="anchor-link" aria-label="Link to this section">#</a>`;
-    });
+    const showLinkIcon = (e) => {
+      e.preventDefault();
+      const $el = e.currentTarget;
+      if ($el.dataset.hasSpaishLink) {
+        return;
+      }
+      
+      $el.style.position = 'relative';
+      const link = document.createElement('a');
+      link.setAttribute('href', `#${$el.id}`);
+      link.innerHTML = '#';
+      link.style.position = 'absolute';
+      link.style.left = '0';
+      link.style.transform = 'translateX(-100%)';
+      link.style.paddingInlineEnd = '0.2em';
+      link.style.background = 'red';
+      $el.appendChild(link);
+      $el.dataset.hasSpaishLink = 'true';
+
+      const removeHandler = (($el, link) => (el) => {
+console.log('remove the handler', el);
+//         if ($el === el.target) { // Do not remove then handler when we are over the '#'
+// console.log('same yea');          
+// //           return;
+//         }
+// console.log("el= ", el.currentTarget);        
+//         $el.dataset.hasSpaishLink = '';
+//         $el.removeChild(link);
+      })($el, link);
+      $el.addEventListener('pointerout', removeHandler, {once: true});
+    };
+    
+    document.querySelectorAll('h1, h2, h3, h4, h5, h6')
+      .forEach($el => $el.addEventListener('pointerover', showLinkIcon));
   };
   makeAllSectionsLinkable();
-  
-  const $h2s = document.querySelectorAll('h2');
-  const $toc = document.querySelector('.secondLevelHeadlines');
-  $h2s.forEach(($h2) => {
-    // Add: <li><a href="#section-slug">title</a></li>
-    const $li = document.createElement('li');
-    $li.innerHTML = `<a href="#${$h2.id}">${$h2.textContent}</a>`;
-    $toc.appendChild($li);
-  });
 
+  const addH2sToChapter = () => {
+    const $h2s = document.querySelectorAll('h2');
+    const $toc = document.querySelector('.secondLevelHeadlines');
+    $h2s.forEach(($h2) => {
+      // Add: <li><a href="#section-slug">title</a></li>
+      const $li = document.createElement('li');
+      $li.innerHTML = `<a href="#${$h2.id}">${$h2.textContent}</a>`;
+      $toc.appendChild($li);
+    });
+  };
+
+  addH2sToChapter();
   showLinkForAllSections();
 </script>
 
